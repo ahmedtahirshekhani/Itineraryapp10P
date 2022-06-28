@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ProgressBarModule } from 'primeng/progressbar';
-import {ButtonModule} from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [],
@@ -11,6 +12,7 @@ import {ButtonModule} from 'primeng/button';
   ],
   exports: [
     ProgressBarModule,
+    InputTextModule,
     ButtonModule
   ]
 })

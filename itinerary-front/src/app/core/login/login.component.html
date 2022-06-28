@@ -1,1 +1,52 @@
-<p>login works!</p>
+<div class="login-screen">
+    <img
+        src="../../../assets/images/user-icon.png"
+        alt="user-icon"
+        class="login-screen__user-icon">
+
+    <h4 class="login-screen__title">Login</h4>
+
+    <div class="login-screen_username">
+        <div class="p-float-label p-input-icon-left">
+            <i class="pi pi-user" style="color:whitesmoke"></i>
+            <input
+                class="text_input"
+                type="text"
+                id="inputtext-left"
+                pInputText
+                [(ngModel)]="username"
+            />
+        <label class="text-label" for="inputtext-left">Username</label>
+        </div>
+    </div>
+    
+    <div class="login-screen_password">
+        <div class="p-float-label p-input-icon-left">
+            <i class="pi pi-lock" style="color:whitesmoke"></i>
+            <input
+                class="text_input"
+                type="password"
+                id="inputtext-left"
+                pInputText
+                [(ngModel)]="password"
+            />
+        <label class="text-label" for="inputtext-left">Password</label>
+        </div>
+    </div>
+
+    <div class="login-screen__submission">
+        <button
+            pButton
+            type="button"
+            id="submitBtn"
+            class="p-button-warning p-button-raised p-button-rounded"
+            label="Submit"
+            (click)="handleClick($event)">
+        </button>
+    </div>
+
+    <div class="login-screen__registration-hint">
+        Not registered? 
+        <a href="https://www.w3schools.com">Create an account!</a> 
+    </div>
+</div>
