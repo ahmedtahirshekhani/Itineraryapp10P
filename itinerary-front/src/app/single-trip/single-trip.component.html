@@ -1,3 +1,51 @@
 <div>
-    <h1>All Trips</h1>
+    <h1>Single Trip [Trip Name]</h1>
+    <div class="grid">
+        <div class="col-4">
+            <p><strong>Start Date: </strong>27-9-22</p>
+        </div>
+        <div class="col-4">
+            <p><strong>End Date: </strong>30-10-22</p>
+        </div>
+        <div class="col-4">
+            <p><strong>Destination: </strong>27-9-22</p>            
+        </div>
     </div>
+    <div>
+        
+        <div><h2>Day 1</h2></div>
+        
+        <div><p-table [columns]="cols" [value]="dayData[0]" responsiveLayout="scroll">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns">
+                        {{col.header}}
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns" let-index="rowIndex">
+                <tr>
+                   
+                    <td *ngFor="let col of columns;  " >
+                        <input *ngIf="col.field == 'time' && updateBtnStatus[0][index]; else notTime" type="time" [(ngModel)]="dayData[0][index][col.field]"/>
+                        <ng-template #notTime>
+                        <input type="text" *ngIf="updateBtnStatus[0][index]; else fixText" pInputText [(ngModel)]="dayData[0][index][col.field]"/>
+                        <ng-template #fixText>{{rowData[col.field]}}</ng-template>
+                    </ng-template>
+                    </td>
+                    <td class="day_ud_col">
+                        <button *ngIf="updateBtnStatus[0][index]; else disBtn" pButton (click) = "doneClicked(0, index)"  type="button" icon="pi pi-check" label=""
+                            class="p-button-success"></button>
+                        <ng-template #disBtn><button pButton type="button"  (click) = "updateBtnClicked(0, index)" icon="pi pi-pencil" label=""
+                            class="p-button-warning"></button></ng-template>
+                        
+                        <button pButton type="button" icon="pi pi-trash" label=""
+                        class="p-button-danger"></button>
+                    </td>
+                    
+                </tr>
+            </ng-template>
+        </p-table></div>
+    </div>
+
+</div>

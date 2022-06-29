@@ -19,6 +19,9 @@ import { TripService } from './trip.service';
 import { SingleTripComponent } from './single-trip/single-trip.component';
 import {DialogModule} from 'primeng/dialog';
 import { AlltripsComponent } from './alltrips/alltrips.component';
+import {TableModule} from 'primeng/table';
+import {InputTextModule} from 'primeng/inputtext';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -39,7 +42,10 @@ import { AlltripsComponent } from './alltrips/alltrips.component';
     PanelModule,
     RippleModule,
     HttpClientModule,
-    DialogModule
+    DialogModule,
+    TableModule,
+    InputTextModule,
+    FormsModule
   ],
   providers: [MenuItemContent, TripService],
   bootstrap: [AppComponent]
