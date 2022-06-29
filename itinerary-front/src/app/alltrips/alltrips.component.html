@@ -2,7 +2,7 @@
     <h1>All Trips</h1>
     <div class="box">
         <div class="grid" *ngFor="let trip of mytrips; let idx = index;">
-            <div class="col-4 trip-card">
+            <div class="col-4 trip-card" (click)="tripCardClicked(trip.name)">
                 <p-card header="{{trip.name}}" subheader="Created On: 27-Jun-22" styleClass="p-card-shadow ">
                     <ng-template pTemplate="header">
                         <img alt="Card" src="../../assets/images/swat-valley.jpg">

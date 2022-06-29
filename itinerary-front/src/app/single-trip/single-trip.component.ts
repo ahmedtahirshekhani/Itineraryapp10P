@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { TripService } from '../trip.service';
 
 @Component({
   selector: 'app-single-trip',
@@ -10,13 +12,31 @@ export class SingleTripComponent implements OnInit {
   dayData!: any[];
   cols!: any[];
   updateBtnStatus !: Boolean[][];
+  tripname !: String;
   // inputVal!: any[];
-  constructor() { }
+  constructor(private tripService: TripService,  private router: Router) {
+
+    const state = this.router.getCurrentNavigation()
+    this.tripname = state?.extras?.state?.['tripName']
+   }
 
   
 
 
   ngOnInit(): void {
+    
+
+    this.tripService.getSingleTripData(this.tripname).subscribe((tripData : any)=>{
+      console.log(tripData.message)
+      if(tripData.success){
+        this.dayData = tripData.message
+        this.updateBtnStatus = [[false, false, false],[false, false, false]]
+        
+      }else{
+        console.log(tripData)
+      }
+    })
+
 
     this.cols = [
       { field: 'time', header: 'Time' },
@@ -24,25 +44,11 @@ export class SingleTripComponent implements OnInit {
      
     ];
 
-    this.dayData = [[
-      {
-       "time":"01:00",
-       "activity": "Reached Kalam"
-      },
-      {
-        "time":"02:30",
-       "activity": "Lunch"
-      },
-      {
-        "time":"04:00",
-       "activity": "Leave for Mohmand Lake"
-      },
-    
-    ]]
+  
 // this.inputVal = this.dayData
     
 
-    this.updateBtnStatus = [[false, false, false]]
+   
 
   }
 

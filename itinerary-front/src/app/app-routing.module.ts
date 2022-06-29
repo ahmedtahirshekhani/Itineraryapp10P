@@ -5,7 +5,7 @@ import { SingleTripComponent } from './single-trip/single-trip.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: CustomerDashboardComponent},
-  { path: 'singletrip', component: SingleTripComponent}
+  { path: 'singletrip/:tripName', component: SingleTripComponent}
 ];
 
 @NgModule({

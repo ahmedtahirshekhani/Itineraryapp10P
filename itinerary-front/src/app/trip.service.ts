@@ -16,4 +16,10 @@ export class TripService {
   getMyTrip() {
     return this.http.get<tripData>("/api/mytrips")
   }
+
+  getSingleTripData(tripNameArg:String){
+    return this.http.post<tripData>("/api/mytrips/single",{
+      tripname:tripNameArg
+    })
+  }
 }
