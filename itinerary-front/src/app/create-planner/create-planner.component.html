@@ -1,0 +1,27 @@
+<div class="dialogBox test">
+    <div class="p-field">
+        <label class="label" id="tripLabel" for="trip">Trip Name</label>
+        <input id="trip" type="text" pInputText [(ngModel)]="tripName" />
+    </div>
+
+    <div class="p-field">
+        <label class="label" for="location">Select Location</label>
+        <p-dropdown id="location" [options]="cities" [(ngModel)]="selectedCity" optionLabel="name" autoWidth="false" [style]="{'width':'100%', 'border-radius': '25px', 'background-color': 'rgba(0, 0, 0, 0.025)'}"></p-dropdown>
+    </div>
+
+    <div class="p-fluid p-grid p-formgrid">
+        <div class="p-field p-col-12">
+            <label class="label" for="startDate">Specify Start Date</label>
+            <p-calendar inputId="startDate" [(ngModel)]="startDate" [showButtonBar]="true" [showIcon]="true" inputId="icon" appendTo="body" [inputStyle]="{'border-radius':'25px', 'background-color': 'rgba(0, 0, 0, 0.025)'}"></p-calendar>
+
+        </div>
+        <div class="p-field p-col-12">
+            <label class="label" for="stacked">Specify Trip Duration</label>
+            <p-inputNumber [(ngModel)]="duration" [showButtons]="true" inputId="stacked" mode="decimal" [inputStyle]="{'border-radius':'25px', 'background-color': 'rgba(0, 0, 0, 0.025)'}">
+            </p-inputNumber>
+        </div>
+    </div>
+</div>
+<div class="submission">
+    <button pButton type="button" class="p-button-raised p-button-rounded">Submit</button>
+</div>

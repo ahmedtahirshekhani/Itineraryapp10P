@@ -19,6 +19,13 @@ import { TripService } from './trip.service';
 import { SingleTripComponent } from './single-trip/single-trip.component';
 import {DialogModule} from 'primeng/dialog';
 import { AlltripsComponent } from './alltrips/alltrips.component';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { CreatePlannerComponent } from './create-planner/create-planner.component';
+import { FormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @NgModule({
   declarations: [
@@ -26,7 +33,8 @@ import { AlltripsComponent } from './alltrips/alltrips.component';
     CustomerDashboardComponent,
     UserMenuComponent,
     SingleTripComponent,
-    AlltripsComponent
+    AlltripsComponent,
+    CreatePlannerComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +47,13 @@ import { AlltripsComponent } from './alltrips/alltrips.component';
     PanelModule,
     RippleModule,
     HttpClientModule,
-    DialogModule
+    DialogModule,
+    DynamicDialogModule,
+    FormsModule,
+    InputTextModule,
+    CalendarModule,
+    DropdownModule,
+    InputNumberModule
   ],
   providers: [MenuItemContent, TripService],
   bootstrap: [AppComponent]
