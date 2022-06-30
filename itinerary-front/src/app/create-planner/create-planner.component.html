@@ -6,7 +6,7 @@
 
     <div class="p-field">
         <label class="label" for="location">Select Location</label>
-        <p-dropdown id="location" [options]="cities" [(ngModel)]="selectedCity" optionLabel="name" autoWidth="false" [style]="{'width':'100%', 'border-radius': '25px', 'background-color': 'rgba(0, 0, 0, 0.025)'}"></p-dropdown>
+        <p-dropdown id="location" [options]="cities" [(ngModel)]="selectedCity" placeholder="Select a City" [showClear]="true" optionLabel="name" autoWidth="false" [style]="{'width':'100%', 'border-radius': '25px', 'background-color': 'rgba(0, 0, 0, 0.025)'}"></p-dropdown>
     </div>
 
     <div class="p-fluid p-grid p-formgrid">
@@ -23,5 +23,7 @@
     </div>
 </div>
 <div class="submission">
-    <button pButton type="button" class="p-button-raised p-button-rounded">Submit</button>
+    <button pButton type="button" class="p-button-raised p-button-rounded" (click)="handleClick()">
+        Submit
+    </button>
 </div>

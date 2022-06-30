@@ -16,8 +16,8 @@ export class AlltripsComponent implements OnInit {
         const dataVal = data.data
         this.mytrips = dataVal.tripdata
         console.log(this.mytrips)
-      }else{
-        console.log(data.err)
+      } else{
+        console.log(data.err);
       }
     })
   }

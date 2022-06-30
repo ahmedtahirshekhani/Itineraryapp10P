@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MenuItem} from 'primeng/api';
+import {MenuItem, MessageService} from 'primeng/api';
 import { ObjectUnsubscribedError } from 'rxjs';
 import { TripService } from '../trip.service';
 import {DialogService} from 'primeng/dynamicdialog';
@@ -11,14 +11,15 @@ import {ContactComponent} from '../contact/contact.component'
   selector: 'app-customer-dashboard',
   templateUrl: './customer-dashboard.component.html',
   styleUrls: ['./customer-dashboard.component.css'],
-  providers: [DialogService]
+  providers: [DialogService, MessageService]
 })
 export class CustomerDashboardComponent implements OnInit {
   display = true;
   items: MenuItem[] = [];
   mytrips: any[] = [];
     
-  constructor(public dialogService: DialogService) {}
+  constructor(public dialogService: DialogService,
+              public messageService: MessageService ) {}
 
   newPlannerRef: DynamicDialogRef;
   contactRef: DynamicDialogRef;
@@ -39,6 +40,15 @@ export class CustomerDashboardComponent implements OnInit {
         header: 'Add a Planner',
         width: '40%',
         contentStyle: {"overflow": "auto"}
+    });
+
+    this.newPlannerRef.onClose.subscribe((status: boolean) => { 
+      if (status) {
+        this.messageService.add({severity:'success', summary: 'Trip Added'});
+      } else if (status == false) {
+        console.log(status);
+        this.messageService.add({severity:'error', summary: 'Addition Failed'});
+      }
     });
   }
 
