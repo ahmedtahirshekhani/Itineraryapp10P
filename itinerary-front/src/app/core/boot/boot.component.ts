@@ -18,7 +18,8 @@ export class BootComponent implements OnInit {
       if (this.progressBarValue >= 100) {
         this.progressBarValue = 100;
         clearInterval(interval);
-        this.router.navigate(['/login']);
+        console.log("Hello World");
+        this.router.navigate(['login']);
       }
     }, 1500);
   }

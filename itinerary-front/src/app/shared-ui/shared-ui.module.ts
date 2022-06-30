@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [],
@@ -13,7 +14,8 @@ import { ButtonModule } from 'primeng/button';
   exports: [
     ProgressBarModule,
     InputTextModule,
-    ButtonModule
+    ButtonModule,
+    ToastModule
   ]
 })
 export class SharedUiModule { }
