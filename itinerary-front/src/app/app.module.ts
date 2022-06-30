@@ -9,12 +9,16 @@ import { FormsModule } from "@angular/forms";
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from "primeng/divider";
 import {PasswordModule} from 'primeng/password';
-
+import { WhoPaidWhatComponent } from './who-paid-what/who-paid-what.component';
+import {TableModule} from 'primeng/table';
+import { HttpClientModule } from '@angular/common/http';
+import {DynamicDialogModule} from 'primeng/dynamicdialog';
 
 @NgModule({
   declarations: [
     AppComponent,
-    RegisterComponent
+    RegisterComponent,
+    WhoPaidWhatComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +27,10 @@ import {PasswordModule} from 'primeng/password';
     FormsModule,
     ButtonModule,
     DividerModule,
-    PasswordModule
+    PasswordModule,
+    TableModule,
+    HttpClientModule,
+    DynamicDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]
