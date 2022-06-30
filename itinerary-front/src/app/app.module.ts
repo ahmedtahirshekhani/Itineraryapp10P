@@ -22,6 +22,7 @@ import { AlltripsComponent } from './alltrips/alltrips.component';
 import {TableModule} from 'primeng/table';
 import {InputTextModule} from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
+import { LayoutComponent } from './layout/layout.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { FormsModule } from '@angular/forms';
     CustomerDashboardComponent,
     UserMenuComponent,
     SingleTripComponent,
-    AlltripsComponent
+    AlltripsComponent,
+    LayoutComponent
   ],
   imports: [
     BrowserModule,

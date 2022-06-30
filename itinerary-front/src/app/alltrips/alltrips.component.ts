@@ -16,15 +16,15 @@ export class AlltripsComponent implements OnInit {
       if(data.success){
         const dataVal = data.data
         this.mytrips = dataVal.tripdata
-        console.log(this.mytrips)
+        // console.log(this.mytrips)
       }else{
         console.log(data.err)
       }
     })
   }
 
-  tripCardClicked(tripName: String){
-   this.router.navigate(['singletrip/'+ tripName]);
+  tripCardClicked(tripUrl: String){
+   this.router.navigate(['dashboard/'+ tripUrl]);
 
     // this.router.navigateByUrl('/singletrip', { state: { tripName: tripname } });
   }

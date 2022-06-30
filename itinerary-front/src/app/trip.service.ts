@@ -3,13 +3,14 @@ import {HttpClient} from '@angular/common/http'
 
 interface tripData{
   success:Boolean,
-  data: [String]
+  data: [Object]
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class TripService {
+  
 
   constructor(private http: HttpClient) { }
 
@@ -22,4 +23,12 @@ export class TripService {
       tripname:tripNameArg
     })
   }
+
+  updateTripData(tripdata: any[][], tripname: String){
+    return this.http.post<tripData>("/api/updatetrip",{
+      name:tripname,
+      data: tripdata})
+  }
+
+  
 }
