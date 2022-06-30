@@ -20,7 +20,7 @@ export class CustomerDashboardComponent implements OnInit {
   ngOnInit():void {
     this.items = [
         {label: 'Create Planner', icon: 'pi pi-fw pi-plus'},
-        {label: 'View All Planners', icon: 'pi pi-fw pi-eye'},
+        {label: 'View All Planners', icon: 'pi pi-fw pi-eye', routerLink:"/dashboard"},
         {label: 'Contact', icon: 'pi pi-fw pi-phone'},
         {label: 'Logout', icon: 'pi pi-fw pi-sign-out'}
 
