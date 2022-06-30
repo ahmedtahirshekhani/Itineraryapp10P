@@ -26,6 +26,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { ContactComponent } from './contact/contact.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
     UserMenuComponent,
     SingleTripComponent,
     AlltripsComponent,
-    CreatePlannerComponent
+    CreatePlannerComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,

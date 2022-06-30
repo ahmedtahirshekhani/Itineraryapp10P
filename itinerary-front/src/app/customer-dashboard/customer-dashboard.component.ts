@@ -5,6 +5,7 @@ import { TripService } from '../trip.service';
 import {DialogService} from 'primeng/dynamicdialog';
 import {DynamicDialogRef} from 'primeng/dynamicdialog';
 import { CreatePlannerComponent } from '../create-planner/create-planner.component';
+import {ContactComponent} from '../contact/contact.component'
 
 @Component({
   selector: 'app-customer-dashboard',
@@ -19,29 +20,43 @@ export class CustomerDashboardComponent implements OnInit {
     
   constructor(public dialogService: DialogService) {}
 
-  ref: DynamicDialogRef;
+  newPlannerRef: DynamicDialogRef;
+  contactRef: DynamicDialogRef;
 
   ngOnInit():void {
     this.items = [
-        {label: 'Create Planner', icon: 'pi pi-fw pi-plus', command: () => this.show()},
+        {label: 'Create Planner', icon: 'pi pi-fw pi-plus', command: () => this.createPlanner()},
         {label: 'View All Planners', icon: 'pi pi-fw pi-eye'},
-        {label: 'Contact', icon: 'pi pi-fw pi-phone'},
+        {label: 'Contact', icon: 'pi pi-fw pi-phone', command: () => this.contact()},
         {label: 'Logout', icon: 'pi pi-fw pi-sign-out'}
 
     ];
   }
 
-  show() {
-    this.ref = this.dialogService.open(CreatePlannerComponent, {
+  // dialog for new planner form
+  createPlanner() {
+    this.newPlannerRef = this.dialogService.open(CreatePlannerComponent, {
         header: 'Add a Planner',
         width: '40%',
         contentStyle: {"overflow": "auto"}
     });
   }
 
+  // dialog for contact page
+  contact() {
+    this.contactRef = this.dialogService.open(ContactComponent, {
+      header: 'Connect With Us',
+      width: '30%'
+    });
+  }
+
   ngOnDestroy() {
-    if (this.ref) {
-        this.ref.close();
+    if (this.newPlannerRef) {
+      this.newPlannerRef.close();
+    }
+
+    if (this.contactRef) {
+      this.contactRef.close();
     }
   }
 }

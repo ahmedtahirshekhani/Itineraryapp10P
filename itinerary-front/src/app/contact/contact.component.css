@@ -1,0 +1,28 @@
+.icons-list {
+    text-align: center;
+}
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -0.5rem;
+    margin-top: -0.5rem;
+    margin-left: -0.5rem;
+    box-sizing: border-box;
+}
+
+.pi-facebook {
+    color: #4267B2;
+}
+
+.pi-instagram{
+    color: #fb3958;
+}
+
+.pi-whatsapp{
+    color:#25D366;
+}
+
+.pi-twitter{
+    color:#1DA1F2;
+}
