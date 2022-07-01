@@ -14,7 +14,7 @@ interface City {
   styleUrls: ['./create-planner.component.css']
 })
 export class CreatePlannerComponent implements OnInit {
-  name!: string;
+  name: string = "";
   startDate!: Date;
   days!: number;
   destination!: City;
@@ -50,6 +50,19 @@ export class CreatePlannerComponent implements OnInit {
       message service display accordingly.
     */
     this.imageUrl = this.destination.url
+
+    
+    let result = this.name?.match(/\w+/g);
+    const tripNameFormat= result?.reduce((final_str, val: String) => {
+      val = val[0].toUpperCase() + val.substring(1);
+      if (final_str.length == 0) {
+        final_str = final_str + val;
+        return final_str;
+      }
+      final_str = final_str + ' ' + val;
+      return final_str;
+    }, '');
+    this.name = tripNameFormat!;
 
     this.tripService.addNewTrip(
       this.name,
