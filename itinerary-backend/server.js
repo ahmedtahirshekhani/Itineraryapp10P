@@ -15,6 +15,10 @@ app.use(bodyParser.json());
 
 const User = require("./models/users");
 const Locations = require("./models/locations");
+const Trips = require("./models/trips");
+const SingleTrip = require("./models/singletrip");
+
+
 app.use(cors());
 
 app.use(
@@ -55,6 +59,7 @@ app.post("/api/register", async (req, res) => {
 
 app.post("/api/login", async (req, res) => {
   const { username, password } = req.body;
+  console.log(username, password)
   const resp = await User.findOne({ username, password });
   console.log(resp);
 
@@ -88,15 +93,14 @@ app.get("/api/logout", (req, res) => {
 
 app.get("/api/mainlocations", async (req, res) => {
   const locationArray = [];
-  console.log("Api is successful");
   const resp = await Locations.find();
   if (resp) {
-    resp.map((value) => {
-      locationArray.push(value.name);
-    });
+    // resp.map((value) => {
+    //   locationArray.push(value.name);
+    // });
     res.send({
       success: true,
-      message: locationArray,
+      message: resp,
     });
   } else {
     res.send({
@@ -127,3 +131,71 @@ app.post("/api/sublocations", async (req, res) => {
 
   // console.log(resp)
 });
+
+app.get("/api/mytrips", async (req, res)=>{
+  req.session.username = "ahmedtahirshekhani"
+  req.session.save()
+  const resp = await Trips.findOne({username:req.session.username});
+  if (resp) {
+    
+    res.send({
+      success: true,
+      data: resp
+    });
+  } else {
+    res.send({
+      success: false,
+      error: "Api failed! Error",
+    });
+  }
+})
+
+
+app.post("/api/mytrips/single", async (req, res) => {
+  req.session.username = "ahmedtahirshekhani"
+  req.session.save()
+
+  const {tripname: tripName} = req.body;
+  
+
+  const singleTripDetails = await SingleTrip.findOne({username:req.session.username, tripname:tripName});
+  const singleTripMetaData = await Trips.findOne({username:req.session.username});
+  let obj = {}
+  singleTripMetaData.tripdata.map(val=>{
+    if(val.name == tripName){
+     
+     obj.metaData = val
+     obj.singleTripDetails = singleTripDetails
+   
+    }
+  })
+  // console.log(singleTripDetails)
+  if (singleTripDetails) {
+    
+    res.send({
+      success: true,
+      message: obj
+    });
+  } else {
+    res.send({
+      success: false,
+      message: "Api failed! Error",
+    });
+  }
+
+  // console.log(singleTripDetails)
+});
+
+
+
+app.post("/api/updatetrip", async (req, res)=>{
+  const {name, data} = req.body
+  // const singleTripDetails = await SingleTrip.findOne({username:req.session.username, tripname:name});
+  await SingleTrip.updateOne({username:req.session.username, tripname:name}, {$set:{tripdata: data}})
+  console.log(data)
+  res.send({
+    success: true
+  })
+
+})
+
