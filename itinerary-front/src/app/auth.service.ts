@@ -18,7 +18,7 @@ export class AuthService {
     this.loggedInStatus = value;
   }
   
-  getUserDetails(username: string, password: string) {
+  getUserDetails(username: string|unknown, password: string|unknown) {
     // post details to server, return user info if valid
     return this.http.post<loginStatus>('/api/login', {
       username,
