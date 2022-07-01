@@ -18,6 +18,10 @@ export class TripService {
 
   constructor(private http: HttpClient) { }
 
+  geturlSlug(){
+
+  }
+
   getMyTrip() {
     return this.http.get<tripData>("/api/mytrips")
   }
@@ -35,12 +39,20 @@ export class TripService {
   }
 
   
-  addNewTrip(tripName: string, startDate: Date, duration: number, selectedCity: string) {
-    return this.http.post<additionStatus>('/api/addTrip', {
-      tripName,
+  addNewTrip(name: string, startDate: Date, days: number, destination: string, imageUrl: String) {
+    console.log({
+      name,
       startDate,
-      duration,
-      selectedCity
+      days,
+      destination,
+      imageUrl
+    })
+    return this.http.post<additionStatus>('/api/addnewtrip', {
+      name,
+      startDate,
+      days,
+      destination,
+      imageUrl
     });
   }
 

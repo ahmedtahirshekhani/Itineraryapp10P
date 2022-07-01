@@ -21,8 +21,8 @@ export class CustomerDashboardComponent implements OnInit {
   constructor(public dialogService: DialogService,
               public messageService: MessageService ) {}
 
-  newPlannerRef: DynamicDialogRef;
-  contactRef: DynamicDialogRef;
+  newPlannerRef!: DynamicDialogRef;
+  contactRef!: DynamicDialogRef;
 
   ngOnInit():void {
     this.items = [
@@ -46,7 +46,6 @@ export class CustomerDashboardComponent implements OnInit {
       if (status) {
         this.messageService.add({severity:'success', summary: 'Trip Added'});
       } else if (status == false) {
-        console.log(status);
         this.messageService.add({severity:'error', summary: 'Addition Failed'});
       }
     });

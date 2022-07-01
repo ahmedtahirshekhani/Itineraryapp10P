@@ -5,6 +5,7 @@ import { TripService } from '../trip.service';
 
 interface City {
   name: string,
+  url: String
 }
 
 @Component({
@@ -13,11 +14,12 @@ interface City {
   styleUrls: ['./create-planner.component.css']
 })
 export class CreatePlannerComponent implements OnInit {
-  tripName: string;
-  startDate: Date;
-  duration: number;
-  selectedCity: City;
+  name!: string;
+  startDate!: Date;
+  days!: number;
+  destination!: City;
   cities: City[] = [];
+  imageUrl!: String
 
   constructor(private locationService: LocationsService,
               private tripService: TripService,
@@ -25,10 +27,14 @@ export class CreatePlannerComponent implements OnInit {
 
   // populate the dropdown with defined locations
   ngOnInit(): void {
+
+    this.tripService.getMyTrip().subscribe((rcvdata:any)=>{
+      console.log(rcvdata.data.tripdata)
+    })
     this.locationService.getLocations().subscribe((data: any) => {
       if (data.success) {
         for (let i = 0; i < data.message.length; i++) {
-          this.cities.push({name: data.message[i].name});
+          this.cities.push({name: data.message[i].name, url: data.message[i].imageUrl});
         }
       } else {
         console.log(data.err);
@@ -43,11 +49,14 @@ export class CreatePlannerComponent implements OnInit {
       forward response to parent dashboard which handles 
       message service display accordingly.
     */
+    this.imageUrl = this.destination.url
+
     this.tripService.addNewTrip(
-      this.tripName,
+      this.name,
       this.startDate,
-      this.duration,
-      this.selectedCity.name).subscribe(data => {
+      this.days,
+      this.destination.name,
+      this.imageUrl).subscribe(data => {
       this.ref.close(data.success);
     })
   }
