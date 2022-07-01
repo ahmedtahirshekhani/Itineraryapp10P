@@ -23,11 +23,11 @@ app.use(cors());
 // var currentDate = new Date(); //use your date here
 
 
-// Date.prototype.formatMMDDYYYY = function(){
-//   return (this.getDate()) + 
-//   "-" +  (this.getMonth() + 1) +
-//   "-" +  this.getFullYear();
-// }
+Date.prototype.formatMMDDYYYY = function(){
+  return (this.getDate()) +
+  "-" +  (this.getMonth() + 1) +
+  "-" +  this.getFullYear();
+}
 
 // var parts =currentDate.formatMMDDYYYY().split("-"),
 //     date = new Date(+parts[2], parts[1]-1, +parts[0]);
@@ -64,7 +64,7 @@ app.post("/api/register", async (req, res) => {
     username,
     password,
   });
-  const result = await user.save();
+  await user.save();
   req.session.username = username;
   req.session.save();
   res.send({
@@ -133,7 +133,7 @@ app.post("/api/sublocations", async (req, res) => {
   const resp = await Locations.findOne({name:selectedMainLocation});
   // console.log(resp.subPlaces)
   if (resp) {
-    
+
     res.send({
       success: true,
       message: resp.subPlaces
@@ -153,7 +153,7 @@ app.get("/api/mytrips", async (req, res)=>{
   req.session.save()
   const resp = await Trips.findOne({username:req.session.username});
   if (resp) {
-    
+
     res.send({
       success: true,
       data: resp
@@ -172,22 +172,22 @@ app.post("/api/mytrips/single", async (req, res) => {
   req.session.save()
 
   const {tripname: tripName} = req.body;
-  
+
 
   const singleTripDetails = await SingleTrip.findOne({username:req.session.username, tripname:tripName});
   const singleTripMetaData = await Trips.findOne({username:req.session.username});
   let obj = {}
   singleTripMetaData.tripdata.map(val=>{
     if(val.name == tripName){
-     
+
      obj.metaData = val
      obj.singleTripDetails = singleTripDetails
-   
+
     }
   })
   // console.log(singleTripDetails)
   if (singleTripDetails) {
-    
+
     res.send({
       success: true,
       message: obj
@@ -214,3 +214,54 @@ app.post("/api/updatetrip", async (req, res)=>{
   })
 
 })
+
+app.post("/api/addnewtrip", async (req, res)=>{
+  const parts  = new Date().formatMMDDYYYY()
+  req.body.createdOn = parts
+  console.log(req.body)
+
+  req.session.username = "ahmedtahirshekhani"
+  req.session.save()
+  const mytrips = await Trips.findOne({username:req.session.username});
+  mytrips.tripdata.push(req.body)
+  // console.log(mytrips)
+  await Trips.updateOne({username:req.session.username}, {$set:{tripdata: mytrips.tripdata}})
+  // console.log(data)
+
+  const tripDays = []
+  for (let index = 0; index < req.body.days; index++) {
+    tripDays.push([
+      {numberOfAct: 0},
+      []
+    ]);
+    
+  }
+
+  const singleTripDetails = new SingleTrip({
+    username:req.session.username,
+    tripname:req.body.name,
+    tripdata:tripDays
+  });
+  await singleTripDetails.save();
+
+  res.send({
+    success: true
+  })
+
+})
+
+
+app.delete("/api/trips/:tripname", async (req, res)=>{
+  const tripToDel = req.params.tripname
+  const tripDelSuccess = await SingleTrip.deleteOne({username:req.session.username, tripname:tripToDel});
+  if(tripDelSuccess){
+    res.send({
+      success:true
+    })
+  }
+
+
+})
+
+
+

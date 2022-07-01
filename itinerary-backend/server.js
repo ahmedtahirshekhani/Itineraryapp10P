@@ -113,8 +113,9 @@ app.get("/api/mainlocations", async (req, res) => {
 });
 
 
-app.get("/api/getallusers", async (req, res) => {
-  const resp = await User.find();
+app.get("/api/users", async (req, res) => {
+  const resp = await User.find({}, {"_id": 0, "username": 1, "email":2});
+  // console.log(resp)
   if (resp) {
     res.send({
       success: true,
@@ -216,4 +217,22 @@ app.post("/api/updatetrip", async (req, res)=>{
   })
 
 })
+
+app.post("/api/addnewtrip", async (req, res)=>{
+  req.body.createdOn = new Date().toString()
+  console.log(req.body)
+  
+  req.session.username = "ahmedtahirshekhani"
+  req.session.save()
+  const mytrips = await Trips.findOne({username:req.session.username});
+  mytrips.tripdata.push(req.body)
+  // console.log(mytrips)
+  await Trips.updateOne({username:req.session.username}, {$set:{tripdata: mytrips.tripdata}})
+  // console.log(data)
+  res.send({
+    success: true
+  })
+
+})
+
 

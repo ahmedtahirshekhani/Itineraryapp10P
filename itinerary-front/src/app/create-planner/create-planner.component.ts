@@ -19,7 +19,8 @@ export class CreatePlannerComponent implements OnInit {
   days!: number;
   destination!: City;
   cities: City[] = [];
-  imageUrl!: String
+  imageUrl!: String;
+  urlSlug!: String;
 
   constructor(private locationService: LocationsService,
               private tripService: TripService,
@@ -40,6 +41,18 @@ export class CreatePlannerComponent implements OnInit {
         console.log(data.err);
       }
     });
+  }
+
+  getUrlSlug(name: String){
+    const nameSplit = name.toLowerCase().split(" ")
+    return nameSplit.reduce((final_str, val: String) => {
+      if (final_str.length == 0) {
+        final_str = final_str + val;
+        return final_str;
+      }
+      final_str = final_str + '-' + val;
+      return final_str;
+    }, '');
   }
 
   // add new trip
@@ -64,12 +77,15 @@ export class CreatePlannerComponent implements OnInit {
     }, '');
     this.name = tripNameFormat!;
 
+    this.urlSlug = this.getUrlSlug(this.name);
+
     this.tripService.addNewTrip(
       this.name,
       this.startDate,
       this.days,
       this.destination.name,
-      this.imageUrl).subscribe(data => {
+      this.imageUrl,
+      this.urlSlug).subscribe(data => {
       this.ref.close(data.success);
     })
   }

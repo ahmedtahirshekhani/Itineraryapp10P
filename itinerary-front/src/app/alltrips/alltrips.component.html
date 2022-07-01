@@ -4,7 +4,7 @@
         <div class="grid">
         <div class="col-4 trip-card" *ngFor="let trip of mytrips; let idx = index;">
             <div  (click)="tripCardClicked(trip.urlSlug)">
-                <p-card header="{{trip.name}}" subheader="Created On: 27-Jun-22" styleClass="p-card-shadow ">
+                <p-card header="{{trip.name}}" subheader="Created On: {{trip['createdOn']}}" styleClass="p-card-shadow ">
                     <ng-template pTemplate="header">
                         <img alt="Card" src="{{trip['imageUrl']}}">
                     </ng-template>
