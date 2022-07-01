@@ -6,6 +6,10 @@ interface tripData{
   data: [Object]
 }
 
+interface additionStatus {
+  success: Boolean
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -31,4 +35,13 @@ export class TripService {
   }
 
   
+  addNewTrip(tripName: string, startDate: Date, duration: number, selectedCity: string) {
+    return this.http.post<additionStatus>('/api/addTrip', {
+      tripName,
+      startDate,
+      duration,
+      selectedCity
+    });
+  }
+
 }

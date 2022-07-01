@@ -1,12 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CustomerDashboardComponent } from './customer-dashboard/customer-dashboard.component';
-
-
 import {ButtonModule} from 'primeng/button';
 import {SidebarModule} from 'primeng/sidebar';
 import {MenuItemContent, MenuModule} from 'primeng/menu';
@@ -20,9 +17,16 @@ import { SingleTripComponent } from './single-trip/single-trip.component';
 import {DialogModule} from 'primeng/dialog';
 import { AlltripsComponent } from './alltrips/alltrips.component';
 import {TableModule} from 'primeng/table';
-import {InputTextModule} from 'primeng/inputtext';
-import { FormsModule } from '@angular/forms';
 import { LayoutComponent } from './layout/layout.component';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { CreatePlannerComponent } from './create-planner/create-planner.component';
+import { FormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { ContactComponent } from './contact/contact.component';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -31,7 +35,9 @@ import { LayoutComponent } from './layout/layout.component';
     UserMenuComponent,
     SingleTripComponent,
     AlltripsComponent,
-    LayoutComponent
+    LayoutComponent,
+    CreatePlannerComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +53,14 @@ import { LayoutComponent } from './layout/layout.component';
     DialogModule,
     TableModule,
     InputTextModule,
-    FormsModule
+    FormsModule,
+    DynamicDialogModule,
+    FormsModule,
+    InputTextModule,
+    CalendarModule,
+    DropdownModule,
+    InputNumberModule,
+    ToastModule
   ],
   providers: [MenuItemContent, TripService],
   bootstrap: [AppComponent]

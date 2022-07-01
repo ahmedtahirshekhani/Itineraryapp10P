@@ -1,0 +1,24 @@
+.submission {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.dialogBox {
+    border-top: 2px solid blue;
+    display: flex;
+    flex-direction: column;
+}
+.p-field * {
+    display: block;
+    width: 100%;
+}
+#trip, #location {
+    border-radius: 25px;
+    background-color: rgba(0, 0, 0, 0.025);
+}
+
+.label {
+    padding-top: 1rem;
+    padding-bottom: 0.5rem;
+}
