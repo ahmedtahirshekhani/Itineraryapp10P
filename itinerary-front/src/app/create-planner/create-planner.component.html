@@ -9,21 +9,21 @@
         <p-dropdown id="location" [options]="cities" [(ngModel)]="destination" placeholder="Select a City" [showClear]="true" optionLabel="name" autoWidth="false" [style]="{'width':'100%', 'border-radius': '25px', 'background-color': 'rgba(0, 0, 0, 0.025)'}"></p-dropdown>
     </div>
 
-    <div class="p-fluid p-grid p-formgrid">
-        <div class="p-field p-col-12">
-            <label class="label" for="startDate">Specify Start Date</label>
-            <p-calendar inputId="startDate" [(ngModel)]="startDate" [showButtonBar]="true" [showIcon]="true" inputId="icon" appendTo="body" [inputStyle]="{'border-radius':'25px', 'background-color': 'rgba(0, 0, 0, 0.025)'}"></p-calendar>
+    <div class="p-fluid p-field">
+        <label class="label" for="startDate">Specify Start Date</label>
+        <p-calendar inputId="startDate" [(ngModel)]="startDate" [showButtonBar]="true" [showIcon]="true" inputId="icon" appendTo="body" [inputStyle]="{'border-radius':'25px', 'background-color': 'rgba(0, 0, 0, 0.025)'}"></p-calendar>
 
-        </div>
-        <div class="p-field p-col-12">
-            <label class="label" for="stacked">Specify Trip Duration</label>
-            <p-inputNumber [(ngModel)]="days" [showButtons]="true" inputId="stacked" mode="decimal" [inputStyle]="{'border-radius':'25px', 'background-color': 'rgba(0, 0, 0, 0.025)'}">
-            </p-inputNumber>
-        </div>
+    </div>
+
+    <div class="p-field p-fluid">
+        <label class="label" for="stacked">Specify Trip Duration</label>
+        <p-inputNumber [(ngModel)]="days" [showButtons]="true" inputId="stacked" mode="decimal" [inputStyle]="{'border-radius':'25px', 'background-color': 'rgba(0, 0, 0, 0.025)'}">
+        </p-inputNumber>
     </div>
 </div>
+
 <div class="submission">
-    <button pButton type="button" class="p-button-raised p-button-rounded" (click)="handleClick()">
+    <button pButton type="button" class="p-button-raised p-button-rounded" (click)="addTrip()">
         Submit
     </button>
 </div>

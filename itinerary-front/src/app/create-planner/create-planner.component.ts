@@ -28,7 +28,6 @@ export class CreatePlannerComponent implements OnInit {
 
   // populate the dropdown with defined locations
   ngOnInit(): void {
-
     this.tripService.getMyTrip().subscribe((rcvdata:any)=>{
       console.log(rcvdata.data.tripdata)
     })
@@ -43,8 +42,8 @@ export class CreatePlannerComponent implements OnInit {
     });
   }
 
-  getUrlSlug(name: String){
-    const nameSplit = name.toLowerCase().split(" ")
+  getUrlSlug(){
+    const nameSplit = this.name.toLowerCase().split(" ")
     return nameSplit.reduce((final_str, val: String) => {
       if (final_str.length == 0) {
         final_str = final_str + val;
@@ -55,16 +54,7 @@ export class CreatePlannerComponent implements OnInit {
     }, '');
   }
 
-  // add new trip
-  handleClick() {
-    /*
-      Handle post request through this component and then
-      forward response to parent dashboard which handles 
-      message service display accordingly.
-    */
-    this.imageUrl = this.destination.url
-
-    
+  getTripNameFormat() {
     let result = this.name?.match(/\w+/g);
     const tripNameFormat= result?.reduce((final_str, val: String) => {
       val = val[0].toUpperCase() + val.substring(1);
@@ -75,9 +65,34 @@ export class CreatePlannerComponent implements OnInit {
       final_str = final_str + ' ' + val;
       return final_str;
     }, '');
-    this.name = tripNameFormat!;
 
-    this.urlSlug = this.getUrlSlug(this.name);
+    return tripNameFormat!;
+  }
+
+  sendTripData(): void {
+    const trip = {
+      name: this.name,
+      startDate: this.startDate,
+      days: this.days,
+      destination: this.destination.name,
+      imageUrl: this.imageUrl,
+      urlSlug: this.urlSlug,
+      createdOn: new Date().toString()
+    };
+
+    this.tripService.updateNewTrip(trip);
+  }
+
+  // add new trip
+  addTrip() {
+    /*
+      Handle post request through this component and then
+      forward response to parent dashboard which handles 
+      message service display accordingly.
+    */
+    this.imageUrl = this.destination.url;
+    this.name = this.getTripNameFormat();
+    this.urlSlug = this.getUrlSlug();
 
     this.tripService.addNewTrip(
       this.name,
@@ -86,7 +101,12 @@ export class CreatePlannerComponent implements OnInit {
       this.destination.name,
       this.imageUrl,
       this.urlSlug).subscribe(data => {
-      this.ref.close(data.success);
-    })
+        if (data.success) {
+          // update the allTrips component
+          this.sendTripData();
+        }
+
+        this.ref.close(data.success);
+      })
   }
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http'
+import {HttpClient} from '@angular/common/http';
+import { Subject, Observable } from 'rxjs';
 
 interface tripData{
   success:Boolean,
@@ -14,11 +15,26 @@ interface additionStatus {
   providedIn: 'root'
 })
 export class TripService {
-  
+  private newTrip = new Subject<Object>();
 
   constructor(private http: HttpClient) { }
 
-  
+  /*
+    Method to which AllTrips subscribes to 
+    update the list myTrips.
+  */
+  updateTripList(): Observable<Object> {
+    return this.newTrip.asObservable();
+  }
+
+  /*
+    Method called by CreatePlanner to send 
+    newTrip data to be reflected on the AllTrips
+    component.
+  */
+  updateNewTrip(trip: Object): void {
+    this.newTrip.next(trip);
+  } 
 
   getMyTrip() {
     return this.http.get<tripData>("/api/mytrips")
@@ -36,16 +52,7 @@ export class TripService {
       data: tripdata})
   }
 
-  
   addNewTrip(name: string, startDate: Date, days: number, destination: string, imageUrl: String, urlSlug: String) {
-    console.log({
-      name,
-      startDate,
-      days,
-      destination,
-      imageUrl,
-      urlSlug
-    })
     return this.http.post<additionStatus>('/api/addnewtrip', {
       name,
       startDate,
@@ -55,5 +62,4 @@ export class TripService {
       urlSlug
     });
   }
-
 }
