@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { LocationsService } from '../locations.service';
 import { TripService } from '../trip.service';
+import { FormBuilder, Validators } from '@angular/forms';
 
 interface City {
   name: string,
@@ -14,18 +15,22 @@ interface City {
   styleUrls: ['./create-planner.component.css']
 })
 export class CreatePlannerComponent implements OnInit {
-  name: string = "";
-  startDate!: Date;
-  days!: number;
-  destination!: City;
-  cities: City[] = [];
+  // reactive form group
+  tripForm = this.fb.group({
+  name: <string|unknown>['', Validators.required],
+  startDate: <Date|unknown>[null, Validators.required],
+  days: <number|unknown>[null, Validators.required],
+  destination: <City|unknown>['', Validators.required],
+  })
+
   imageUrl!: String;
   urlSlug!: String;
-
+  cities: City[] = [];
   constructor(private locationService: LocationsService,
               private tripService: TripService,
-              public ref: DynamicDialogRef) { }
-
+              public ref: DynamicDialogRef,
+              private fb: FormBuilder) { }
+  
   // populate the dropdown with defined locations
   ngOnInit(): void {
     this.tripService.getMyTrip().subscribe((rcvdata:any)=>{
@@ -42,9 +47,16 @@ export class CreatePlannerComponent implements OnInit {
     });
   }
 
+  // getters for form controrls and their values
+  get name(): any { return this.tripForm.get('name') }
+  get startDate(): any { return this.tripForm.get('startDate')?.value }
+  get days(): any { return this.tripForm.get('days')?.value }
+  get destination(): any { return this.tripForm.get('destination')?.value } 
+
+  // method formats the urlSlug attribute
   getUrlSlug(){
-    const nameSplit = this.name.toLowerCase().split(" ")
-    return nameSplit.reduce((final_str, val: String) => {
+    const nameSplit = this.name.value.toLowerCase().split(" ")
+    return nameSplit.reduce((final_str: any, val: String) => {
       if (final_str.length == 0) {
         final_str = final_str + val;
         return final_str;
@@ -54,9 +66,10 @@ export class CreatePlannerComponent implements OnInit {
     }, '');
   }
 
+  // method formats tripName into the requried format
   getTripNameFormat() {
-    let result = this.name?.match(/\w+/g);
-    const tripNameFormat= result?.reduce((final_str, val: String) => {
+    let result = this.name.value.match(/\w+/g);
+    const tripNameFormat= result?.reduce((final_str: any, val: String) => {
       val = val[0].toUpperCase() + val.substring(1);
       if (final_str.length == 0) {
         final_str = final_str + val;
@@ -69,9 +82,13 @@ export class CreatePlannerComponent implements OnInit {
     return tripNameFormat!;
   }
 
+  /*
+    An update method that sends new trip details 
+    to the AllTrips component to update the trips on-screen
+  */
   sendTripData(): void {
     const trip = {
-      name: this.name,
+      name: this.name.value,
       startDate: this.startDate,
       days: this.days,
       destination: this.destination.name,
@@ -83,30 +100,31 @@ export class CreatePlannerComponent implements OnInit {
     this.tripService.updateNewTrip(trip);
   }
 
-  // add new trip
+  // add new trip to the database and reflect changes on-screen
   addTrip() {
     /*
       Handle post request through this component and then
       forward response to parent dashboard which handles 
-      message service display accordingly.
+      message-service display accordingly.
     */
     this.imageUrl = this.destination.url;
-    this.name = this.getTripNameFormat();
+    this.name.setValue(this.getTripNameFormat());
     this.urlSlug = this.getUrlSlug();
 
     this.tripService.addNewTrip(
-      this.name,
+      this.name.value,
       this.startDate,
       this.days,
       this.destination.name,
       this.imageUrl,
-      this.urlSlug).subscribe(data => {
+      this.urlSlug).subscribe((data: any) => {
         if (data.success) {
-          // update the allTrips component
+          // update the screen (AllTrips Component)
           this.sendTripData();
         }
-
+        
+        // forward response to customer-dashboard
         this.ref.close(data.success);
-      })
+      });
   }
 }

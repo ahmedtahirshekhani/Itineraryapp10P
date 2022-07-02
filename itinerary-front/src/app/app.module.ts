@@ -27,6 +27,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ContactComponent } from './contact/contact.component';
 import { ToastModule } from 'primeng/toast';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { ToastModule } from 'primeng/toast';
     CalendarModule,
     DropdownModule,
     InputNumberModule,
-    ToastModule
+    ToastModule,
+    ReactiveFormsModule
   ],
   providers: [MenuItemContent, TripService],
   bootstrap: [AppComponent]
