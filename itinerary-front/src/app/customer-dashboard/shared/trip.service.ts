@@ -37,15 +37,8 @@ export class TripService {
   }
 
   
-  addNewTrip(name: string, startDate: Date, days: number, destination: string, imageUrl: String, urlSlug: String) {
-    console.log({
-      name,
-      startDate,
-      days,
-      destination,
-      imageUrl,
-      urlSlug
-    })
+  addNewTrip(name: string, startDate: String, days: number, destination: string, imageUrl: String, urlSlug: String) {
+   
     return this.http.post<additionStatus>('/api/addnewtrip', {
       name,
       startDate,
@@ -54,6 +47,11 @@ export class TripService {
       imageUrl,
       urlSlug
     });
+  }
+
+
+  deleteTrip(name:String){
+    return this.http.delete("api/trips/"+name)
   }
 
 }

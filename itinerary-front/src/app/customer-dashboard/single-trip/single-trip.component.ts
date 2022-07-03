@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { TripService } from '../trip.service';
-
-
+import { TripService } from '../shared/trip.service';
 
 @Component({
   selector: 'app-single-trip',
@@ -24,7 +22,6 @@ export class SingleTripComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    
     this.tripUrl = this.route.snapshot.paramMap.get('tripUrl');
     let result = this.tripUrl?.match(/\w+/g);
     const tripNameFromUrl = result?.reduce((final_str, val: String) => {
@@ -51,16 +48,14 @@ export class SingleTripComponent implements OnInit {
           const date = tripData.message.metaData.startDate;
           const parts = date.split('-');
           const startDate = new Date(+parts[2], parts[1] - 1, +parts[0]);
-          this.endDate = (new Date(
+          this.endDate = new Date(
             startDate.setDate(startDate.getDate() + numofdays)
-          )).formatMMDDYYYY()
-
-          
+          ).formatMMDDYYYY();
 
           this.updateBtnStatus = new Array(numofdays)
             .fill(0)
             .map((idx, val) =>
-              new Array(this.dayData[val][0].numberofAct).fill(false)
+              new Array(this.dayData[val][0].numberOfAct).fill(false)
             );
 
           this.metadata.push(metaData);
@@ -91,22 +86,27 @@ export class SingleTripComponent implements OnInit {
 
   deleteAct(dayIdx: number, actTimeIdx: number) {
     // console.log(dayIdx, actTimeIdx);
-    this.dayData[dayIdx][0].numberofAct--;
+    this.dayData[dayIdx][0].numberOfAct -= 1;
     this.dayData[dayIdx][1].splice(actTimeIdx, 1);
+    this.updateBtnStatus[dayIdx].splice(actTimeIdx, 1);
+    console.log(this.updateBtnStatus[dayIdx]);
     this.tripService
       .updateTripData(this.dayData, this.tripname)
       .subscribe((data: any) => {
         console.log(data.success);
+        console.log(this.dayData[dayIdx][0].numberOfAct);
       });
   }
 
   addActivity(dayIdx: number) {
     this.updateBtnStatus[dayIdx].push(true);
-    this.dayData[dayIdx][0].numberofAct++;
+    this.dayData[dayIdx][0].numberOfAct += 1;
     this.dayData[dayIdx][1].push({
       time: '00:00',
       activity: '',
     });
+
+    console.log(this.dayData[dayIdx]);
   }
 
   doneClicked(dayIdx: number, actTimeIdx: number) {

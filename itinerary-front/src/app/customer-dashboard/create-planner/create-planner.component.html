@@ -1,4 +1,6 @@
 <div class="dialogBox">
+    <div *ngIf="checkErrNameExist">{{errNameExist}}</div>
+
     <div class="p-field">
         <label class="label" id="tripLabel" for="trip">Trip Name</label>
         <input id="trip" type="text" pInputText [(ngModel)]="name" />
