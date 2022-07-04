@@ -8,9 +8,16 @@ export class UsersService {
 
   constructor(private http: HttpClient) { }
 
-  registerUser(user: any){
-    this.http.post('/api/register', user).subscribe(res =>
+  registerUser(name: string, username: string, password: string, email: string ){
+    return this.http.post('/api/register', {
+      name,
+      email,
+      username,
+      password
+    }).subscribe(res =>
       {
+        console.log(res);
+        // user;
       })
   }
 

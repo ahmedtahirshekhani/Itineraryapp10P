@@ -29,6 +29,7 @@ export class RegisterComponent implements OnInit {
       validator: ConfirmedValidator('password', 'cpassword')
     })
    }
+   
 
   get Password(){
     return this.RegisterForm.controls;
@@ -39,27 +40,8 @@ export class RegisterComponent implements OnInit {
 
   RegisterUser(){
     console.warn(this.RegisterForm.value);
-    this.service.registerUser(this.RegisterForm.value);
-    // const email = target.querySelector('#email').value
-    // const username = target.querySelector('#username').value
-    // const password = target.querySelector('#password').value
-    // const cpassword = target.querySelector('#cpassword').value
-    // if(password === cpassword)
-    // {
-    //   if(/(?=.*\d)(?=.*[a-zA-Z0-9])(?=.*[@$!%*?&])([a-zA-Z0-9@$!%*?&]{8,})/g.test(password))
-    //   {
-    //     console.log(name, email, username, password, cpassword);
-    //   }
-    //   else
-    //   {
-    //     console.log("Invalid password")
-    //   }
-      
-    // }
-    // else
-    // {
-    //   console.log("unable to register user");
-    // }
+    this.service.registerUser(this.RegisterForm.value.name, this.RegisterForm.value.username, this.RegisterForm.value.password, this.RegisterForm.value.email);
+
   }
 
 }
