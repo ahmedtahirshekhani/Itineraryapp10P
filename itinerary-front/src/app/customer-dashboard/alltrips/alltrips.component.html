@@ -12,12 +12,17 @@
                         <div><i class="pi pi-calendar"></i>No. of days: {{trip.days}}</div>
                         <div> <i class="pi pi-map-marker"></i>Location: {{trip.destination}}</div>
                     </div>
-
-                    <button pButton type="button" icon="pi pi-trash" label="Delete"
-                        class="p-button-danger"></button>
+                    <button pButton type="button" (click)="deleteTrip(trip.name, $event)" icon="pi pi-trash" label="Delete"
+                    class="p-button-danger"></button>
+                    
                 </p-card>
+               
             </div>
+
+
         </div>
-        </div>
+    </div>
+
+
     </div>
 </div>

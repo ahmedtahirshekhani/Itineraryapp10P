@@ -15,6 +15,7 @@ interface additionStatus {
   providedIn: 'root'
 })
 export class TripService {
+  
   private newTrip = new Subject<Object>();
 
   constructor(private http: HttpClient) { }
@@ -34,10 +35,10 @@ export class TripService {
   */
   updateNewTrip(trip: Object): void {
     this.newTrip.next(trip);
-  } 
+  }
 
   getMyTrip() {
-    return this.http.get<tripData>("/api/mytrips")
+    return this.http.get<tripData>("/api/trips");
   }
 
   getSingleTripData(tripNameArg:String){
@@ -52,7 +53,9 @@ export class TripService {
       data: tripdata})
   }
 
-  addNewTrip(name: string, startDate: Date, days: number, destination: string, imageUrl: String, urlSlug: String) {
+  
+  addNewTrip(name: string, startDate: String, days: number, destination: string, imageUrl: String, urlSlug: String) {
+   
     return this.http.post<additionStatus>('/api/addnewtrip', {
       name,
       startDate,
@@ -62,4 +65,10 @@ export class TripService {
       urlSlug
     });
   }
+
+
+  deleteTrip(name:String){
+    return this.http.delete("api/trips/"+name)
+  }
+
 }

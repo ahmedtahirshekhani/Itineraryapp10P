@@ -1,45 +1,49 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
-import { LocationsService } from '../locations.service';
-import { TripService } from '../trip.service';
+import { LocationsService } from '../shared/locations.service';
+import { TripService } from '../shared/trip.service';
 import { FormBuilder, Validators } from '@angular/forms';
 
 interface City {
-  name: string,
-  url: String
+  name: string;
+  url: String;
 }
 
 @Component({
   selector: 'app-create-planner',
   templateUrl: './create-planner.component.html',
-  styleUrls: ['./create-planner.component.css']
+  styleUrls: ['./create-planner.component.css'],
 })
 export class CreatePlannerComponent implements OnInit {
-  // reactive form group
-  tripForm = this.fb.group({
-  name: <string|unknown>['', Validators.required],
-  startDate: <Date|unknown>[null, Validators.required],
-  days: <number|unknown>[null, Validators.required],
-  destination: <City|unknown>['', Validators.required],
-  })
-
+  cities: City[] = [];
   imageUrl!: String;
   urlSlug!: String;
-  cities: City[] = [];
-  constructor(private locationService: LocationsService,
-              private tripService: TripService,
-              public ref: DynamicDialogRef,
-              private fb: FormBuilder) { }
-  
+  startDateFormatted: String = '';
+
+  // reactive form group
+  tripForm = this.fb.group({
+    name: <string|unknown>['', Validators.required],
+    startDate: <Date|unknown>[null, Validators.required],
+    days: <number|unknown>[null, Validators.required],
+    destination: <City|unknown>['', Validators.required],
+  });
+
+  constructor(
+    private locationService: LocationsService,
+    private tripService: TripService,
+    public ref: DynamicDialogRef,
+    private fb: FormBuilder
+  ) {}
+
   // populate the dropdown with defined locations
   ngOnInit(): void {
-    this.tripService.getMyTrip().subscribe((rcvdata:any)=>{
-      console.log(rcvdata.data.tripdata)
-    })
     this.locationService.getLocations().subscribe((data: any) => {
       if (data.success) {
         for (let i = 0; i < data.message.length; i++) {
-          this.cities.push({name: data.message[i].name, url: data.message[i].imageUrl});
+          this.cities.push({
+            name: data.message[i].name,
+            url: data.message[i].imageUrl,
+          });
         }
       } else {
         console.log(data.err);
@@ -53,9 +57,8 @@ export class CreatePlannerComponent implements OnInit {
   get days(): any { return this.tripForm.get('days')?.value }
   get destination(): any { return this.tripForm.get('destination')?.value } 
 
-  // method formats the urlSlug attribute
-  getUrlSlug(){
-    const nameSplit = this.name.value.toLowerCase().split(" ")
+  getUrlSlug() {
+    const nameSplit = this.name.value.toLowerCase().split(' ');
     return nameSplit.reduce((final_str: any, val: String) => {
       if (final_str.length == 0) {
         final_str = final_str + val;
@@ -69,7 +72,7 @@ export class CreatePlannerComponent implements OnInit {
   // method formats tripName into the requried format
   getTripNameFormat() {
     let result = this.name.value.match(/\w+/g);
-    const tripNameFormat= result?.reduce((final_str: any, val: String) => {
+    const tripNameFormat = result?.reduce((final_str: any, val: String) => {
       val = val[0].toUpperCase() + val.substring(1);
       if (final_str.length == 0) {
         final_str = final_str + val;
@@ -89,42 +92,47 @@ export class CreatePlannerComponent implements OnInit {
   sendTripData(): void {
     const trip = {
       name: this.name.value,
-      startDate: this.startDate,
+      startDate: this.startDateFormatted,
       days: this.days,
       destination: this.destination.name,
       imageUrl: this.imageUrl,
       urlSlug: this.urlSlug,
-      createdOn: new Date().toString()
+      createdOn: new Date().toLocaleDateString('en-GB') // change this
     };
 
     this.tripService.updateNewTrip(trip);
   }
 
-  // add new trip to the database and reflect changes on-screen
+  // add new trip
   addTrip() {
     /*
       Handle post request through this component and then
       forward response to parent dashboard which handles 
-      message-service display accordingly.
+      message service display accordingly.
     */
     this.imageUrl = this.destination.url;
-    this.name.setValue(this.getTripNameFormat());
+    this.startDateFormatted = this.startDate.toLocaleDateString('en-GB'); // change this
     this.urlSlug = this.getUrlSlug();
+    this.name.setValue(this.getTripNameFormat());
 
-    this.tripService.addNewTrip(
-      this.name.value,
-      this.startDate,
-      this.days,
-      this.destination.name,
-      this.imageUrl,
-      this.urlSlug).subscribe((data: any) => {
+    this.tripService
+      .addNewTrip(
+        this.name.value,
+        this.startDateFormatted,
+        this.days,
+        this.destination.name,
+        this.imageUrl,
+        this.urlSlug
+      )
+      .subscribe((data) => {
         if (data.success) {
-          // update the screen (AllTrips Component)
+          // update the screen
           this.sendTripData();
         }
-        
-        // forward response to customer-dashboard
+
+        // forward server response to customer-dashboard
         this.ref.close(data.success);
       });
   }
 }
+
