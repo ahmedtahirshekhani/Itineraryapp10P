@@ -1,0 +1,68 @@
+.login-screen {
+    background-image: url('../../assets/images/desktop-background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh;   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.login-screen__user-icon {
+    width: 8rem;
+    margin-bottom: 1rem;
+}
+
+.login-screen__title {
+    color: var(--mac-grey);
+    text-shadow: 1px 1px var(--dark-0);
+    margin-bottom: 2.5rem;
+}
+
+.text_input {
+    background-color: rgba(0, 0, 0, 0.3);
+    outline: none;
+    border: none;
+    border-radius: 25px;
+    color: var(--light-0);
+}
+.login-screen_username, .login-screen_password {
+    margin-bottom: 1.5rem;
+}
+.text_input:hover, :enabled:focus {
+    box-shadow: none;
+    border: none
+}
+
+.text-label {
+    color: var(--mac-grey);
+}
+
+.login-screen__submission {
+    margin-bottom: 0.75rem;
+}
+
+.login-screen__registration-hint {
+    color: whitesmoke;
+    font-size: x-small;
+}
+
+a:link {
+    color: #a1dff5;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #ffcc00;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ff9900;
+    background-color: transparent;
+    text-decoration: underline;
+}

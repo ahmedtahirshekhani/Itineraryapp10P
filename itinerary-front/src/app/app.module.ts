@@ -11,11 +11,20 @@ import { DividerModule } from "primeng/divider";
 import {PasswordModule} from 'primeng/password';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UsersService } from './users.service';
+import { AuthService } from './auth.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LoginComponent } from './login/login.component';
+import { BootComponent } from './boot/boot.component';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { ToastModule } from 'primeng/toast';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    RegisterComponent
+    RegisterComponent,
+    BootComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -26,9 +35,17 @@ import { UsersService } from './users.service';
     DividerModule,
     PasswordModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    ProgressBarModule,
+    InputTextModule,
+    ButtonModule,
+    ToastModule,
+    ReactiveFormsModule
   ],
-  providers: [UsersService],
+  providers: [UsersService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
