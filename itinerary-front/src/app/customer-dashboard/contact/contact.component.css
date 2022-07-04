@@ -19,10 +19,17 @@
     color: #fb3958;
 }
 
-.pi-whatsapp{
-    color:#25D366;
+.pi-linkedin{
+    color:#0077B5;
 }
 
 .pi-twitter{
     color:#1DA1F2;
+}
+
+.link {
+    display: block;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
 }

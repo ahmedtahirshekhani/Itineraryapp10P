@@ -55,7 +55,9 @@ export class CustomerDashboardComponent implements OnInit {
 
     this.newPlannerRef.onClose.subscribe((status: boolean) => {
       if (status) {
-        this.messageService.add({ severity: 'success', summary: 'Trip Added' });
+        this.messageService.add({ severity: 'success',
+         summary: 'Trip Added' 
+        });
       } else if (status == false) {
         this.messageService.add({
           severity: 'error',
