@@ -13,6 +13,9 @@ import { WhoPaidWhatComponent } from './who-paid-what/who-paid-what.component';
 import {TableModule} from 'primeng/table';
 import { HttpClientModule } from '@angular/common/http';
 import {DynamicDialogModule} from 'primeng/dynamicdialog';
+import { DialogModule } from "primeng/dialog";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,10 @@ import {DynamicDialogModule} from 'primeng/dynamicdialog';
     PasswordModule,
     TableModule,
     HttpClientModule,
-    DynamicDialogModule
+    DynamicDialogModule,
+    DialogModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

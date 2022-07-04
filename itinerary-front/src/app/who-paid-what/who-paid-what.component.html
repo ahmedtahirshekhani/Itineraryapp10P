@@ -7,7 +7,7 @@
                 <th> <i class="pi pi-user"></i>Name</th>
                 <th>Item</th>
                 <th> <i class="pi pi-money-bill"></i>Amount</th>  
-                <!-- <th></th>               -->
+                <th><button pButton pRipple type="button" icon="pi pi-plus"  (click)="showBasicDialog()" class="p-button-rounded p-button-text"></button></th>              
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-users>
@@ -16,10 +16,32 @@
                 <td>{{users.item}}</td>
                 <td>{{users.amount}}                     
                 </td>
-                <!-- <td>
+                <td>
                     <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-text"></button>
-                </td> -->
+                </td>
             </tr>
         </ng-template>
     </p-table>
 </div>
+
+
+<p-dialog header="Add Details" [(visible)]="displayBasic">
+   
+    <form [formGroup]="AddForm" (ngSubmit)="onSubmit()">
+
+        <span class="p-float-label ">
+            <input id="username" type="username" size="60" formControlName="username" pPassword> 
+            <label for="username">username</label>
+          </span>
+          <span class="p-float-label ">
+            <input id="item" type="item" size="60" formControlName="item" pPassword> 
+            <label for="item">item</label>
+          </span>
+          <span class="p-float-label ">
+            <input id="amount" type="amount" size="60" formControlName="amount" pPassword> 
+            <label for="amount">amount</label>
+          </span>      
+        <button pButton type="submit" label="Add" [disabled]="!AddForm.valid" ></button>
+  
+      </form> 
+</p-dialog>
