@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AuthModule } from './auth/auth.module';
 
 import { CustomerDashboardModule } from './customer-dashboard/customer-dashboard.module';
 
@@ -13,9 +15,9 @@ import { CustomerDashboardModule } from './customer-dashboard/customer-dashboard
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
     AppRoutingModule,
-  
+    BrowserAnimationsModule,
+    AuthModule  
     CustomerDashboardModule
   ],
   providers: [],
