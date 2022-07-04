@@ -14,6 +14,10 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
+  get isLoggedIn() {
+    return this.loggedInStatus;
+  }
+
   setLoggedIn(value: boolean) {
     this.loggedInStatus = value;
   }

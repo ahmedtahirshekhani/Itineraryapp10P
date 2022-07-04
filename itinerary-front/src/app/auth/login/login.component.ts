@@ -1,5 +1,5 @@
 import { Component} from '@angular/core';
-import { AuthService } from 'src/app/auth.service';
+import { AuthService } from '../shared/auth.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -35,6 +35,7 @@ export class LoginComponent {
       this.password.value).subscribe(data => {
       if (data.success) {
         this.auth.setLoggedIn(true);
+        console.log(data.success);
         // this.router.navigate(['/dashboard']);
       } else {
         this.messageService.add({
