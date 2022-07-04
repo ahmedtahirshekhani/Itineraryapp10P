@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-{ "/api": { "target": "https://a7fe-117-20-31-76.in.ngrok.io/", "secure":false, "changeOrigin": true } }
-=======
-{
-    "/api": {
-        "target": "https://f9d2-117-20-31-76.in.ngrok.io/",
-        "secure":false,
-        "changeOrigin": true
-    }
-}
->>>>>>> origin/feat/login
+{ "/api": { "target": "https://a7fe-117-20-31-76.in.ngrok.io/", 
+    "secure":false, 
+    "changeOrigin": true } }
