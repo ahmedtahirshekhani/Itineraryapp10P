@@ -1,6 +1,5 @@
 .p-float-label{
     margin-bottom: 25px;
-    width: 100% !important;
 }
 .form {
     margin-left: 15%;
@@ -11,10 +10,15 @@
 
 button{
     margin-left: 40%;
+    background-color: rgba(38,115,101,255)
 }
+
 .container{
     margin-top: 100px;
 }
 .p-float-label{
     margin-top: 1.5rem;
+}
+.Welcome, .name{
+    color:rgba(38,115,101,255)
 }

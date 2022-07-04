@@ -26,7 +26,7 @@ export class RegisterComponent implements OnInit {
       cpassword: ['',[Validators.required]],
     },
     {
-      validators: ConfirmedValidator('password', 'cpassword')
+      validator: ConfirmedValidator('password', 'cpassword')
     })
    }
 

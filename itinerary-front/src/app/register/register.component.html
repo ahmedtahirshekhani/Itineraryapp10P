@@ -38,34 +38,30 @@
                     </span>
 
                     <span class="p-float-label ">
-                      <input id="password" type="password" size="60" formControlName="password" pPassword> 
+                      <input id="password" type="password" size="60" formControlName="password" pInputText> 
                       <label for="password">Password</label>
                       <div *ngIf = "Password['password'].touched && Password['password'].invalid"
                       class = "alert alert-danger">
                       Password must be 8 characters with at least 1 upper, 1 digit, 1 lower, and 1 special character.
-                      <div *ngIf = "Password['password'].errors && Password['password'].errors['required']"
-                      class = "alert alert-danger">
+                      <div *ngIf = "Password['password'].errors && Password['password'].errors['required']">
                       Password is required
                       </div>
                       </div>   
-                    </span>
-                    
+                    </span>                    
                     <span class="p-float-label ">
-                      <input id="cpassword" type="password" size="60" formControlName="name" pInputText> 
+                      <input id="cpassword" type="password" size="60" formControlName="cpassword" pInputText> 
                       <label for="cpassword">Confirm Password</label>
                       <div *ngIf = "Password['cpassword'].touched && Password['cpassword'].invalid"
                       class = "alert alert-danger">
-                      <div *ngIf = "Password['cpassword'].errors && Password['cpassword'].errors['required']"
-                      class = "alert alert-danger">
+                      <div *ngIf = "Password['cpassword'].errors && Password['cpassword'].errors['required']">
                       Password is required
                       </div>
-                      <div *ngIf = "Password['cpassword'].errors && Password['cpassword'].errors['ConfirmedValidator']"
-                      class = "alert alert-danger">
+                      <div *ngIf = "Password['cpassword'].errors && Password['cpassword'].errors['confirmedValidator']">
                       Passwords do not match
                       </div>
                       </div>
                     </span>
-                    <button type="submit" [disabled]="!RegisterForm.valid">Submit</button>
+                    <button pButton type="submit" label="Sign up" [disabled]="!RegisterForm.valid" ></button>
                 </div>
                     </form>
   
