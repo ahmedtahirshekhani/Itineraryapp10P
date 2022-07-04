@@ -16,6 +16,7 @@ export class WhoPaidWhatComponent implements OnInit {
     item: new FormControl('', Validators.required),
     amount: new FormControl('', Validators.required),
   });
+
   
   constructor(private service: UsersService) {      
   }

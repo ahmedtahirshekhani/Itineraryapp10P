@@ -4,10 +4,12 @@
 .pi-user{
     margin: 0 30px 0 10px;
     font-size: 20px;
+    color:rgba(38,115,101,255)
 }
 .pi-money-bill{
     margin: 0 30px 0 10px;
     font-size: 20px;
+    color:rgba(38,115,101,255)
 }
 .p-float-label{
     margin-top: 1.5rem;
@@ -15,4 +17,8 @@
 button{
     margin-left: 40%;
     margin-top: 10px;
+    color:rgba(38,115,101,255)
+}
+h1{
+    color:rgba(38,115,101,255)
 }
