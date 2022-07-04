@@ -1,0 +1,79 @@
+
+<div>
+    <div class="grid">
+        <div class="col-4"><h1>{{tripname}}</h1></div>
+        <!-- <div class="col-5"></div> -->
+        <!-- <div class="col-3 flex align-items-center justify-content-center"> <a routerLink="/dashboard" style="text-decoration: none;"><button pButton type="button" icon="pi pi-arrow-circle-left" label="Back to Dashboard" class="p-button-outlined p-button-rounded p-button-success" ></button></a></div> -->
+    </div>
+    
+    <div>
+        <p-table [value]="metadata" [columns]="colsMetaData" styleClass="p-datatable-gridlines"
+            responsiveLayout="scroll">
+
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns">{{col.header}}</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData>
+                <tr>
+                    <td>{{rowData.startDate}}</td>
+                    <td>{{endDate}}</td>
+                    <td>{{rowData.days}}</td>
+                    <td>{{rowData.destination}}</td>
+                </tr>
+            </ng-template>
+
+        </p-table>
+    </div>
+
+    <div *ngFor="let in of dayData; let dayIdx = index">
+
+        <div>
+            <h2>Day {{dayIdx+1}}</h2>
+        </div>
+
+        <div>
+            <p-table [columns]="cols" [value]="dayData[dayIdx][1]" responsiveLayout="scroll">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of columns">
+                            {{col.header}}
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns" let-colIdx="rowIndex">
+                    <tr>
+
+                        <td *ngFor="let col of columns;  ">
+                            <input *ngIf="col.field == 'time' && updateBtnStatus[dayIdx][colIdx]; else notTime"
+                                type="time" [(ngModel)]="dayData[dayIdx][1][colIdx][col.field]" />
+                            <ng-template #notTime>
+                                <input type="text" *ngIf="updateBtnStatus[dayIdx][colIdx]; else fixText" pInputText
+                                    [(ngModel)]="dayData[dayIdx][1][colIdx][col.field]" />
+                                <ng-template #fixText>{{rowData[col.field]}}</ng-template>
+                            </ng-template>
+                        </td>
+                        <td class="day_ud_col">
+                            <button *ngIf="updateBtnStatus[dayIdx][colIdx]; else disBtn" pButton
+                                (click)="doneClicked(dayIdx, colIdx)" type="button" icon="pi pi-check" label=""
+                                class="p-button-success"></button>
+                            <ng-template #disBtn><button pButton type="button"
+                                    (click)="updateBtnClicked(dayIdx, colIdx)" icon="pi pi-pencil" label=""
+                                    class="p-button-warning"></button></ng-template>
+
+                            <button pButton type="button" icon="pi pi-trash" (click)="deleteAct(dayIdx, colIdx)" label="" class="p-button-danger"></button>
+                        </td>
+
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <div class="col-12" style="text-align:center; margin-top: 10px;">
+            
+            <button pButton type="button" label="Add Activity" (click)="addActivity(dayIdx)" class="p-button-success" icon="pi pi-plus" iconPos="left"></button>
+        </div>
+    </div>
+
+</div>

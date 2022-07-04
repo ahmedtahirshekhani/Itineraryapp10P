@@ -1,6 +1,6 @@
 {
     "/api": {
-        "target": "https://f9d2-117-20-31-76.in.ngrok.io/",
+        "target": "http://localhost:3001/",
         "secure":false,
         "changeOrigin": true
     }
