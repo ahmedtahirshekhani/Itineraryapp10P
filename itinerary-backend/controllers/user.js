@@ -4,28 +4,42 @@ const User = require('../models/users');
 const config = require('../config');
 
 
-exports.registerUser= async (req, res) => {
+exports.registerUser = (req, res) => {
     // console.log(req.body)
     const { name, email, username, password } = req.body;
-    const resp = await User.findOne({ username });
-    if (resp) {
-      res.send({
-        success: false,
-        message: "Username already there",
-      });
-      return;
-    }
-    const user = new User({
+    User.findOne({username}, function(err, existingUser) {
+      if (err) {
+        return res.status(422).send({success: false, message: err.errors});
+      }
+  
+      if (existingUser) {
+        return res.status(422).send({ success: false,
+          message: "Username already there"});
+      }
+
+      const user = new User({
+        name,
+        email,
         username,
-        password,
+        password
       });
-      await user.save();
-      req.session.username = username;
+      user.save(function(err) {
+        if (err) {
+          return res.status(422).send({success: false, message: err.errors});
+        }
+        req.session.username = username;
       req.session.save();
-      res.send({
-        success: true,
-        message: "Registered Successful",
+  
+        return res.json({success: true,
+          message: "Registered Successful"});
       });
+
+
+
+    })
+    
+        
+     
     }
 
 exports.loginUser = async (req, res) => {
