@@ -13,6 +13,6 @@ export class LocationsService {
   constructor(private http: HttpClient) {}
 
   getLocations() {
-    return this.http.get<locations>('/api/mainlocations');
+    return this.http.get<locations>('/api/v1/locations');
   }
 }

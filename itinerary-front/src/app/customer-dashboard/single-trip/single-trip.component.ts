@@ -46,11 +46,11 @@ export class SingleTripComponent implements OnInit {
           const metaData = tripData.message.metaData;
           const numofdays = metaData.days;
           const date = tripData.message.metaData.startDate;
-          const parts = date.split('-');
+          const parts = date.split('/');
           const startDate = new Date(+parts[2], parts[1] - 1, +parts[0]);
           this.endDate = new Date(
             startDate.setDate(startDate.getDate() + numofdays)
-          ).formatMMDDYYYY();
+          ).toLocaleDateString('en-GB');
 
           this.updateBtnStatus = new Array(numofdays)
             .fill(0)
