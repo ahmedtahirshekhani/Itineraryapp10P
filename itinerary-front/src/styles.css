@@ -2,6 +2,7 @@
 @import '~primeng/resources/primeng.min.css';
 @import '~primeng/resources/themes/saga-blue/theme.css';
 @import '~primeicons/primeicons.css';
+@import  "~primeflex/primeflex.css";
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
 * {
@@ -12,7 +13,7 @@
 }
 
 body {
-    font-family: 'Poppins';
+    font-family: 'Poppins', sans-serif;
 }
 
 :root {
