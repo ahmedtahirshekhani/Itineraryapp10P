@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Subject, Observable } from 'rxjs';
+interface tripData {
+  success: Boolean;
+  data: [Object];
+}
 
 interface tripData{
   success:Boolean,
@@ -8,17 +12,16 @@ interface tripData{
 }
 
 interface additionStatus {
-  success: Boolean
+  success: Boolean;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TripService {
-  
   private newTrip = new Subject<Object>();
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
 
   /*
     Method to which AllTrips subscribes to 
@@ -38,6 +41,7 @@ export class TripService {
   }
 
   getMyTrip() {
+
     return this.http.get<tripData>("/api/v1/trips");
   }
 
@@ -51,7 +55,7 @@ export class TripService {
     });
   }
 
-  
+
   addNewTrip(
     name: string,
     startDate: String,
@@ -74,5 +78,4 @@ export class TripService {
   deleteTrip(name: String) {
     return this.http.delete('/api/v1/trips/' + name);
   }
-
 }

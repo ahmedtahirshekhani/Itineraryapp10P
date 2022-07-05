@@ -1,0 +1,20 @@
+[{
+  "_id": {
+    "$oid": "62b99e2e73bdbc63ab95463a"
+  },
+  "name": "Swat",
+  "subPlaces": [
+    "Kalam",
+    "Malam Jabba",
+    "Kumrat"
+  ]
+},{
+  "_id": {
+    "$oid": "62b99f9073bdbc63ab95463b"
+  },
+  "name": "Mansehra",
+  "subPlaces": [
+    "Naran",
+    "Kaghan"
+  ]
+}]

@@ -51,8 +51,7 @@ export class SingleTripComponent implements OnInit {
           this.endDate = new Date(
             startDate.setDate(startDate.getDate() + numofdays)
           ).toLocaleDateString('en-GB');
-          
-          console.log(this.endDate);
+
           this.updateBtnStatus = new Array(numofdays)
             .fill(0)
             .map((idx, val) =>
