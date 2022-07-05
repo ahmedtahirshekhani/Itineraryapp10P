@@ -29,6 +29,10 @@ export class LoginComponent {
     this.password.reset();
   }
 
+  goRegister() {
+    this.router.navigate(['register']);
+  }
+
   loginUser() {
     this.auth.getUserDetails(
       this.username.value,
@@ -36,7 +40,7 @@ export class LoginComponent {
       if (data.success) {
         this.auth.setLoggedIn(true);
         console.log(data.success);
-        // this.router.navigate(['/dashboard']);
+        this.router.navigate(['dashboard']);
       } else {
         this.messageService.add({
           severity:'error', summary: 'Invalid Credentials!'

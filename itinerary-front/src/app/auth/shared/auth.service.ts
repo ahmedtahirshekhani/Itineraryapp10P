@@ -6,6 +6,10 @@ interface loginStatus {
   message: string
 }
 
+interface registerResponse {
+  success: boolean
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -24,9 +28,21 @@ export class AuthService {
   
   getUserDetails(username: string|unknown, password: string|unknown) {
     // post details to server, return user info if valid
-    return this.http.post<loginStatus>('/api/login', {
+    return this.http.post<loginStatus>('/api/v1/users/login', {
       username,
       password
     })
+  }
+
+  registerUser(name: string, username: string, password: string, email: string ){
+    return this.http.post<registerResponse>('/api/v1/users/register', {
+      name,
+      email,
+      username,
+      password
+    }).subscribe(res =>
+      {
+        console.log(res);
+      })
   }
 }

@@ -38,37 +38,41 @@ export class TripService {
   }
 
   getMyTrip() {
-    return this.http.get<tripData>("/api/trips");
+    return this.http.get<tripData>("/api/v1/trips");
   }
 
-  getSingleTripData(tripNameArg:String){
-    return this.http.post<tripData>("/api/mytrips/single",{
-      tripname:tripNameArg
-    })
+  getSingleTripData(tripNameArg: String) {
+    return this.http.get<tripData>('/api/v1/trips/' + tripNameArg);
   }
 
-  updateTripData(tripdata: any[][], tripname: String){
-    return this.http.post<tripData>("/api/updatetrip",{
-      name:tripname,
-      data: tripdata})
+  updateTripData(tripdata: any[][], tripname: String) {
+    return this.http.put<tripData>('/api/v1/trips/' + tripname, {
+      data: tripdata,
+    });
   }
 
   
-  addNewTrip(name: string, startDate: String, days: number, destination: string, imageUrl: String, urlSlug: String) {
-   
-    return this.http.post<additionStatus>('/api/addnewtrip', {
+  addNewTrip(
+    name: string,
+    startDate: String,
+    days: number,
+    destination: string,
+    imageUrl: String,
+    urlSlug: String
+  ) {
+    return this.http.post<additionStatus>('/api/v1/trips', {
       name,
       startDate,
       days,
       destination,
       imageUrl,
-      urlSlug
+      urlSlug,
     });
   }
 
 
-  deleteTrip(name:String){
-    return this.http.delete("api/trips/"+name)
+  deleteTrip(name: String) {
+    return this.http.delete('/api/v1/trips/' + name);
   }
 
 }

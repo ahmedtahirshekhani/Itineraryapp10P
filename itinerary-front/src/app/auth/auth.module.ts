@@ -12,9 +12,10 @@ import { ToastModule } from 'primeng/toast';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthRoutingModule } from './auth-routing.module';
 import { UserService } from './shared/user.service';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
-  declarations: [ LoginComponent, BootComponent ],
+  declarations: [ LoginComponent, BootComponent, RegisterComponent ],
   imports: [
     CommonModule,
     FormsModule,
@@ -24,7 +25,7 @@ import { UserService } from './shared/user.service';
     InputTextModule,
     ProgressBarModule,
     HttpClientModule,
-    AuthRoutingModule
+    AuthRoutingModule,
   ],
   providers: [AuthService, UserService],
 })

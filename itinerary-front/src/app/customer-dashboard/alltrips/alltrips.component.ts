@@ -37,11 +37,23 @@ export class AlltripsComponent implements OnInit {
     // this.router.navigateByUrl('/singletrip', { state: { tripName: tripname } });
   }
 
-  deleteTrip(name: String, event: any) {
+  // update mytrips list to reflect removal on screen sans netwrok call
+  removeFromList(name: string): void {
+    for (let i = 0; i < this.mytrips.length; i++) {
+      if (this.mytrips[i].name == name) {
+        // remove just that deleted trip
+        this.mytrips.splice(i, 1);
+        break;
+      }
+    }
+  }
+
+  deleteTrip(name: string, event: any) {
     event.stopPropagation();
     console.log('delete', name);
     this.tripService.deleteTrip(name).subscribe((data: any) => {
       console.log(data.success);
     });
+    this.removeFromList(name);
   }
 }

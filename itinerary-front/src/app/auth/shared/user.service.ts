@@ -18,10 +18,10 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   isLoggedIn(): Observable<isLoggedIn> {
-    return this.http.get<isLoggedIn>('/api/isloggedin');
+    return this.http.get<isLoggedIn>('api/v1/users/isloggedin');
   }
 
   logout() {
-    return this.http.get<logoutStatus>('/api/logout');
+    return this.http.get<logoutStatus>('api/v1/users/logout');
   }
 }
