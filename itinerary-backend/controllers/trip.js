@@ -59,7 +59,7 @@ exports.getTrips = async (req, res)=>{
 
 
 exports.addNewTrip = async (req, res)=>{
-  const parts  = new Date().formatMMDDYYYY()
+  const parts  = new Date().toLocaleDateString("en-GB")
   req.body.createdOn = parts
   //console.log(req.body)
 
@@ -97,8 +97,9 @@ exports.addNewTrip = async (req, res)=>{
 }
 
 exports.deleteTrip = async (req, res)=>{
+
   const tripToDel = req.params.tripname
-  //console.log(tripToDel)
+  
   const tripDelSuccess = await SingleTrip.deleteOne({username:req.session.username, tripname:tripToDel});
   const tripMainDet = await Trips.deleteOne({username:req.session.username, name:req.params.tripname})
   //console.log(tripMainDet)
