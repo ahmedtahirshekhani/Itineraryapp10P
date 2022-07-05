@@ -40,9 +40,6 @@ export class AuthService {
       email,
       username,
       password
-    }).subscribe(res =>
-      {
-        console.log(res);
-      })
+    });
   }
 }
