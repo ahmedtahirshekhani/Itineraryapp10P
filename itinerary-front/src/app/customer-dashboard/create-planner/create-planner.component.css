@@ -10,7 +10,7 @@
     flex-direction: column;
 }
 .p-field * {
-    display: block;
+    display: inline-block;
     width: 100%;
 }
 #trip, #location {

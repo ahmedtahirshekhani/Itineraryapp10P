@@ -1,12 +1,5 @@
 import { Component } from '@angular/core';
 
-declare global {
-  interface Date {
-    formatMMDDYYYY(): String;
-  }
-}
-
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -14,11 +7,5 @@ declare global {
 })
 export class AppComponent {
   title = 'itinerary-front';
-  constructor(){
-    Date.prototype.formatMMDDYYYY = function () {
-      return (
-        this.getDate() + '-' + (this.getMonth() + 1) + '-' + this.getFullYear()
-      );
-    };
-  }
+  constructor() { }
 }
