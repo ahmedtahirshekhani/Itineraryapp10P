@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ConfirmedValidator } from '../shared/confirmed.validator';
 import { AuthService } from '../shared/auth.service';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.css'],
+  providers: [MessageService]
 })
 export class RegisterComponent implements OnInit {
 
@@ -26,7 +29,10 @@ export class RegisterComponent implements OnInit {
     validator: ConfirmedValidator('password', 'cpassword')
   });
 
-  constructor(private auth: AuthService, private fb: FormBuilder) { }
+  constructor(private auth: AuthService,
+              private fb: FormBuilder,
+              private router: Router,
+              public msg: MessageService) { }
    
   get Password(){
     return this.registerForm.controls;
@@ -41,7 +47,15 @@ export class RegisterComponent implements OnInit {
       this.registerForm.value.name,
       this.registerForm.value.username,
       this.registerForm.value.password,
-      this.registerForm.value.email);
+      this.registerForm.value.email).subscribe(data => {
+        if (data.success) {
+          this.router.navigate(['login']);
+        } else {
+          this.msg.add({ severity: 'error',
+            summary: 'Registration Failed' 
+          });
+        }
+      });
   }
 
 }
