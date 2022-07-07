@@ -1,36 +1,58 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import {
+  CanActivate,
+  Router,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { AuthService } from './auth.service';
-import { Router } from '@angular/router';
-import { UserService } from './user.service';
-import { map } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private auth: AuthService,
-              private router: Router,
-              private user: UserService) {}
+  private url: string;
+
+  constructor(private auth: AuthService, private router: Router) {}
+
+  private handleAuthState(): boolean {
+    console.log('I here 1');
+
+    if (this.isLoginOrRegister()) {
+      this.router.navigate(['/dashboard']);
+      return false;
+    }
+    console.log('I here 2');
+
+    return true;
+  }
+
+  private handleNotAuthState(): boolean {
+    if (this.isLoginOrRegister()) {
+      return true;
+    }
+
+    this.router.navigate(['/login']);
+    return false;
+  }
+
+  private isLoginOrRegister(): boolean {
+    if (this.url.includes('login') || this.url.includes('register')) {
+      return true;
+    }
+
+    return false;
+  }
 
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    console.log(this.auth.isLoggedIn);
-    if (this.auth.isLoggedIn) {
-      return true;
+    state: RouterStateSnapshot
+  ): boolean {
+    this.url = state.url;
+
+    if (this.auth.isAuthenticated()) {
+      console.log('Authenticated');
+      return this.handleAuthState();
     }
-    return this.user.isLoggedIn().pipe(map(res => {
-      console.log(res.status);
-      if (res.status) {
-        this.auth.setLoggedIn(true);
-        return true;
-      } else {
-        console.log('here');
-        this.router.navigate(['boot']);
-        return false;
-      }
-    }));
+
+    return this.handleNotAuthState();
   }
 }

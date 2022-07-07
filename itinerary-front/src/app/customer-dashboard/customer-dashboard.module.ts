@@ -9,7 +9,11 @@ import { MenuItemContent, MenuModule } from 'primeng/menu';
 import { CardModule } from 'primeng/card';
 import { PanelModule } from 'primeng/panel';
 import { Ripple, RippleModule } from 'primeng/ripple';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpClientModule,
+  HTTP_INTERCEPTORS,
+} from '@angular/common/http';
 import { TripService } from './shared/trip.service';
 import { SingleTripComponent } from './single-trip/single-trip.component';
 import { DialogModule } from 'primeng/dialog';
@@ -25,6 +29,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { ContactComponent } from './contact/contact.component';
 import { ToastModule } from 'primeng/toast';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TokenInterceptor } from '../token-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -55,9 +60,17 @@ import { ReactiveFormsModule } from '@angular/forms';
     DropdownModule,
     InputNumberModule,
     ToastModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  providers: [MenuItemContent, TripService],
+  providers: [
+    MenuItemContent,
+    TripService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [CustomerDashboardComponent],
 })
 export class CustomerDashboardModule {}

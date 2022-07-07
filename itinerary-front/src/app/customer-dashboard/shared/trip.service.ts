@@ -6,9 +6,9 @@ interface tripData {
   data: [Object];
 }
 
-interface tripData{
-  success:Boolean,
-  data: [Object]
+interface tripData {
+  success: Boolean;
+  data: [Object];
 }
 
 interface additionStatus {
@@ -21,7 +21,6 @@ interface additionStatus {
 export class TripService {
   private newTrip = new Subject<Object>();
   constructor(private http: HttpClient) {}
-
 
   /*
     Method to which AllTrips subscribes to 
@@ -41,8 +40,7 @@ export class TripService {
   }
 
   getMyTrip() {
-
-    return this.http.get<tripData>("/api/v1/trips");
+    return this.http.get<tripData>('/api/v1/trips');
   }
 
   getSingleTripData(tripNameArg: String) {
@@ -78,7 +76,6 @@ export class TripService {
       urlSlug,
     });
   }
-
 
   deleteTrip(name: String) {
     return this.http.delete('/api/v1/trips/' + name);
