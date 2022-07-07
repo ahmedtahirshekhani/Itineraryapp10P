@@ -4,8 +4,8 @@
         <div class="col-8"><h1>{{tripname}}</h1> </div>
                    
         <div class="col-sm-12 text-center line">
-        <button class="col-md-12 text-center" pButton type="button" label="View Friends" class="p-button-success" (click)="showDisplayFriend()" iconPos="left"></button>
-        <button class="col-md-12 text-center" pButton type="button" label="Add a friend" class="p-button-success" icon="pi pi-user-plus" (click)="showAddFriend()" iconPos="left"></button>
+        <button class="col-md-12 text-center" pButton type="button" label="View Friends" class="p-button-success" icon = "pi pi-users" (click)="showDisplayFriend()" [ngStyle]="{'margin-right':'8px'}"></button>
+        <button class="col-md-12 text-center" pButton type="button" label="Add a friend" class="p-button-success" icon="pi pi-user-plus" (click)="showAddFriend()" [ngStyle]="{'margin-right':'8px'}"></button>
           </div>
     
     </div>
@@ -103,20 +103,18 @@
     </div>
 </p-dialog>
 
-<p-dialog header="Friends going along"  widgetVar="dlg2" [modal]="true" width="300" height="200" [(visible)]="displayFriend" [style]="{width:'40%',position:'fixed'}" >
-    <!-- <div class="p-field">
-        <label class="label" for="username"></label>
-        <p-table [value]="username" responsiveLayout="scroll">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>Friends</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-product>
-                <tr>
-                    <td>{{product.code}}</td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div> -->
+<p-dialog header="Friends going along on {{tripname}}"  widgetVar="dlg2" [modal]="true" width="300" height="200" [(visible)]="displayFriend" [style]="{width:'40%',position:'fixed'}" >
+    <p-table [value]="friends">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Name</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-friend>
+            <tr>
+                <td>{{friend}}</td>
+            </tr>
+        </ng-template> 
+    </p-table>
+    <button pButton type="button" (click) = "closeView()" label="Close"  class="p-button-success" icon="pi pi-times" [ngStyle]="{'margin-top':'2.5rem','margin-left':'40%'}" ></button>
 </p-dialog>

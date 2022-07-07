@@ -138,7 +138,8 @@ exports.updateTripData = async (req, res)=>{
   //checking for add friend
   exports.addFriend = async (req, res)=>{
     const tripToUpd = req.params.tripname
-    const [data] = req.body
+    const user = res.locals.user
+    const [data] = req.body.friends
     // const singleTripDetails = await SingleTrip.findOne({username:req.session.username, tripname:name});
     await SingleTrip.updateOne({username:req.session.username, tripname:tripToUpd}, {$set:{friends: data}})
     console.log(data)

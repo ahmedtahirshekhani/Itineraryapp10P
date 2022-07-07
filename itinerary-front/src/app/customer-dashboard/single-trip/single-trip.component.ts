@@ -143,6 +143,7 @@ export class SingleTripComponent implements OnInit {
     this.selectedUser.username = (event["username"]);
     this.friends.push(this.selectedUser.username);
     this.addFriend =false;
+
     console.log(this.friends)
 
     this.tripService.addFriend(this.friends, this.tripname).subscribe(res=>
@@ -152,5 +153,8 @@ export class SingleTripComponent implements OnInit {
       err=>{
         console.log(err);
       })
+   }
+   closeView(){
+    this.displayFriend =false;
    }
 }
