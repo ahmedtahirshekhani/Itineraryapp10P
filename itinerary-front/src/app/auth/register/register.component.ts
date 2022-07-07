@@ -58,7 +58,7 @@ export class RegisterComponent implements OnInit {
         this.registerForm.value.password,
         this.registerForm.value.email
       )
-      .subscribe((data: any) => {
+      .subscribe((data) => {
         if (data.success) {
           this.router.navigate(['login']);
         } else {
