@@ -4,7 +4,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CreatePlannerComponent } from './create-planner/create-planner.component';
 import { ContactComponent } from './contact/contact.component';
-import { UserService } from '../auth/shared/user.service';
+import { AuthService } from '../auth/shared/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -21,7 +21,7 @@ export class CustomerDashboardComponent implements OnInit {
   constructor(
     public dialogService: DialogService,
     public messageService: MessageService,
-    private user: UserService,
+    private auth: AuthService,
     private router: Router
   ) {}
 
@@ -45,19 +45,18 @@ export class CustomerDashboardComponent implements OnInit {
         icon: 'pi pi-fw pi-phone',
         command: () => this.contact(),
       },
-      { label: 'Logout',
+      {
+        label: 'Logout',
         icon: 'pi pi-fw pi-sign-out',
-        command: () => this.logout()},
+        command: () => this.logout(),
+      },
     ];
   }
 
   logout() {
     // logout the user here
-    this.user.logout().subscribe(data => {
-      if (data.success) {
-        this.router.navigate(['boot']);
-      }
-    })
+    this.auth.logout();
+    this.router.navigate(['/boot']);
   }
 
   // dialog for new planner form
@@ -70,9 +69,7 @@ export class CustomerDashboardComponent implements OnInit {
 
     this.newPlannerRef.onClose.subscribe((status: boolean) => {
       if (status) {
-        this.messageService.add({ severity: 'success',
-         summary: 'Trip Added' 
-        });
+        this.messageService.add({ severity: 'success', summary: 'Trip Added' });
       } else if (status == false) {
         this.messageService.add({
           severity: 'error',
