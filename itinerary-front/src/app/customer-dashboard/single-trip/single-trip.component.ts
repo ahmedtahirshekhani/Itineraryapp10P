@@ -59,7 +59,7 @@ export class SingleTripComponent implements OnInit {
           this.endDate = new Date(
             startDate.setDate(startDate.getDate() + numofdays)
           ).toLocaleDateString('en-GB');
-
+          this.friends = tripData.message.metaData.friends;
           this.updateBtnStatus = new Array(numofdays)
             .fill(0)
             .map((idx, val) =>
@@ -143,9 +143,6 @@ export class SingleTripComponent implements OnInit {
     this.selectedUser.username = (event["username"]);
     this.friends.push(this.selectedUser.username);
     this.addFriend =false;
-
-    console.log(this.friends)
-
     this.tripService.addFriend(this.friends, this.tripname).subscribe(res=>
       {
         console.log(res);
@@ -154,6 +151,7 @@ export class SingleTripComponent implements OnInit {
         console.log(err);
       })
    }
+
    closeView(){
     this.displayFriend =false;
    }
