@@ -1,9 +1,13 @@
 
 <div>
     <div class="grid">
-        <div class="col-4"><h1>{{tripname}}</h1></div>
-        <!-- <div class="col-5"></div> -->
-        <!-- <div class="col-3 flex align-items-center justify-content-center"> <a routerLink="/dashboard" style="text-decoration: none;"><button pButton type="button" icon="pi pi-arrow-circle-left" label="Back to Dashboard" class="p-button-outlined p-button-rounded p-button-success" ></button></a></div> -->
+        <div class="col-8"><h1>{{tripname}}</h1> </div>
+                   
+        <div class="col-sm-12 text-center line">
+        <button class="col-md-12 text-center" pButton type="button" label="View Friends" class="p-button-success" (click)="showDisplayFriend()" iconPos="left"></button>
+        <button class="col-md-12 text-center" pButton type="button" label="Add a friend" class="p-button-success" icon="pi pi-user-plus" (click)="showAddFriend()" iconPos="left"></button>
+          </div>
+    
     </div>
     
     <div>
@@ -13,7 +17,6 @@
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns">{{col.header}}</th>
-                    <th>Add a friend <button class = "icon" pButton pRipple type="button" icon="pi pi-plus"  (click)="showDialog()" class="p-button-rounded p-button-text"></button></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData>
@@ -22,7 +25,6 @@
                     <td>{{endDate}}</td>
                     <td>{{rowData.days}}</td>
                     <td>{{rowData.destination}}</td>
-                    <td>{{selectedUser}}</td>
                 </tr>
             </ng-template>
 
@@ -81,7 +83,7 @@
 </div>
 
 
-<p-dialog header="Take a friend along"  widgetVar="dlg2" [modal]="true" width="300" height="200" [(visible)]="displayFriend" [style]="{width:'40%',position:'fixed'}" >
+<p-dialog header="Take a friend along"  widgetVar="dlg2" [modal]="true" width="300" height="200" [(visible)]="addFriend" [style]="{width:'40%',position:'fixed'}" >
     <div class="p-field">
         <label class="label" for="username"></label>
         <p-dropdown
@@ -99,4 +101,22 @@
             [style]="{'width':'100%', 'border-radius': '25px', 'background-color': 'rgba(0, 0, 0, 0.025)'}">
         </p-dropdown>
     </div>
+</p-dialog>
+
+<p-dialog header="Friends going along"  widgetVar="dlg2" [modal]="true" width="300" height="200" [(visible)]="displayFriend" [style]="{width:'40%',position:'fixed'}" >
+    <!-- <div class="p-field">
+        <label class="label" for="username"></label>
+        <p-table [value]="username" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Friends</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product>
+                <tr>
+                    <td>{{product.code}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div> -->
 </p-dialog>

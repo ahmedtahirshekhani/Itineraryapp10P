@@ -18,9 +18,11 @@ export class SingleTripComponent implements OnInit {
   colsMetaData!: any[];
   metadata: any[] = [];
   endDate!: String;
-  displayFriend: boolean = false;
+  addFriend: boolean = false;
   users: any = [];
-  selectedUser: string = "";
+  selectedUser: any = [];
+  friends = new Array() ;
+  displayFriend: boolean = false;
 
   constructor(
     private tripService: TripService,
@@ -90,7 +92,11 @@ export class SingleTripComponent implements OnInit {
       })
    }
 
-  showDialog() {
+   showAddFriend() {
+    this.display = true;
+    this.addFriend =true;
+  }
+  showDisplayFriend() {
     this.display = true;
     this.displayFriend =true;
   }
@@ -134,7 +140,17 @@ export class SingleTripComponent implements OnInit {
       });
   }
   onChange(event: any): void{
-    this.selectedUser = event["username"];
-    this.displayFriend =false;
-  }
+    this.selectedUser.username = (event["username"]);
+    this.friends.push(this.selectedUser.username);
+    this.addFriend =false;
+    console.log(this.friends)
+
+    this.tripService.addFriend(this.friends, this.tripname).subscribe(res=>
+      {
+        console.log(res);
+      },
+      err=>{
+        console.log(err);
+      })
+   }
 }

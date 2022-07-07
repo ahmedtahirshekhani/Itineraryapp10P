@@ -7,7 +7,7 @@ const tripsSchema = new mongoose.Schema({
     destination: String,
     imageUrl: String,
     urlSlug: String,
-    createdOn: String
+    createdOn: String,
 })
 
 const trips= mongoose.model('my_trips', tripsSchema)
