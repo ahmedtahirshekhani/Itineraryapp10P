@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject, Observable } from 'rxjs';
+interface tripData {
+  success: Boolean;
+  data: [Object];
+}
 
 interface tripData {
   success: Boolean;
@@ -16,7 +20,6 @@ interface additionStatus {
 })
 export class TripService {
   private newTrip = new Subject<Object>();
-
   constructor(private http: HttpClient) {}
 
   /*

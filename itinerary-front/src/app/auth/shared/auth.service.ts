@@ -76,16 +76,12 @@ export class AuthService {
     password: string,
     email: string
   ) {
-    return this.http
-      .post<registerResponse>('/api/v1/users/register', {
-        name,
-        email,
-        username,
-        password,
-      })
-      .subscribe((res) => {
-        console.log(res);
-      });
+    return this.http.post<registerResponse>('/api/v1/users/register', {
+      name,
+      email,
+      username,
+      password,
+    });
   }
 
   private getExpiration() {
@@ -111,10 +107,6 @@ export class AuthService {
   isUserLoggedIn(): Observable<isLoggedIn> {
     return this.http.get<isLoggedIn>('/api/v1/users/isloggedin');
   }
-
-  // getUserDetails(): Observable<any> {
-  //   return this.http.get<any>('api/v1/users/abcd');
-  // }
 
   logout() {
     localStorage.removeItem('ti_auth');
