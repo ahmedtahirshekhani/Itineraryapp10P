@@ -12,18 +12,22 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'register',
-    component: RegisterComponent
+    component: RegisterComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'dashboard',
     loadChildren: () =>
-      import (`../customer-dashboard/customer-dashboard.module`).then((m) => m.CustomerDashboardModule),
-    canActivate: [AuthGuard]
-  }
+      import(`../customer-dashboard/customer-dashboard.module`).then(
+        (m) => m.CustomerDashboardModule
+      ),
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({

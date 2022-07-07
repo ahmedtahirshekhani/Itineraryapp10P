@@ -1,28 +1,43 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, Validators } from '@angular/forms';
+import { TripService } from 'src/app/customer-dashboard/shared/trip.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers: [MessageService]
+  providers: [MessageService],
 })
 export class LoginComponent {
   credentialsForm = this.fb.group({
-    username: <string|unknown>['', Validators.required],
-    password: <string|unknown>['', Validators.required]
+    username: <string | unknown>['', Validators.required],
+    password: <string | unknown>['', Validators.required],
   });
-  
-  constructor(private auth: AuthService,
-              private router: Router,
-              public messageService: MessageService,
-              private fb: FormBuilder) { }
 
-  get username(): any { return this.credentialsForm.get('username') }
-  get password(): any { return this.credentialsForm.get('password') }
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    public messageService: MessageService,
+    private fb: FormBuilder
+  ) {
+    // this.trip.getMyTrip().subscribe((data: any) => {
+    //   if (data.success) {
+    //     console.log(data);
+    //   } else {
+    //     console.log(data.err);
+    //   }
+    // });
+  }
+
+  get username(): any {
+    return this.credentialsForm.get('username');
+  }
+  get password(): any {
+    return this.credentialsForm.get('password');
+  }
 
   clearInput(): void {
     this.username.reset();
@@ -34,19 +49,20 @@ export class LoginComponent {
   }
 
   loginUser() {
-    this.auth.getUserDetails(
-      this.username.value,
-      this.password.value).subscribe(data => {
-      if (data.success) {
-        this.auth.setLoggedIn(true);
-        console.log(data.success);
-        this.router.navigate(['dashboard']);
-      } else {
-        this.messageService.add({
-          severity:'error', summary: 'Invalid Credentials!'
-        });
-      }
-    });
+    this.auth
+      .login(this.username.value, this.password.value)
+      .subscribe((data: any) => {
+        if (data.success) {
+          this.auth.setLoggedIn(true);
+          console.log(data.success);
+          this.router.navigate(['dashboard']);
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Invalid Credentials!',
+          });
+        }
+      });
     // reset the fields
     this.clearInput();
   }

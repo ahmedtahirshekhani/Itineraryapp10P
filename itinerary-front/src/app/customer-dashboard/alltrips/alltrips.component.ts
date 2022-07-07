@@ -11,22 +11,21 @@ import { Subscription } from 'rxjs';
 export class AlltripsComponent implements OnInit {
   mytrips: any[] = [];
   public subscription: Subscription;
-  
-  constructor(private tripService: TripService,
-              private router: Router) {}
+
+  constructor(private tripService: TripService, private router: Router) {}
 
   ngOnInit(): void {
     this.tripService.getMyTrip().subscribe((data: any) => {
       if (data.success) {
         this.mytrips = data.data;
-        console.log(this.mytrips)
+        console.log(this.mytrips);
       } else {
         console.log(data.err);
       }
     });
 
     // listen for new Trips being added
-    this.subscription = this.tripService.updateTripList().subscribe(trip => {
+    this.subscription = this.tripService.updateTripList().subscribe((trip) => {
       this.mytrips.push(trip);
     });
   }
