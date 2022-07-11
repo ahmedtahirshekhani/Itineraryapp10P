@@ -95,6 +95,9 @@ export class SingleTripComponent implements OnInit {
    showAddFriend() {
     this.display = true;
     this.addFriend =true;
+    const usernames = this.users.map((obj: any) => obj.username);
+    const matched = this.friends.filter(value => usernames.includes(value))
+    this.users = this.users.filter( (el: { username: any; }) => (-1 == matched.indexOf(el.username)) );
   }
   showDisplayFriend() {
     this.display = true;
@@ -142,7 +145,7 @@ export class SingleTripComponent implements OnInit {
   onChange(event: any): void{
     this.selectedUser.username = (event["username"]);
     this.friends.push(this.selectedUser.username);
-    this.addFriend =false;
+    this.addFriend = false;
     this.tripService.addFriend(this.friends, this.tripname).subscribe(res=>
       {
         console.log(res);
@@ -150,6 +153,7 @@ export class SingleTripComponent implements OnInit {
       err=>{
         console.log(err);
       })
+
    }
 
    closeView(){
