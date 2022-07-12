@@ -1,9 +1,13 @@
 
 <div>
     <div class="grid">
-        <div class="col-4"><h1>{{tripname}}</h1></div>
-        <!-- <div class="col-5"></div> -->
-        <!-- <div class="col-3 flex align-items-center justify-content-center"> <a routerLink="/dashboard" style="text-decoration: none;"><button pButton type="button" icon="pi pi-arrow-circle-left" label="Back to Dashboard" class="p-button-outlined p-button-rounded p-button-success" ></button></a></div> -->
+        <div class="col-8"><h1>{{tripname}}</h1> </div>
+                   
+        <div class="col-sm-12 text-center line">
+        <button class="col-md-12 text-center" pButton type="button" label="View Friends" class="p-button-success" icon = "pi pi-users" (click)="showDisplayFriend()" [ngStyle]="{'margin-right':'8px'}"></button>
+        <button class="col-md-12 text-center" pButton type="button" label="Add a friend" class="p-button-success" icon="pi pi-user-plus" (click)="showAddFriend()" [ngStyle]="{'margin-right':'8px'}"></button>
+          </div>
+    
     </div>
     
     <div>
@@ -77,3 +81,40 @@
     </div>
 
 </div>
+
+
+<p-dialog header="Take a friend along"  widgetVar="dlg2" [modal]="true" width="300" height="200" [(visible)]="addFriend" [style]="{width:'40%',position:'fixed'}" >
+    <div class="p-field">
+        <label class="label" for="username"></label>
+        <p-dropdown
+            appendTo="body"
+            id="username"
+            [options]="users"
+            placeholder="Select a friend"
+            [showClear]="true"
+            [filter]="true" 
+            filterBy="username"
+            [(ngModel)]="selectedUser"
+            optionLabel="username"
+            autoWidth="false"
+            (onChange)="onChange($event.value)"
+            [style]="{'width':'100%', 'border-radius': '25px', 'background-color': 'rgba(0, 0, 0, 0.025)'}">
+        </p-dropdown>
+    </div>
+</p-dialog>
+
+<p-dialog header="Friends going along on {{tripname}}"  widgetVar="dlg2" [modal]="true" width="300" height="200" [(visible)]="displayFriend" [style]="{width:'40%',position:'fixed'}" >
+    <p-table [value]="friends">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Name</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-friend>
+            <tr>
+                <td>{{friend}}</td>
+            </tr>
+        </ng-template> 
+    </p-table>
+    <button pButton type="button" (click) = "closeView()" label="Close"  class="p-button-success" icon="pi pi-times" [ngStyle]="{'margin-top':'2.5rem','margin-left':'40%'}" ></button>
+</p-dialog>

@@ -53,6 +53,12 @@ export class TripService {
     });
   }
 
+  addFriend(friends:any[], tripname: String) {
+    return this.http.patch<tripData>('/api/v1/trips/' + tripname, {
+      friends,
+    });
+  }
+
   addNewTrip(
     name: string,
     startDate: String,

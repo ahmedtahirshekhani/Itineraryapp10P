@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { UsersService } from '../shared/users.service';
 import { TripService } from '../shared/trip.service';
 
 @Component({
@@ -17,10 +18,17 @@ export class SingleTripComponent implements OnInit {
   colsMetaData!: any[];
   metadata: any[] = [];
   endDate!: String;
+  addFriend: boolean = false;
+  users: any = [];
+  selectedUser: any = [];
+  friends = new Array() ;
+  displayFriend: boolean = false;
+
   constructor(
     private tripService: TripService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private userServce: UsersService
   ) {
     this.tripUrl = this.route.snapshot.paramMap.get('tripUrl');
     let result = this.tripUrl?.match(/\w+/g);
@@ -51,7 +59,7 @@ export class SingleTripComponent implements OnInit {
           this.endDate = new Date(
             startDate.setDate(startDate.getDate() + numofdays)
           ).toLocaleDateString('en-GB');
-
+          this.friends = tripData.message.metaData.friends;
           this.updateBtnStatus = new Array(numofdays)
             .fill(0)
             .map((idx, val) =>
@@ -73,11 +81,27 @@ export class SingleTripComponent implements OnInit {
       { field: 'enddate', header: 'End Date' },
       { field: 'numofdays', header: 'Number of Days' },
       { field: 'destination', header: 'Destination' },
-    ];
-  }
+    ]; 
 
-  showDialog() {
+    //reading usernames for add a friend
+    this.userServce.getUsers().subscribe(
+      response =>
+      {
+        this.users = Object.values(response)
+        this.users = this.users[1];
+      })
+   }
+
+   showAddFriend() {
     this.display = true;
+    this.addFriend =true;
+    const usernames = this.users.map((obj: any) => obj.username);
+    const matched = this.friends.filter(value => usernames.includes(value))
+    this.users = this.users.filter( (el: { username: any; }) => (-1 == matched.indexOf(el.username)) );
+  }
+  showDisplayFriend() {
+    this.display = true;
+    this.displayFriend =true;
   }
 
   updateBtnClicked(dayIdx: number, actTimeIdx: number) {
@@ -118,4 +142,21 @@ export class SingleTripComponent implements OnInit {
         console.log(data.success);
       });
   }
+  onChange(event: any): void{
+    this.selectedUser.username = (event["username"]);
+    this.friends.push(this.selectedUser.username);
+    this.addFriend = false;
+    this.tripService.addFriend(this.friends, this.tripname).subscribe(res=>
+      {
+        console.log(res);
+      },
+      err=>{
+        console.log(err);
+      })
+
+   }
+
+   closeView(){
+    this.displayFriend =false;
+   }
 }
