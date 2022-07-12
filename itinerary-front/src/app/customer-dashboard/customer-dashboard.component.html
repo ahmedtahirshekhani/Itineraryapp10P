@@ -1,0 +1,25 @@
+<div class="grid">
+  <div class="col-3">
+    <p-toast></p-toast>
+    <div class="box">
+      <p-sidebar
+        [modal]="false"
+        [visible]="display"
+        position="left"
+        [showCloseIcon]="false"
+        [style]="{
+          textAlign: 'center',
+          backgroundColor: '#267365',
+          color: '#F2CB05',
+          width: '15em'
+        }"
+      >
+        <h1>Main Menu</h1>
+        <p-menu [model]="items"></p-menu>
+      </p-sidebar>
+    </div>
+  </div>
+  <div class="col-8">
+    <router-outlet></router-outlet>
+  </div>
+</div>
