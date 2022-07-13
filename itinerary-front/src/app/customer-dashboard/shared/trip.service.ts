@@ -53,8 +53,8 @@ export class TripService {
     });
   }
 
-  addFriend(friends:any[], tripname: String) {
-    return this.http.patch<tripData>('/api/v1/trips/' + tripname, {
+  addFriend(friends: any[], tripid: String) {
+    return this.http.patch<tripData>('/api/v1/trips/' + tripid, {
       friends,
     });
   }

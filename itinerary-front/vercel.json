@@ -1,0 +1,9 @@
+{
+    "functions": {
+        "/api": { "target": "https://travel-itinerary-server.vercel.app/", 
+    "secure":false, 
+    "changeOrigin": true,
+    "memory": 3008,
+    "maxDuration": 30 }
+    }
+  }
