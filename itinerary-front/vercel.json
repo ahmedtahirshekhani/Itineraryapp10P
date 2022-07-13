@@ -1,9 +1,16 @@
 {
-    "functions": {
-        "/api": { "target": "https://travel-itinerary-server.vercel.app/", 
-    "secure":false, 
-    "changeOrigin": true,
-    "memory": 3008,
-    "maxDuration": 30 }
-    }
+    "rewrites": [
+      { "source": "/api/:match*", "destination": "https://travel-itinerary-server.vercel.app/api/:match*" }
+  
+    ],
+    "headers": [
+      {
+        "source": "api/(.*)",
+        "headers": [
+          { "key": "Access-Control-Allow-Credentials", "value": "true" },
+          { "key": "Access-Control-Allow-Origin", "value": "*" },
+          { "key": "Access-Control-Allow-Methods", "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT" }
+        ]
+      }
+    ]
   }
