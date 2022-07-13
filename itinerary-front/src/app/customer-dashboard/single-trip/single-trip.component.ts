@@ -21,7 +21,7 @@ export class SingleTripComponent implements OnInit {
   addFriend: boolean = false;
   users: any = [];
   selectedUser: any = [];
-  friends = new Array() ;
+  friends = new Array();
   displayFriend: boolean = false;
 
   constructor(
@@ -54,6 +54,7 @@ export class SingleTripComponent implements OnInit {
           const metaData = tripData.message.metaData;
           const numofdays = metaData.days;
           const date = tripData.message.metaData.startDate;
+          this.friends = tripData.message.metaData.friends;
           const parts = date.split('/');
           const startDate = new Date(+parts[2], parts[1] - 1, +parts[0]);
           this.endDate = new Date(
@@ -81,24 +82,22 @@ export class SingleTripComponent implements OnInit {
       { field: 'enddate', header: 'End Date' },
       { field: 'numofdays', header: 'Number of Days' },
       { field: 'destination', header: 'Destination' },
-    ]; 
+    ];
 
     //reading usernames for add a friend
-    this.userServce.getUsers().subscribe(
-      response =>
-      {
-        this.users = Object.values(response)
-        this.users = this.users[1];
-      })
-   }
+    this.userServce.getUsers().subscribe((response) => {
+      this.users = Object.values(response);
+      this.users = this.users[1];
+    });
+  }
 
-   showAddFriend() {
+  showAddFriend() {
     this.display = true;
-    this.addFriend =true;
+    this.addFriend = true;
   }
   showDisplayFriend() {
     this.display = true;
-    this.displayFriend =true;
+    this.displayFriend = true;
   }
 
   updateBtnClicked(dayIdx: number, actTimeIdx: number) {
@@ -139,22 +138,23 @@ export class SingleTripComponent implements OnInit {
         console.log(data.success);
       });
   }
-  onChange(event: any): void{
-    this.selectedUser.username = (event["username"]);
+  onChange(event: any): void {
+    this.selectedUser.username = event['username'];
     this.friends.push(this.selectedUser.username);
-    this.addFriend =false;
+    this.addFriend = false;
 
-    console.log(this.friends)
+    console.log(this.friends);
 
-    this.tripService.addFriend(this.friends, this.tripname).subscribe(res=>
-      {
+    this.tripService.addFriend(this.friends, this.tripname).subscribe(
+      (res) => {
         console.log(res);
       },
-      err=>{
+      (err) => {
         console.log(err);
-      })
-   }
-   closeView(){
-    this.displayFriend =false;
-   }
+      }
+    );
+  }
+  closeView() {
+    this.displayFriend = false;
+  }
 }
