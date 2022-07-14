@@ -25,4 +25,29 @@
 
 
     </div>
+
+    <h1>Checking Friends Trips</h1>
+    <div class="box">
+        <div class="grid">
+        <div class="col-4 trip-card" *ngFor="let trip of friendTrips; let idx = index;">
+            <div  (click)="tripCardClicked(trip.urlSlug)">
+                <p-card header="{{trip.name}}" subheader="Created On: {{trip['createdOn']}}" styleClass="p-card-shadow ">
+                    <ng-template pTemplate="header">
+                        <img alt="Card" src="{{trip['imageUrl']}}">
+                    </ng-template>
+                    <div class="card-content">
+                        <div><i class="pi pi-calendar"></i>No. of days: {{trip.days}}</div>
+                        <div> <i class="pi pi-map-marker"></i>Location: {{trip.destination}}</div>
+                    </div>
+                </p-card>
+               
+            </div>
+
+
+        </div>
+    </div>
+
+
+    </div>
+    
 </div>

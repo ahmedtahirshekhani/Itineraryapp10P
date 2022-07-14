@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 })
 export class AlltripsComponent implements OnInit {
   mytrips: any[] = [];
+  friendTrips: any[] = [];
   public subscription: Subscription;
 
   constructor(private tripService: TripService, private router: Router) {}
@@ -28,6 +29,11 @@ export class AlltripsComponent implements OnInit {
     this.subscription = this.tripService.updateTripList().subscribe((trip) => {
       this.mytrips.push(trip);
     });
+    
+    this.tripService.getTripsAsFrnd().subscribe((data: any) => {
+      this.friendTrips = data;
+    });
+
   }
 
   tripCardClicked(tripUrl: String) {
@@ -55,4 +61,5 @@ export class AlltripsComponent implements OnInit {
     });
     this.removeFromList(name);
   }
+
 }

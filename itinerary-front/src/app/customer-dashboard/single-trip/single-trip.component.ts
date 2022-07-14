@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UsersService } from '../shared/users.service';
 import { TripService } from '../shared/trip.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-single-trip',
@@ -15,6 +16,7 @@ export class SingleTripComponent implements OnInit {
   updateBtnStatus!: Boolean[][];
   tripname!: String;
   tripUrl: String | null;
+  tripID: string;
   colsMetaData!: any[];
   metadata: any[] = [];
   endDate!: String;
@@ -28,7 +30,8 @@ export class SingleTripComponent implements OnInit {
     private tripService: TripService,
     private router: Router,
     private route: ActivatedRoute,
-    private userServce: UsersService
+    private userServce: UsersService,
+    private messageService: MessageService
   ) {
     this.tripUrl = this.route.snapshot.paramMap.get('tripUrl');
     let result = this.tripUrl?.match(/\w+/g);
@@ -50,6 +53,7 @@ export class SingleTripComponent implements OnInit {
       .getSingleTripData(this.tripname)
       .subscribe((tripData: any) => {
         if (tripData.success) {
+          this.tripID = tripData.message.metaData._id;
           this.dayData = tripData.message.singleTripDetails.tripdata;
           const metaData = tripData.message.metaData;
           const numofdays = metaData.days;
@@ -146,7 +150,22 @@ export class SingleTripComponent implements OnInit {
     this.selectedUser.username = (event["username"]);
     this.friends.push(this.selectedUser.username);
     this.addFriend = false;
-    this.tripService.addFriend(this.friends, this.tripname).subscribe(res=>
+    this.tripService.addFriend(this.selectedUser.username, this.tripID).subscribe(res=>
+      {
+        console.log(res);
+      },
+      err=>{
+        console.log(err);
+      })
+   }
+
+   closeView(){
+    this.displayFriend =false;
+   }
+
+   removeFriend(friend : string){
+   
+    this.tripService.removeFriend(friend, this.tripID).subscribe(res=>
       {
         console.log(res);
       },
@@ -154,9 +173,10 @@ export class SingleTripComponent implements OnInit {
         console.log(err);
       })
 
-   }
-
-   closeView(){
-    this.displayFriend =false;
-   }
+    this.friends = this.friends.filter(function(name){ 
+          return name != friend; 
+        });
+    this.users.push({username: friend})
+    this.messageService.add({severity:'warn', summary: 'Successful', detail: 'Friend removed', life: 3000});
+      }
 }

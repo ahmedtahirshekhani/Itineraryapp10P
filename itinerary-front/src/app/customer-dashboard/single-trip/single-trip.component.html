@@ -108,11 +108,13 @@
         <ng-template pTemplate="header">
             <tr>
                 <th>Name</th>
+                <th></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-friend>
             <tr>
                 <td>{{friend}}</td>
+                <td> <button pButton type="button" icon="pi pi-trash" (click) = "removeFriend(friend)"  label="" class="p-button-danger"></button></td>
             </tr>
         </ng-template> 
     </p-table>
