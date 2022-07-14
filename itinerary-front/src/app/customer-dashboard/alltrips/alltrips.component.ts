@@ -10,54 +10,25 @@ import { Subscription } from 'rxjs';
 })
 export class AlltripsComponent implements OnInit {
   mytrips: any[] = [];
-  
   friendTrips: any[] = [];
-
-  friendTripStatus: boolean = false;
-  myTripLength: number = 0;
-
   public subscription: Subscription;
 
   constructor(private tripService: TripService, private router: Router) {}
 
   ngOnInit(): void {
-<<<<<<< HEAD
-    this.tripService.getMyTrip().subscribe((data: any) => {
-      if (data.success) {
-        this.mytrips = data.data;
-        console.log(this.mytrips);
-        this.myTripLength = this.mytrips.length;
-      } else {
-        console.log(data.err);
-      }
-=======
     this.tripService.getMyTrip().subscribe({
       next: (res) => {
         this.mytrips = res;
       },
->>>>>>> d22aa5871e257e81a529f38cba23da787da3c6fd
     });
 
     // listen for new Trips being added
     this.subscription = this.tripService.updateTripList().subscribe((trip) => {
       this.mytrips.push(trip);
     });
-<<<<<<< HEAD
-    
-    // get data of trips you have been added to as a friend
-    this.tripService.getTripsAsFrnd().subscribe((data: any) => {
-      if(data.length === 0)
-      {
-        this.friendTripStatus = false;
-      }
-      else{
-        this.friendTripStatus = true;
-      }
-=======
 
     this.tripService.getTripsAsFrnd().subscribe((data: any) => {
       console.log(data);
->>>>>>> d22aa5871e257e81a529f38cba23da787da3c6fd
       this.friendTrips = data;
     });
   }
@@ -69,9 +40,9 @@ export class AlltripsComponent implements OnInit {
   }
 
   // update mytrips list to reflect removal on screen sans netwrok call
-  removeFromList(name: string): void {
+  removeFromList(tripId: string): void {
     for (let i = 0; i < this.mytrips.length; i++) {
-      if (this.mytrips[i].name == name) {
+      if (this.mytrips[i]._id == tripId) {
         // remove just that deleted trip
         this.mytrips.splice(i, 1);
         break;
@@ -79,12 +50,13 @@ export class AlltripsComponent implements OnInit {
     }
   }
 
-  deleteTrip(name: string, event: any) {
+  deleteTrip(tripId: string, event: any) {
     event.stopPropagation();
-    console.log('delete', name);
-    this.tripService.deleteTrip(name).subscribe((data: any) => {
+    console.log('delete', tripId);
+    this.tripService.deleteTrip(tripId).subscribe((data: any) => {
       console.log(data.success);
+      this.removeFromList(tripId);
     });
-    this.removeFromList(name);
+
   }
 }
