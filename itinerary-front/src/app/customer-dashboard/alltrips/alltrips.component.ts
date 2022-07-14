@@ -16,24 +16,21 @@ export class AlltripsComponent implements OnInit {
   constructor(private tripService: TripService, private router: Router) {}
 
   ngOnInit(): void {
-    this.tripService.getMyTrip().subscribe((data: any) => {
-      if (data.success) {
-        this.mytrips = data.data;
-        console.log(this.mytrips);
-      } else {
-        console.log(data.err);
-      }
+    this.tripService.getMyTrip().subscribe({
+      next: (res) => {
+        this.mytrips = res;
+      },
     });
 
     // listen for new Trips being added
     this.subscription = this.tripService.updateTripList().subscribe((trip) => {
       this.mytrips.push(trip);
     });
-    
+
     this.tripService.getTripsAsFrnd().subscribe((data: any) => {
+      console.log(data);
       this.friendTrips = data;
     });
-
   }
 
   tripCardClicked(tripUrl: String) {
@@ -61,5 +58,4 @@ export class AlltripsComponent implements OnInit {
     });
     this.removeFromList(name);
   }
-
 }

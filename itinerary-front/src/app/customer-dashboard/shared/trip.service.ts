@@ -40,29 +40,29 @@ export class TripService {
   }
 
   getMyTrip() {
-    return this.http.get<tripData>('/api/v1/trips');
+    return this.http.get<any>('/api/v1/trips');
   }
 
-  getSingleTripData(tripNameArg: String) {
-    return this.http.get<tripData>('/api/v1/trips/' + tripNameArg);
+  getSingleTripData(tripID: String) {
+    return this.http.get<tripData>('/api/v1/trips/' + tripID);
   }
 
-  updateTripData(tripdata: any[][], tripname: String) {
-    return this.http.put<tripData>('/api/v1/trips/' + tripname, {
+  updateTripData(tripdata: any[][], tripID: String | null) {
+    return this.http.put<tripData>('/api/v1/trips/' + tripID, {
       data: tripdata,
     });
   }
 
-  addFriend(friends: string, tripID: String) {
+  addFriend(friends: string, tripID: String | null) {
     return this.http.patch<tripData>('/api/v1/trips/friends/' + tripID, {
       friendToAdd: friends,
     });
   }
 
-  removeFriend(friends: string, tripID: String) {
-    return this.http.post('/api/v1/trips/friends/' + tripID ,{
+  removeFriend(friends: string, tripID: String | null) {
+    return this.http.post('/api/v1/trips/friends/' + tripID, {
       friendToDel: friends,
-    });    
+    });
   }
 
   getTripsAsFrnd() {
@@ -87,7 +87,7 @@ export class TripService {
     });
   }
 
-  deleteTrip(name: String) {
-    return this.http.delete('/api/v1/trips/' + name);
+  deleteTrip(tripID: String) {
+    return this.http.delete('/api/v1/trips/' + tripID);
   }
 }
