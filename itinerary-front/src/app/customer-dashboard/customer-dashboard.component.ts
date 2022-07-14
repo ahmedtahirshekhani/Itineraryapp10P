@@ -36,12 +36,12 @@ export class CustomerDashboardComponent implements OnInit {
         command: () => this.createPlanner(),
       },
       {
-        label: 'View My Planners',
+        label: 'My Planners',
         icon: 'pi pi-fw pi-eye',
         routerLink: '/dashboard',
       },
       {
-        label: 'View Friends Planners',
+        label: 'Friends Planners',
         icon: 'pi pi-fw pi-eye',
         routerLink: '/dashboard',
       },

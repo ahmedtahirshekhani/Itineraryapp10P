@@ -21,6 +21,7 @@ export class AlltripsComponent implements OnInit {
   constructor(private tripService: TripService, private router: Router) {}
 
   ngOnInit(): void {
+<<<<<<< HEAD
     this.tripService.getMyTrip().subscribe((data: any) => {
       if (data.success) {
         this.mytrips = data.data;
@@ -29,12 +30,19 @@ export class AlltripsComponent implements OnInit {
       } else {
         console.log(data.err);
       }
+=======
+    this.tripService.getMyTrip().subscribe({
+      next: (res) => {
+        this.mytrips = res;
+      },
+>>>>>>> d22aa5871e257e81a529f38cba23da787da3c6fd
     });
 
     // listen for new Trips being added
     this.subscription = this.tripService.updateTripList().subscribe((trip) => {
       this.mytrips.push(trip);
     });
+<<<<<<< HEAD
     
     // get data of trips you have been added to as a friend
     this.tripService.getTripsAsFrnd().subscribe((data: any) => {
@@ -45,6 +53,11 @@ export class AlltripsComponent implements OnInit {
       else{
         this.friendTripStatus = true;
       }
+=======
+
+    this.tripService.getTripsAsFrnd().subscribe((data: any) => {
+      console.log(data);
+>>>>>>> d22aa5871e257e81a529f38cba23da787da3c6fd
       this.friendTrips = data;
     });
   }
@@ -74,5 +87,4 @@ export class AlltripsComponent implements OnInit {
     });
     this.removeFromList(name);
   }
-
 }
