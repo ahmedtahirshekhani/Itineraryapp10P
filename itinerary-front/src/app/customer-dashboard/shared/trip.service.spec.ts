@@ -154,23 +154,25 @@ describe('TripService', () => {
   });
 
   it('should test addNewTrip', (done) => {
-    name = 'try';
-    startDate = '23-02-12';
-    days = 5;
-    destination = 'Swat';
-    imageUrl = 'http=//test.com';
-    urlSlug = 'test-trip';
+    const name = 'try';
+    const startDate = '23-02-12';
+    const days = 5;
+    const destination = 'Swat';
+    const imageUrl = 'http://test.com';
+    const urlSlug = 'test-trip';
 
     const mockResult = 'mockresult';
     const command = 'testing';
     const url = '/api/v1/trips/others';
     jest.spyOn(httpClientSpy, 'post').mockReturnValue(of(mockResult));
-    service.addNewTrip(argAddTrip).subscribe({
-      next: (res) => {
-        expect(res).toEqual(mockResult);
-        done();
-      },
-    });
+    service
+      .addNewTrip(name, startDate, days, destination, imageUrl, urlSlug)
+      .subscribe({
+        next: (res) => {
+          expect(res).toEqual(mockResult);
+          done();
+        },
+      });
     expect(httpClientSpy.post).toBeCalledTimes(1);
     expect(httpClientSpy.get).toHaveBeenCalledWith(url);
   });
