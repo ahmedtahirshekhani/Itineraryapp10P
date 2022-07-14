@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TripService } from '../shared/trip.service';
-import { Subscription } from 'rxjs';
+import { catchError, Observable, Subscription } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-alltrips',
@@ -15,13 +16,13 @@ export class AlltripsComponent implements OnInit {
   constructor(private tripService: TripService, private router: Router) {}
 
   ngOnInit(): void {
-    this.tripService.getMyTrip().subscribe((data: any) => {
-      if (data.success) {
-        this.mytrips = data.data;
-        console.log(this.mytrips);
-      } else {
-        console.log(data.err);
-      }
+    this.tripService.getMyTrip().subscribe({
+      next: (res) => {
+        this.mytrips = res;
+      },
+      error: (error) => {
+        console.log(error);
+      },
     });
 
     // listen for new Trips being added
@@ -29,6 +30,16 @@ export class AlltripsComponent implements OnInit {
       this.mytrips.push(trip);
     });
   }
+
+  /*
+  private handleError<T>(operation = 'operation') {
+    return (error: HttpErrorResponse): Observable<T> => {
+      console.error('Error here', error);
+      const message = `Server returned code ${error.status} with body ${error.error}`;
+      throw new Error(`${operation} failed: ${message}`);
+    };
+  }
+  */
 
   tripCardClicked(tripUrl: String) {
     this.router.navigate(['dashboard/' + tripUrl]);

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject, Observable } from 'rxjs';
 interface tripData {
+  [x: string]: any;
   success: Boolean;
   data: [Object];
 }
@@ -40,7 +41,7 @@ export class TripService {
   }
 
   getMyTrip() {
-    return this.http.get<tripData>('/api/v1/trips');
+    return this.http.get<any>('/api/v1/trips');
   }
 
   getSingleTripData(tripNameArg: String) {
