@@ -23,6 +23,10 @@ describe('TripService', () => {
     httpTestingController = TestBed.inject(HttpTestingController);
     httpClientSpy = {
       get: jest.fn(),
+      put: jest.fn(),
+      patch: jest.fn(),
+      post: jest.fn(),
+      delete: jest.fn(),
     };
     service = new TripService(httpClientSpy);
   });
@@ -85,8 +89,89 @@ describe('TripService', () => {
     expect(httpClientSpy.get).toHaveBeenCalledWith(url);
   });
 
-  it('should test updateTripData', () => {
-    //const command = 'testing';
-    expect(1).toBeTruthy();
+  it('should test updateTripData', (done) => {
+    const mockResult = 'mockresult';
+    const command = [['testing']];
+    const url = '/api/v1/trips/1234';
+    jest.spyOn(httpClientSpy, 'put').mockReturnValue(of(mockResult));
+    service.updateTripData(command, '1234').subscribe({
+      next: (res) => {
+        expect(res).toEqual(mockResult);
+        done();
+      },
+    });
+    expect(httpClientSpy.put).toBeCalledTimes(1);
+    expect(httpClientSpy.put).toHaveBeenCalledWith(url, { data: command });
+  });
+
+  it('should test addFriend', (done) => {
+    const mockResult = 'mockresult';
+    const command = 'testing';
+    const url = '/api/v1/trips/friends/1234';
+    jest.spyOn(httpClientSpy, 'patch').mockReturnValue(of(mockResult));
+    service.addFriend(command, '1234').subscribe({
+      next: (res) => {
+        expect(res).toEqual(mockResult);
+        done();
+      },
+    });
+    expect(httpClientSpy.patch).toBeCalledTimes(1);
+    expect(httpClientSpy.patch).toHaveBeenCalledWith(url, {
+      friendToAdd: command,
+    });
+  });
+
+  it('should test removeFriend', (done) => {
+    const mockResult = 'mockresult';
+    const command = 'testing';
+    const url = '/api/v1/trips/friends/1234';
+    jest.spyOn(httpClientSpy, 'post').mockReturnValue(of(mockResult));
+    service.removeFriend(command, '1234').subscribe({
+      next: (res) => {
+        expect(res).toEqual(mockResult);
+        done();
+      },
+    });
+    expect(httpClientSpy.post).toBeCalledTimes(1);
+    expect(httpClientSpy.post).toHaveBeenCalledWith(url, {
+      friendToDel: command,
+    });
+  });
+
+  it('should test getTripsAsFrnd', (done) => {
+    const mockResult = 'mockresult';
+    const command = 'testing';
+    const url = '/api/v1/trips/others';
+    jest.spyOn(httpClientSpy, 'get').mockReturnValue(of(mockResult));
+    service.getTripsAsFrnd().subscribe({
+      next: (res) => {
+        expect(res).toEqual(mockResult);
+        done();
+      },
+    });
+    expect(httpClientSpy.get).toBeCalledTimes(1);
+    expect(httpClientSpy.get).toHaveBeenCalledWith(url);
+  });
+
+  it('should test addNewTrip', (done) => {
+    name = 'try';
+    startDate = '23-02-12';
+    days = 5;
+    destination = 'Swat';
+    imageUrl = 'http=//test.com';
+    urlSlug = 'test-trip';
+
+    const mockResult = 'mockresult';
+    const command = 'testing';
+    const url = '/api/v1/trips/others';
+    jest.spyOn(httpClientSpy, 'post').mockReturnValue(of(mockResult));
+    service.addNewTrip(argAddTrip).subscribe({
+      next: (res) => {
+        expect(res).toEqual(mockResult);
+        done();
+      },
+    });
+    expect(httpClientSpy.post).toBeCalledTimes(1);
+    expect(httpClientSpy.get).toHaveBeenCalledWith(url);
   });
 });
