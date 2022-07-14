@@ -9,7 +9,7 @@
         <p-dropdown
         id="location"
         [options]="cities"
-        formControlName="destination"
+        ngDefaultControl formControlName="destination"
         placeholder="Select a City"
         [showClear]="true"
         optionLabel="name"
@@ -22,7 +22,7 @@
         <label class="label" for="startDate">Specify Start Date</label>
         <p-calendar
         inputId="startDate"
-        formControlName="startDate"
+        ngDefaultControl formControlName="startDate"
         [showButtonBar]="true"
         [showIcon]="true"
         inputId="icon"
@@ -35,7 +35,7 @@
     <div class="p-field p-fluid">
         <label class="label" for="stacked">Specify Trip Duration</label>
         <p-inputNumber
-        formControlName="days"
+        ngDefaultControl formControlName="days"
         [showButtons]="true"
         inputId="stacked"
         mode="decimal"
