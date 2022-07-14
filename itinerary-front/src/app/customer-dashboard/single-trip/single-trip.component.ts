@@ -17,6 +17,7 @@ export class SingleTripComponent implements OnInit {
   tripname!: String;
   tripUrl: String | null;
   tripID: string;
+  username: string;
   colsMetaData!: any[];
   metadata: any[] = [];
   endDate!: String;
@@ -54,6 +55,7 @@ export class SingleTripComponent implements OnInit {
       .subscribe((tripData: any) => {
         if (tripData.success) {
           this.tripID = tripData.message.metaData._id;
+          this.username = tripData.message.metaData.username;
           this.dayData = tripData.message.singleTripDetails.tripdata;
           const metaData = tripData.message.metaData;
           const numofdays = metaData.days;
@@ -92,6 +94,9 @@ export class SingleTripComponent implements OnInit {
     this.userServce.getUsers().subscribe((response) => {
       this.users = Object.values(response);
       this.users = this.users[1];
+      // this.users = this.users.filter(function(name){ 
+      //   return name != friend; 
+      // });
     });
   }
 
@@ -172,7 +177,6 @@ export class SingleTripComponent implements OnInit {
 
     this.users.push({username: friend})
     this.messageService.add({severity:'warn', summary: 'Successful', detail: 'Friend removed', life: 3000});
-    
     this.tripService.removeFriend(friend, this.tripID).subscribe(res=>
       {
         console.log(res);

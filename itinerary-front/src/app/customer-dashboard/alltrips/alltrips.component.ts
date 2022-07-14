@@ -10,7 +10,12 @@ import { Subscription } from 'rxjs';
 })
 export class AlltripsComponent implements OnInit {
   mytrips: any[] = [];
+  
   friendTrips: any[] = [];
+
+  friendTripStatus: boolean = false;
+  myTripLength: number = 0;
+
   public subscription: Subscription;
 
   constructor(private tripService: TripService, private router: Router) {}
@@ -20,6 +25,7 @@ export class AlltripsComponent implements OnInit {
       if (data.success) {
         this.mytrips = data.data;
         console.log(this.mytrips);
+        this.myTripLength = this.mytrips.length;
       } else {
         console.log(data.err);
       }
@@ -30,10 +36,17 @@ export class AlltripsComponent implements OnInit {
       this.mytrips.push(trip);
     });
     
+    // get data of trips you have been added to as a friend
     this.tripService.getTripsAsFrnd().subscribe((data: any) => {
+      if(data.length === 0)
+      {
+        this.friendTripStatus = false;
+      }
+      else{
+        this.friendTripStatus = true;
+      }
       this.friendTrips = data;
     });
-
   }
 
   tripCardClicked(tripUrl: String) {
