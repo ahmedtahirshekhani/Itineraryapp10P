@@ -7,14 +7,13 @@ import { Component } from "@angular/core";
 import { Routes } from "@angular/router";
 import { AuthService } from '../shared/auth.service';
 import { of } from 'rxjs';
+import { ToastModule } from 'primeng/toast';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
 
 // mocked AuthService
 class MockAuthService {
   login(username: string, password: string) {
-    return of({
-      success: true,
-      message: "Successful Login",
-    });
   }
 
   setLoggedIn(status: boolean) {
@@ -50,10 +49,11 @@ describe('LoginComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ LoginComponent ],
-      imports: [ ReactiveFormsModule,  RouterTestingModule.withRoutes(routes) ],
+      imports: [ ReactiveFormsModule,  RouterTestingModule.withRoutes(routes), ToastModule, NoopAnimationsModule ],
       providers: [{
         provide: AuthService, useClass: MockAuthService
-      }]
+      }
+    ]
     })
     .compileComponents();
 
@@ -141,7 +141,12 @@ describe('LoginComponent', () => {
 
   it('should handle successful login attempt', () => {
     // set spies on service
-    const serviceSpy = jest.spyOn(service, 'login');
+    const serviceSpy = jest.spyOn(service, 'login').mockReturnValue(
+      of({
+        success: true,
+        message: "Login Successful"
+      })
+    );
     const loggedInStausSpy = jest.spyOn(service, 'setLoggedIn');
     const navigateSpy = jest.spyOn(router, 'navigate');
 
@@ -164,4 +169,36 @@ describe('LoginComponent', () => {
     expect(component.password.value).toEqual(null);
     expect(component.username.value).toEqual(null);
   });
+
+  it('should handle failed login attempt', () => {
+    // set spies on service
+    const serviceSpy = jest.spyOn(service, 'login').mockReturnValue(
+      of({
+        success: false,
+        message: "Failed login attempt"
+      })
+    );
+
+    // set form values
+    component.credentialsForm.setValue({
+      "username": "test",
+      "password": "test123"
+    });
+
+    // trigger form submission
+    component.loginUser();
+    // verify that service is called with Form Data
+    expect(serviceSpy).toHaveBeenCalledWith("test", "test123");
+    
+    // verify that the toast message is rendered
+    fixture.detectChanges();
+    const toastMessage =  fixture.debugElement.query(By.css('.p-toast-message'));
+    expect(toastMessage.nativeElement).toBeTruthy();
+    expect(toastMessage.nativeElement.classList).toContain("p-toast-message-error");
+
+    // check if fields are reset
+    fixture.detectChanges();
+    expect(component.password.value).toEqual(null);
+    expect(component.username.value).toEqual(null);
+  })
 });
