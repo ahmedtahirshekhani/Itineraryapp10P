@@ -23,7 +23,7 @@ export class SingleTripComponent implements OnInit {
   addFriend: boolean = false;
   users: any = [];
   selectedUser: any = [];
-  friends = new Array() ;
+  friends = new Array();
   displayFriend: boolean = false;
 
   constructor(
@@ -58,6 +58,7 @@ export class SingleTripComponent implements OnInit {
           const metaData = tripData.message.metaData;
           const numofdays = metaData.days;
           const date = tripData.message.metaData.startDate;
+          this.friends = tripData.message.metaData.friends;
           const parts = date.split('/');
           const startDate = new Date(+parts[2], parts[1] - 1, +parts[0]);
           this.endDate = new Date(
@@ -85,27 +86,27 @@ export class SingleTripComponent implements OnInit {
       { field: 'enddate', header: 'End Date' },
       { field: 'numofdays', header: 'Number of Days' },
       { field: 'destination', header: 'Destination' },
-    ]; 
+    ];
 
     //reading usernames for add a friend
-    this.userServce.getUsers().subscribe(
-      response =>
-      {
-        this.users = Object.values(response)
-        this.users = this.users[1];
-      })
-   }
+    this.userServce.getUsers().subscribe((response) => {
+      this.users = Object.values(response);
+      this.users = this.users[1];
+    });
+  }
 
-   showAddFriend() {
+  showAddFriend() {
     this.display = true;
-    this.addFriend =true;
+    this.addFriend = true;
     const usernames = this.users.map((obj: any) => obj.username);
-    const matched = this.friends.filter(value => usernames.includes(value))
-    this.users = this.users.filter( (el: { username: any; }) => (-1 == matched.indexOf(el.username)) );
+    const matched = this.friends.filter((value) => usernames.includes(value));
+    this.users = this.users.filter(
+      (el: { username: any }) => -1 == matched.indexOf(el.username)
+    );
   }
   showDisplayFriend() {
     this.display = true;
-    this.displayFriend =true;
+    this.displayFriend = true;
   }
 
   updateBtnClicked(dayIdx: number, actTimeIdx: number) {
@@ -146,8 +147,8 @@ export class SingleTripComponent implements OnInit {
         console.log(data.success);
       });
   }
-  onChange(event: any): void{
-    this.selectedUser.username = (event["username"]);
+  onChange(event: any): void {
+    this.selectedUser.username = event['username'];
     this.friends.push(this.selectedUser.username);
     this.addFriend = false;
     this.tripService.addFriend(this.selectedUser.username, this.tripID).subscribe(res=>
@@ -164,19 +165,23 @@ export class SingleTripComponent implements OnInit {
    }
 
    removeFriend(friend : string){
-   
+    //getting friend name to remove 
+    this.friends = this.friends.filter(function(name){ 
+      return name != friend; 
+    });
+
+    this.users.push({username: friend})
+    this.messageService.add({severity:'warn', summary: 'Successful', detail: 'Friend removed', life: 3000});
+    
     this.tripService.removeFriend(friend, this.tripID).subscribe(res=>
       {
         console.log(res);
       },
-      err=>{
+      (err) => {
         console.log(err);
-      })
-
-    this.friends = this.friends.filter(function(name){ 
-          return name != friend; 
-        });
-    this.users.push({username: friend})
-    this.messageService.add({severity:'warn', summary: 'Successful', detail: 'Friend removed', life: 3000});
       }
-}
+    );
+  }
+
+   
+      }
