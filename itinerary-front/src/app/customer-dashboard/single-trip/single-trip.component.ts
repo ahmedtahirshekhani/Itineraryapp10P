@@ -16,7 +16,7 @@ export class SingleTripComponent implements OnInit {
   cols!: any[];
   updateBtnStatus!: Boolean[][];
   tripId!: String;
-  // tripID: String | null;
+  username: String | null;
   colsMetaData!: any[];
   metadata: any[] = [];
   endDate!: String;
@@ -34,15 +34,16 @@ export class SingleTripComponent implements OnInit {
     private messageService: MessageService
   ) {
     this.tripId = this.route.snapshot.paramMap.get('tripId') as string;
-    console.log("tripID",this.tripId)
   }
 
   ngOnInit(): void {
+
     this.tripService
       .getSingleTripData(this.tripId)
       .subscribe((tripData: any) => {
         if (tripData.success) {
           this.tripname = tripData.message.metaData.name;
+          this.username = tripData.message.metaData.username;
           this.dayData = tripData.message.singleTripDetails.tripdata;
           const metaData = tripData.message.metaData;
           const numofdays = metaData.days;
@@ -61,6 +62,21 @@ export class SingleTripComponent implements OnInit {
             );
 
           this.metadata.push(metaData);
+
+          this.userServce.getUsers().subscribe((response) => {
+            this.users = Object.values(response);
+            this.users = this.users[1];
+            
+            // filtering own name out of add friend list
+            
+            const testName: any = [];
+            testName.push(this.username);
+            this.users = this.users.filter(
+              (el: { username: any }) => -1 == testName.indexOf(el.username)
+            );
+          });
+
+
         } else {
           console.log(tripData);
         }
@@ -78,10 +94,11 @@ export class SingleTripComponent implements OnInit {
     ];
 
     //reading usernames for add a friend
-    this.userServce.getUsers().subscribe((response) => {
-      this.users = Object.values(response);
-      this.users = this.users[1];
-    });
+    // this.userServce.getUsers().subscribe((response) => {
+    //   this.users = Object.values(response);
+    //   this.users = this.users[1];
+    //   console.log("users");
+    // });
   }
 
   showAddFriend() {
