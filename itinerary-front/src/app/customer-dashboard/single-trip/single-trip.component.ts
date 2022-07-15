@@ -15,8 +15,10 @@ export class SingleTripComponent implements OnInit {
   dayData!: any[];
   cols!: any[];
   updateBtnStatus!: Boolean[][];
+
   tripId!: String;
   username: String | null;
+
   colsMetaData!: any[];
   metadata: any[] = [];
   endDate!: String;
@@ -47,6 +49,7 @@ export class SingleTripComponent implements OnInit {
           this.username = tripData.message.metaData.username;
           this.dayData = tripData.message.singleTripDetails.tripdata;
           const metaData = tripData.message.metaData;
+          console.log(metaData);
           const numofdays = metaData.days;
           const date = tripData.message.metaData.startDate;
           this.friends = tripData.message.metaData.friends;
@@ -76,6 +79,9 @@ export class SingleTripComponent implements OnInit {
               (el: { username: any }) => -1 == testName.indexOf(el.username)
             );
           });
+
+        
+
         } else {
           console.log(tripData);
         }
@@ -91,6 +97,7 @@ export class SingleTripComponent implements OnInit {
       { field: 'numofdays', header: 'Number of Days' },
       { field: 'destination', header: 'Destination' },
     ];
+
   }
 
   showAddFriend() {
@@ -193,5 +200,6 @@ export class SingleTripComponent implements OnInit {
         console.log(err);
       },
     });
+
   }
 }

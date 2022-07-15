@@ -56,6 +56,7 @@ export class TripService {
   addFriend(friends: string, tripID: String | null) {
     return this.http.patch<tripData>('/api/v1/trips/friends/' + tripID, {
       friendToAdd: friends,
+
     });
   }
 
