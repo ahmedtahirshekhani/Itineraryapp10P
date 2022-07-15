@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TripService } from '../shared/trip.service';
 import { Subscription } from 'rxjs';
 import { MessageService } from 'primeng/api';
@@ -13,29 +13,40 @@ export class AlltripsComponent implements OnInit {
   mytrips: any[] = [];
   friendTrips: any[] = [];
   public subscription: Subscription;
+  currentLoc: String = '';
 
-  constructor(private tripService: TripService, private router: Router,private messageService: MessageService) {}
+  constructor(
+    private tripService: TripService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
-    this.tripService.getMyTrip().subscribe({
-      next: (res) => {
-        this.mytrips = res;
-      },
+    this.route.data.subscribe((v) => {
+      this.currentLoc = v['state'];
+      if (this.currentLoc == 'myPlanners') {
+        this.tripService.getMyTrip().subscribe({
+          next: (res) => {
+            this.mytrips = res;
+          },
+        });
+      } else {
+        this.tripService.getTripsAsFrnd().subscribe((data: any) => {
+          console.log(data);
+          this.mytrips = data;
+        });
+      }
     });
 
     // listen for new Trips being added
     this.subscription = this.tripService.updateTripList().subscribe((trip) => {
       this.mytrips.push(trip);
     });
-
-    this.tripService.getTripsAsFrnd().subscribe((data: any) => {
-      console.log(data);
-      this.friendTrips = data;
-    });
   }
 
-  tripCardClicked(tripUrl: String) {
-    this.router.navigate(['dashboard/' + tripUrl]);
+  tripCardClicked(tripId: String) {
+    this.router.navigate(['dashboard/' + tripId], { state: this.currentLoc });
 
     // this.router.navigateByUrl('/singletrip', { state: { tripName: tripname } });
   }
@@ -64,6 +75,5 @@ export class AlltripsComponent implements OnInit {
         life: 3000,
       });
     });
-
   }
 }

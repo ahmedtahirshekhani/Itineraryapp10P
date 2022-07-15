@@ -1,5 +1,9 @@
 <div>
-  <h1>My Trips</h1>
+  <h1 *ngIf="currentLoc == 'myPlanners'; else friendPlannerHead">My Trips</h1>
+
+  <ng-template #friendPlannerHead
+    ><h1>Other Planners (As Friend)</h1></ng-template
+  >
   <div class="box">
     <div class="grid">
       <div
@@ -24,6 +28,7 @@
               </div>
             </div>
             <button
+              *ngIf="currentLoc == 'myPlanners'"
               pButton
               type="button"
               (click)="deleteTrip(trip._id, $event)"
@@ -31,36 +36,6 @@
               label="Delete"
               class="p-button-danger"
             ></button>
-          </p-card>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <h1>Trips with Friends</h1>
-  <div class="box">
-    <div class="grid">
-      <div
-        class="col-4 trip-card"
-        *ngFor="let trip of friendTrips; let idx = index"
-      >
-        <div (click)="tripCardClicked(trip._id)">
-          <p-card
-            header="{{ trip.name }}"
-            subheader="Created On: {{ trip['createdOn'] }}"
-            styleClass="p-card-shadow "
-          >
-            <ng-template pTemplate="header">
-              <img alt="Card" src="{{ trip['imageUrl'] }}" />
-            </ng-template>
-            <div class="card-content">
-              <div>
-                <i class="pi pi-calendar"></i>No. of days: {{ trip.days }}
-              </div>
-              <div>
-                <i class="pi pi-map-marker"></i>Location: {{ trip.destination }}
-              </div>
-            </div>
           </p-card>
         </div>
       </div>

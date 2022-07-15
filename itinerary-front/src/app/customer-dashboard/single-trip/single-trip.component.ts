@@ -25,6 +25,7 @@ export class SingleTripComponent implements OnInit {
   selectedUser: any = [];
   friends = new Array();
   displayFriend: boolean = false;
+  currentLoc: any;
 
   constructor(
     private tripService: TripService,
@@ -34,10 +35,10 @@ export class SingleTripComponent implements OnInit {
     private messageService: MessageService
   ) {
     this.tripId = this.route.snapshot.paramMap.get('tripId') as string;
+    this.currentLoc = this.router.getCurrentNavigation()?.extras.state!;
   }
 
   ngOnInit(): void {
-
     this.tripService
       .getSingleTripData(this.tripId)
       .subscribe((tripData: any) => {
@@ -66,17 +67,15 @@ export class SingleTripComponent implements OnInit {
           this.userServce.getUsers().subscribe((response) => {
             this.users = Object.values(response);
             this.users = this.users[1];
-            
+
             // filtering own name out of add friend list
-            
+
             const testName: any = [];
             testName.push(this.username);
             this.users = this.users.filter(
               (el: { username: any }) => -1 == testName.indexOf(el.username)
             );
           });
-
-
         } else {
           console.log(tripData);
         }
