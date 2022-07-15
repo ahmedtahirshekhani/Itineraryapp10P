@@ -33,7 +33,7 @@
 }
 .text_input:hover, :enabled:focus {
     box-shadow: none;
-    border: none
+    border: none;
 }
 
 .text-label {
@@ -49,19 +49,17 @@
     font-size: x-small;
 }
 
-a:link {
-    color: #a1dff5;
-    background-color: transparent;
-    text-decoration: none;
-}
-
-a:visited {
+#regLink, #regLink:link {
     color: #ffcc00;
     background-color: transparent;
     text-decoration: none;
 }
 
-a:hover {
+#regLink:visited {
+    color: #663366;
+}
+
+#regLink:hover {
     color: #ff9900;
     background-color: transparent;
     text-decoration: underline;
