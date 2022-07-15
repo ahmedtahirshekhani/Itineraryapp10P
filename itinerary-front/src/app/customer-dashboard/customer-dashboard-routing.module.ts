@@ -10,19 +10,17 @@ const routes: Routes = [
     component: CustomerDashboardComponent,
     children: [
       { path: '', component: AlltripsComponent },
-      { path: ':tripUrl', component: SingleTripComponent },
+      { path: ':tripId', component: SingleTripComponent },
     ],
   },
   {
     path: 'boot',
-    loadChildren: () =>
-      import (`../auth/auth.module`).then((m) => m.AuthModule),
-  }
+    loadChildren: () => import(`../auth/auth.module`).then((m) => m.AuthModule),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CustomerDashboardRoutingModule {
-}
+export class CustomerDashboardRoutingModule {}

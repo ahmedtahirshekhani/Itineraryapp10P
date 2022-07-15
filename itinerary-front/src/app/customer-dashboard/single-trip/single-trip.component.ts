@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UsersService } from '../shared/users.service';
 import { TripService } from '../shared/trip.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-single-trip',
@@ -9,12 +10,13 @@ import { TripService } from '../shared/trip.service';
   styleUrls: ['./single-trip.component.css'],
 })
 export class SingleTripComponent implements OnInit {
+  tripname: String;
   display = false;
   dayData!: any[];
   cols!: any[];
   updateBtnStatus!: Boolean[][];
-  tripname!: String;
-  tripUrl: String | null;
+  tripId!: String;
+  username: String | null;
   colsMetaData!: any[];
   metadata: any[] = [];
   endDate!: String;
@@ -28,28 +30,20 @@ export class SingleTripComponent implements OnInit {
     private tripService: TripService,
     private router: Router,
     private route: ActivatedRoute,
-    private userServce: UsersService
+    private userServce: UsersService,
+    private messageService: MessageService
   ) {
-    this.tripUrl = this.route.snapshot.paramMap.get('tripUrl');
-    let result = this.tripUrl?.match(/\w+/g);
-    const tripNameFromUrl = result?.reduce((final_str, val: String) => {
-      val = val[0].toUpperCase() + val.substring(1);
-      if (final_str.length == 0) {
-        final_str = final_str + val;
-        return final_str;
-      }
-      final_str = final_str + ' ' + val;
-      return final_str;
-    }, '');
-
-    this.tripname = tripNameFromUrl!;
+    this.tripId = this.route.snapshot.paramMap.get('tripId') as string;
   }
 
   ngOnInit(): void {
+
     this.tripService
-      .getSingleTripData(this.tripname)
+      .getSingleTripData(this.tripId)
       .subscribe((tripData: any) => {
         if (tripData.success) {
+          this.tripname = tripData.message.metaData.name;
+          this.username = tripData.message.metaData.username;
           this.dayData = tripData.message.singleTripDetails.tripdata;
           const metaData = tripData.message.metaData;
           const numofdays = metaData.days;
@@ -68,6 +62,21 @@ export class SingleTripComponent implements OnInit {
             );
 
           this.metadata.push(metaData);
+
+          this.userServce.getUsers().subscribe((response) => {
+            this.users = Object.values(response);
+            this.users = this.users[1];
+            
+            // filtering own name out of add friend list
+            
+            const testName: any = [];
+            testName.push(this.username);
+            this.users = this.users.filter(
+              (el: { username: any }) => -1 == testName.indexOf(el.username)
+            );
+          });
+
+
         } else {
           console.log(tripData);
         }
@@ -83,12 +92,6 @@ export class SingleTripComponent implements OnInit {
       { field: 'numofdays', header: 'Number of Days' },
       { field: 'destination', header: 'Destination' },
     ];
-
-    //reading usernames for add a friend
-    this.userServce.getUsers().subscribe((response) => {
-      this.users = Object.values(response);
-      this.users = this.users[1];
-    });
   }
 
   showAddFriend() {
@@ -116,7 +119,7 @@ export class SingleTripComponent implements OnInit {
     this.updateBtnStatus[dayIdx].splice(actTimeIdx, 1);
     console.log(this.updateBtnStatus[dayIdx]);
     this.tripService
-      .updateTripData(this.dayData, this.tripname)
+      .updateTripData(this.dayData, this.tripId)
       .subscribe((data: any) => {
         console.log(data.success);
         console.log(this.dayData[dayIdx][0].numberOfAct);
@@ -138,7 +141,7 @@ export class SingleTripComponent implements OnInit {
     // console.log('doneClicked', dayIdx, actTimeIdx);
     this.updateBtnStatus[dayIdx][actTimeIdx] = false;
     this.tripService
-      .updateTripData(this.dayData, this.tripname)
+      .updateTripData(this.dayData, this.tripId)
       .subscribe((data: any) => {
         console.log(data.success);
       });
@@ -147,17 +150,49 @@ export class SingleTripComponent implements OnInit {
     this.selectedUser.username = event['username'];
     this.friends.push(this.selectedUser.username);
     this.addFriend = false;
-    this.tripService.addFriend(this.friends, this.tripname).subscribe(
-      (res) => {
-        console.log(res);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Added',
+      detail: 'Friend added',
+      life: 3000,
+    });
+    this.tripService
+      .addFriend(this.selectedUser.username, this.tripId)
+      .subscribe({
+        next: (res: any) => {
+          console.log(res);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
   closeView() {
     this.displayFriend = false;
+  }
+
+  removeFriend(friend: string) {
+    //getting friend name to remove
+    this.friends = this.friends.filter(function (name) {
+      return name != friend;
+    });
+
+    this.users.push({ username: friend });
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'Removed',
+      detail: 'Friend removed',
+      life: 3000,
+    });
+
+    this.tripService.removeFriend(friend, this.tripId).subscribe({
+      next: (res: any) => {
+        console.log(res);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 }

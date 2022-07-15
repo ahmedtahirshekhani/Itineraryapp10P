@@ -36,7 +36,7 @@ export class CustomerDashboardComponent implements OnInit {
         command: () => this.createPlanner(),
       },
       {
-        label: 'View All Planners',
+        label: 'All Planners',
         icon: 'pi pi-fw pi-eye',
         routerLink: '/dashboard',
       },
