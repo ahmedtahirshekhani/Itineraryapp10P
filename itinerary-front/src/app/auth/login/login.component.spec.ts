@@ -6,7 +6,7 @@ import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { Component } from "@angular/core";
 import { Routes } from "@angular/router";
 import { AuthService } from '../shared/auth.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { ToastModule } from 'primeng/toast';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
@@ -69,6 +69,7 @@ describe('LoginComponent', () => {
   afterEach(() => {
     // restore all mocks to initial states
     jest.restoreAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should create', () => {
@@ -171,13 +172,11 @@ describe('LoginComponent', () => {
   });
 
   it('should handle failed login attempt', () => {
+    // create observable error response
+    const error = throwError(() => new Error('Failed login attempt'));
+    
     // set spies on service
-    const serviceSpy = jest.spyOn(service, 'login').mockReturnValue(
-      of({
-        success: false,
-        message: "Failed login attempt"
-      })
-    );
+    const serviceSpy = jest.spyOn(service, 'login').mockImplementation(() => error);
 
     // set form values
     component.credentialsForm.setValue({
@@ -200,5 +199,5 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
     expect(component.password.value).toEqual(null);
     expect(component.username.value).toEqual(null);
-  })
+  });
 });
