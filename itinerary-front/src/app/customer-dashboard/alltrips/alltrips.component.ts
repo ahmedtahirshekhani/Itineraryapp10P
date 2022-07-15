@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TripService } from '../shared/trip.service';
 import { Subscription } from 'rxjs';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-alltrips',
@@ -13,7 +14,7 @@ export class AlltripsComponent implements OnInit {
   friendTrips: any[] = [];
   public subscription: Subscription;
 
-  constructor(private tripService: TripService, private router: Router) {}
+  constructor(private tripService: TripService, private router: Router,private messageService: MessageService) {}
 
   ngOnInit(): void {
     this.tripService.getMyTrip().subscribe({
@@ -56,6 +57,12 @@ export class AlltripsComponent implements OnInit {
     this.tripService.deleteTrip(tripId).subscribe((data: any) => {
       console.log(data.success);
       this.removeFromList(tripId);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Removed',
+        detail: 'Trip removed',
+        life: 3000,
+      });
     });
 
   }

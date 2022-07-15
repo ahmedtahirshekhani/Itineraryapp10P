@@ -92,13 +92,6 @@ export class SingleTripComponent implements OnInit {
       { field: 'numofdays', header: 'Number of Days' },
       { field: 'destination', header: 'Destination' },
     ];
-
-    //reading usernames for add a friend
-    // this.userServce.getUsers().subscribe((response) => {
-    //   this.users = Object.values(response);
-    //   this.users = this.users[1];
-    //   console.log("users");
-    // });
   }
 
   showAddFriend() {
@@ -157,6 +150,12 @@ export class SingleTripComponent implements OnInit {
     this.selectedUser.username = event['username'];
     this.friends.push(this.selectedUser.username);
     this.addFriend = false;
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Added',
+      detail: 'Friend added',
+      life: 3000,
+    });
     this.tripService
       .addFriend(this.selectedUser.username, this.tripId)
       .subscribe({
@@ -182,7 +181,7 @@ export class SingleTripComponent implements OnInit {
     this.users.push({ username: friend });
     this.messageService.add({
       severity: 'warn',
-      summary: 'Successful',
+      summary: 'Removed',
       detail: 'Friend removed',
       life: 3000,
     });
