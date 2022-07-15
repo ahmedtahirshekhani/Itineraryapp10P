@@ -20,7 +20,7 @@ interface additionStatus {
   providedIn: 'root',
 })
 export class TripService {
-  private newTrip = new Subject<Object>();
+  public newTrip = new Subject<Object>();
   constructor(private http: HttpClient) {}
 
   /*
@@ -67,7 +67,7 @@ export class TripService {
   }
 
   getTripsAsFrnd() {
-    return this.http.get<tripData>('/api/v1/trips/others/');
+    return this.http.get<tripData>('/api/v1/trips/others');
   }
 
   addNewTrip(

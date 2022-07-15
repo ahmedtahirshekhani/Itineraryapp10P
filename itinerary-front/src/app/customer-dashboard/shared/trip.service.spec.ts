@@ -6,7 +6,14 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { of, throwError } from 'rxjs';
+import {
+  isObservable,
+  observable,
+  Observable,
+  of,
+  Subject,
+  throwError,
+} from 'rxjs';
 
 describe('TripService', () => {
   let service: TripService;
@@ -27,6 +34,7 @@ describe('TripService', () => {
       patch: jest.fn(),
       post: jest.fn(),
       delete: jest.fn(),
+      updateTripList: jest.fn(),
     };
     service = new TripService(httpClientSpy);
   });
@@ -140,7 +148,6 @@ describe('TripService', () => {
 
   it('should test getTripsAsFrnd', (done) => {
     const mockResult = 'mockresult';
-    const command = 'testing';
     const url = '/api/v1/trips/others';
     jest.spyOn(httpClientSpy, 'get').mockReturnValue(of(mockResult));
     service.getTripsAsFrnd().subscribe({
@@ -162,8 +169,7 @@ describe('TripService', () => {
     const urlSlug = 'test-trip';
 
     const mockResult = 'mockresult';
-    const command = 'testing';
-    const url = '/api/v1/trips/others';
+    const url = '/api/v1/trips';
     jest.spyOn(httpClientSpy, 'post').mockReturnValue(of(mockResult));
     service
       .addNewTrip(name, startDate, days, destination, imageUrl, urlSlug)
@@ -174,6 +180,55 @@ describe('TripService', () => {
         },
       });
     expect(httpClientSpy.post).toBeCalledTimes(1);
-    expect(httpClientSpy.get).toHaveBeenCalledWith(url);
+    expect(httpClientSpy.post).toHaveBeenCalledWith(url, {
+      days: days,
+      destination: destination,
+      imageUrl: imageUrl,
+      name: name,
+      startDate: startDate,
+      urlSlug: urlSlug,
+    });
+  });
+
+  it('should test deleteTrip', (done) => {
+    const mockResult = 'mockresult';
+    const url = '/api/v1/trips/1234';
+    jest.spyOn(httpClientSpy, 'delete').mockReturnValue(of(mockResult));
+    service.deleteTrip('1234').subscribe({
+      next: (res) => {
+        expect(res).toEqual(mockResult);
+        done();
+      },
+    });
+    expect(httpClientSpy.delete).toBeCalledTimes(1);
+    expect(httpClientSpy.delete).toHaveBeenCalledWith(url);
+  });
+
+  it('should test updateTripList', (done) => {
+    const mockResult = of({});
+    jest.spyOn(service, 'updateTripList').mockReturnValue(of(mockResult));
+    service.updateTripList().subscribe({
+      next: (data) => {
+        if (isObservable(data)) {
+          expect(1).toBeTruthy();
+        } else {
+          expect(1).toBeFalsy();
+        }
+        console.log(typeof data);
+        expect(data).toBe(mockResult);
+        done();
+      },
+      error: (error) => {
+        console.log(error);
+        done();
+      },
+    });
+  });
+
+  it('should test updateNewTrip', () => {
+    const mockresult = { name: 'test' };
+    jest.spyOn(service, 'updateNewTrip');
+    service.updateNewTrip(mockresult);
+    expect(service.updateNewTrip).toBeCalledTimes(1);
   });
 });
