@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 interface tripData {
   [x: string]: any;
   success: Boolean;
@@ -20,7 +20,7 @@ interface additionStatus {
   providedIn: 'root',
 })
 export class TripService {
-  public newTrip = new Subject<Object>();
+  newTrip = new BehaviorSubject<Object>({});
   constructor(private http: HttpClient) {}
 
   /*
