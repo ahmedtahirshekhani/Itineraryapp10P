@@ -206,6 +206,7 @@ describe('TripService', () => {
 
   it('should test updateTripList', (done) => {
     const mockResult = of({});
+    jest.spyOn(service, 'updateTripList').mockReturnValue(of(mockResult));
     service.updateTripList().subscribe({
       next: (data) => {
         if (isObservable(data)) {
@@ -213,13 +214,12 @@ describe('TripService', () => {
         } else {
           expect(1).toBeFalsy();
         }
-        console.log(typeof data);
+
         expect(data).toBe(mockResult);
         done();
       },
       error: (error) => {
         console.log(error);
-        done();
       },
     });
   });
