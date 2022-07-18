@@ -9,6 +9,7 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('SingleTripComponent', () => {
   let component: SingleTripComponent;
@@ -21,6 +22,13 @@ describe('SingleTripComponent', () => {
   beforeEach(async () => {
     UsersServiceMock = {
       getUsers: jest.fn(),
+    };
+
+    TripServiceMock = {
+      getSingleTripData: jest.fn(),
+      updateTripData: jest.fn(),
+      addFriend: jest.fn(),
+      removeFriend: jest.fn(),
     };
     await TestBed.configureTestingModule({
       declarations: [SingleTripComponent],
@@ -38,7 +46,7 @@ describe('SingleTripComponent', () => {
           useValue: MessageServiceMock,
         },
       ],
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule],
     }).compileComponents();
     http = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
