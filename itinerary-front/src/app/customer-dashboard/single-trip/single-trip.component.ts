@@ -27,9 +27,8 @@ export class SingleTripComponent implements OnInit {
 
   constructor(
     private tripService: TripService,
-    private router: Router,
     private route: ActivatedRoute,
-    private userServce: UsersService,
+    private userService: UsersService,
     private messageService: MessageService
   ) {
     this.tripId = this.route.snapshot.paramMap.get('tripId') as string;
@@ -44,7 +43,6 @@ export class SingleTripComponent implements OnInit {
           this.tripname = tripData.message.metaData.name;
           this.dayData = tripData.message.singleTripDetails.tripdata;
           const metaData = tripData.message.metaData;
-          console.log(metaData);
           const numofdays = metaData.days;
           const date = tripData.message.metaData.startDate;
           const parts = date.split('/');
@@ -80,7 +78,7 @@ export class SingleTripComponent implements OnInit {
     ];
 
     //reading usernames for add a friend
-    this.userServce.getUsers().subscribe((response) => {
+    this.userService.getUsers().subscribe((response) => {
       this.users = Object.values(response);
       this.users = this.users[1];
     });
@@ -109,13 +107,7 @@ export class SingleTripComponent implements OnInit {
     this.dayData[dayIdx][0].numberOfAct -= 1;
     this.dayData[dayIdx][1].splice(actTimeIdx, 1);
     this.updateBtnStatus[dayIdx].splice(actTimeIdx, 1);
-    console.log(this.updateBtnStatus[dayIdx]);
-    this.tripService
-      .updateTripData(this.dayData, this.tripId)
-      .subscribe((data: any) => {
-        console.log(data.success);
-        console.log(this.dayData[dayIdx][0].numberOfAct);
-      });
+    this.tripService.updateTripData(this.dayData, this.tripId).subscribe();
   }
 
   addActivity(dayIdx: number) {
@@ -125,20 +117,15 @@ export class SingleTripComponent implements OnInit {
       time: '00:00',
       activity: '',
     });
-
-    console.log(this.dayData[dayIdx]);
   }
 
   doneClicked(dayIdx: number, actTimeIdx: number) {
     // console.log('doneClicked', dayIdx, actTimeIdx);
     this.updateBtnStatus[dayIdx][actTimeIdx] = false;
-    this.tripService
-      .updateTripData(this.dayData, this.tripId)
-      .subscribe((data: any) => {
-        console.log(data.success);
-      });
+    this.tripService.updateTripData(this.dayData, this.tripId).subscribe();
   }
   onChange(event: any): void {
+    console.log(event);
     this.selectedUser.username = event['username'];
     this.friends.push(this.selectedUser.username);
     this.addFriend = false;
