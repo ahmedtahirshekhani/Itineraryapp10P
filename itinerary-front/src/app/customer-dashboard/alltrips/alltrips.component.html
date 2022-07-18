@@ -10,7 +10,7 @@
         class="col-4 trip-card"
         *ngFor="let trip of mytrips; let idx = index"
       >
-        <div (click)="tripCardClicked(trip._id)">
+        <div id="{{trip.urlSlug}}" (click)="tripCardClicked(trip._id)">
           <p-card
             header="{{ trip.name }}"
             subheader="Created On: {{ trip['createdOn'] }}"
@@ -35,6 +35,7 @@
               icon="pi pi-trash"
               label="Delete"
               class="p-button-danger"
+              id="{{trip.urlSlug}}-btn"
             ></button>
           </p-card>
         </div>

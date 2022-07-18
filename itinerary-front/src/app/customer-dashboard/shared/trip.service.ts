@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject, Observable } from 'rxjs';
-interface tripData {
-  success: Boolean;
-  data: [Object];
-}
 
 interface tripData {
   success: Boolean;
@@ -67,7 +63,7 @@ export class TripService {
   }
 
   getTripsAsFrnd() {
-    return this.http.get<tripData>('/api/v1/trips/others/');
+    return this.http.get<Object[]>('/api/v1/trips/others/');
   }
 
   addNewTrip(

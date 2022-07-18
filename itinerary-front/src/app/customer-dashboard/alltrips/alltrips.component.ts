@@ -25,24 +25,30 @@ export class AlltripsComponent implements OnInit {
   ngOnInit(): void {
     this.route.data.subscribe((v) => {
       this.currentLoc = v['state'];
-      if (this.currentLoc == 'myPlanners') {
+      if (this.currentLoc === 'myPlanners') {
         this.tripService.getMyTrip().subscribe({
           next: (res) => {
             this.mytrips = res;
           },
         });
-      } else {
+      } else  {
         this.tripService.getTripsAsFrnd().subscribe((data: any) => {
-          console.log(data);
           this.mytrips = data;
         });
       }
     });
-
-    // listen for new Trips being added
-    this.subscription = this.tripService.updateTripList().subscribe((trip) => {
-      this.mytrips.push(trip);
-    });
+   
+    /*
+      Update trip list with newly a added trip that the user
+      owns - prevent conflation of friends trips with the trips
+      of the user.
+    */
+    if (this.currentLoc === 'myPlanners') {
+      // listen for new Trips being added by the user
+      this.subscription = this.tripService.updateTripList().subscribe((trip) => {
+        this.mytrips.push(trip);
+      });
+    }
   }
 
   tripCardClicked(tripId: String) {
@@ -53,23 +59,17 @@ export class AlltripsComponent implements OnInit {
 
   // update mytrips list to reflect removal on screen sans netwrok call
   removeFromList(tripId: string): void {
-    for (let i = 0; i < this.mytrips.length; i++) {
-      if (this.mytrips[i]._id == tripId) {
-        // remove just that deleted trip
-        this.mytrips.splice(i, 1);
-        break;
-      }
-    }
+    const index =this.mytrips.findIndex((trip) => trip._id === tripId);
+    this.mytrips.splice(index, 1);
   }
 
   deleteTrip(tripId: string, event: any) {
     event.stopPropagation();
-    console.log('delete', tripId);
     this.tripService.deleteTrip(tripId).subscribe((data: any) => {
-      console.log(data.success);
+      console.log(data);
       this.removeFromList(tripId);
       this.messageService.add({
-        severity: 'error',
+        severity: 'success',
         summary: 'Removed',
         detail: 'Trip removed',
         life: 3000,
