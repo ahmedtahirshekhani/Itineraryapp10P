@@ -1,3 +1,4 @@
 { "/api": { "target": "https://travel-itinerary-server.vercel.app/", 
     "secure":false, 
     "changeOrigin": true } }
+    
