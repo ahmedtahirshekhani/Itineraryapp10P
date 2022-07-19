@@ -168,7 +168,7 @@ describe('AlltripsComponent', () => {
     expect(component.mytrips.length).toEqual(1);
     expect(component.mytrips[0].name).toEqual("Test Enjoy");
     expect(msgSpy).toHaveBeenCalledWith({
-      severity: 'success',
+      severity: 'info',
       summary: 'Removed',
       detail: 'Trip removed',
       life: 3000,

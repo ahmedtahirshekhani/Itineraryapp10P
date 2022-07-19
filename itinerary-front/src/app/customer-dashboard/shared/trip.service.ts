@@ -66,7 +66,7 @@ export class TripService {
   }
 
   getTripsAsFrnd() {
-    return this.http.get<Object[]>('/api/v1/trips/others/');
+    return this.http.get<Object[]>('/api/v1/trips/others');
   }
 
   addNewTrip(
