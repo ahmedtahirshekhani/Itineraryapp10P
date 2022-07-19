@@ -22,7 +22,7 @@ export class LoginComponent {
     private router: Router,
     public messageService: MessageService,
     private fb: FormBuilder
-  ) { }
+  ) {}
 
   get username(): any {
     return this.credentialsForm.get('username');
@@ -41,20 +41,19 @@ export class LoginComponent {
   }
 
   loginUser() {
-    this.auth
-      .login(this.username.value, this.password.value)
-      .subscribe({
-        next: (data: any) => {
-          this.auth.setLoggedIn(true);
-          this.router.navigate(['dashboard']);
-        },
-        error: (err: Error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Invalid Credentials!',
-          });
-        }
-      });
+    this.auth.login(this.username.value, this.password.value).subscribe({
+      next: (data: any) => {
+        this.auth.setLoggedIn(true);
+        this.router.navigate(['dashboard']);
+      },
+      error: (err: Error) => {
+        console.log(err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Invalid Credentials!',
+        });
+      },
+    });
     // reset the fields
     this.clearInput();
   }

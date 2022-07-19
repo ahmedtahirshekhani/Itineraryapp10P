@@ -10,6 +10,10 @@ interface tripData {
 interface additionStatus {
   success: Boolean;
 }
+interface tripAdded {
+  success: Boolean;
+  tripId: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -73,7 +77,7 @@ export class TripService {
     imageUrl: String,
     urlSlug: String
   ) {
-    return this.http.post<additionStatus>('/api/v1/trips', {
+    return this.http.post<tripAdded>('/api/v1/trips', {
       name,
       startDate,
       days,

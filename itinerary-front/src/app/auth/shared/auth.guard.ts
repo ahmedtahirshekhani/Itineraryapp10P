@@ -14,14 +14,10 @@ export class AuthGuard implements CanActivate {
   constructor(private auth: AuthService, private router: Router) {}
 
   private handleAuthState(): boolean {
-    console.log('I here 1');
-
     if (this.isLoginOrRegister()) {
       this.router.navigate(['/dashboard']);
       return false;
     }
-    console.log('I here 2');
-
     return true;
   }
 
@@ -49,7 +45,6 @@ export class AuthGuard implements CanActivate {
     this.url = state.url;
 
     if (this.auth.isAuthenticated()) {
-      console.log('Authenticated');
       return this.handleAuthState();
     }
 

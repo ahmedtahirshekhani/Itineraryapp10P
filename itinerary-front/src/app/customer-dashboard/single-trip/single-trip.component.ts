@@ -36,53 +36,56 @@ export class SingleTripComponent implements OnInit {
   ) {
     this.tripId = this.route.snapshot.paramMap.get('tripId') as string;
     this.currentLoc = this.router.getCurrentNavigation()?.extras.state!;
+    console.log(this.currentLoc);
   }
 
   ngOnInit(): void {
-    this.tripService
-      .getSingleTripData(this.tripId)
-      .subscribe((tripData: any) => {
-        if (tripData.success) {
-          this.tripname = tripData.message.metaData.name;
-          this.username = tripData.message.metaData.username;
-          this.dayData = tripData.message.singleTripDetails.tripdata;
-          const metaData = tripData.message.metaData;
-          const numofdays = metaData.days;
-          const date = tripData.message.metaData.startDate;
-          this.friends = tripData.message.metaData.friends;
-          const parts = date.split('/');
-          const startDate = new Date(+parts[2], parts[1] - 1, +parts[0]);
-          this.endDate = new Date(
-            startDate.setDate(startDate.getDate() + numofdays)
-          ).toLocaleDateString('en-GB');
-          this.friends = tripData.message.metaData.friends;
-          this.updateBtnStatus = new Array(numofdays)
-            .fill(0)
-            .map((idx, val) =>
-              new Array(this.dayData[val][0].numberOfAct).fill(false)
-            );
-
-          this.metadata.push(metaData);
-
-          this.userServce.getUsers().subscribe((response) => {
-            this.users = Object.values(response);
-            this.users = this.users[1];
-
-            // filtering own name out of add friend list
-
-            const testName: any = [];
-            testName.push(this.username);
-            this.users = this.users.filter(
-              (el: { username: any }) => -1 == testName.indexOf(el.username)
-            );
-          });
-
-        
-
-        } else {
-          console.log(tripData);
+    this.tripService.getSingleTripData(this.tripId).subscribe({
+      next: (tripData: any) => {
+        this.tripname = tripData.metaData.name;
+        this.username = tripData.metaData.username;
+        let usernameStored = JSON.parse(
+          localStorage.getItem('ti_meta')!
+        ).username;
+        if (this.username === usernameStored) {
+          this.currentLoc = 'myPlanners';
         }
-      });
+        this.dayData = tripData.singleTripDetails.tripdata;
+        const metaData = tripData.metaData;
+        const numofdays = metaData.days;
+        const date = tripData.metaData.startDate;
+        this.friends = tripData.metaData.friends;
+        const parts = date.split('/');
+        const startDate = new Date(+parts[2], parts[1] - 1, +parts[0]);
+        this.endDate = new Date(
+          startDate.setDate(startDate.getDate() + numofdays)
+        ).toLocaleDateString('en-GB');
+        this.friends = tripData.metaData.friends;
+        this.updateBtnStatus = new Array(numofdays)
+          .fill(0)
+          .map((idx, val) =>
+            new Array(this.dayData[val][0].numberOfAct).fill(false)
+          );
+
+        this.metadata.push(metaData);
+
+        this.userServce.getUsers().subscribe((response) => {
+          this.users = response;
+
+          // filtering own name out of add friend list
+
+          const testName: any = [];
+          testName.push(this.username);
+
+          this.users = this.users.filter(
+            (el: { username: any }) => -1 == testName.indexOf(el.username)
+          );
+        });
+      },
+      error: (err: Error) => {
+        console.log(err);
+      },
+    });
 
     this.cols = [
       { field: 'time', header: 'Time' },

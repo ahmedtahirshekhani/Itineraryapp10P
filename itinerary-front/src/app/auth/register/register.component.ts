@@ -58,12 +58,10 @@ export class RegisterComponent implements OnInit {
         this.registerForm.value.password,
         this.registerForm.value.email
       )
-      .subscribe((data) => {
-        if (data.success) {
-          this.router.navigate(['login']);
-        } else {
-          this.msg.add({ severity: 'error', summary: 'Registration Failed' });
-        }
+      .subscribe({
+        next: (data) => this.router.navigate(['login']),
+        error: (error) =>
+          this.msg.add({ severity: 'error', summary: 'Registration Failed' }),
       });
   }
 }

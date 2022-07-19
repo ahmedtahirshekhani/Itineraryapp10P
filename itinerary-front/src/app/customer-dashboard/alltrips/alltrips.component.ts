@@ -32,13 +32,13 @@ export class AlltripsComponent implements OnInit {
             this.mytrips = res;
           },
         });
-      } else  {
+      } else {
         this.tripService.getTripsAsFrnd().subscribe((data: any) => {
           this.mytrips = data;
         });
       }
     });
-   
+
     /*
       Update trip list with newly a added trip that the user
       owns - prevent conflation of friends trips with the trips
@@ -46,12 +46,15 @@ export class AlltripsComponent implements OnInit {
     */
     if (this.currentLoc === 'myPlanners') {
       // listen for new Trips being added by the user
-      this.subscription = this.tripService.updateTripList().subscribe((trip) => {
-        this.mytrips.push(trip);
-      });
+      this.subscription = this.tripService
+        .updateTripList()
+        .subscribe((trip) => {
+          this.mytrips.push(trip);
+        });
     }
   }
   tripCardClicked(tripId: String) {
+    console.log(tripId);
     this.router.navigate(['dashboard/' + tripId], { state: this.currentLoc });
 
     // this.router.navigateByUrl('/singletrip', { state: { tripName: tripname } });
@@ -59,7 +62,7 @@ export class AlltripsComponent implements OnInit {
 
   // update mytrips list to reflect removal on screen sans netwrok call
   removeFromList(tripId: string): void {
-    const index =this.mytrips.findIndex((trip) => trip._id === tripId);
+    const index = this.mytrips.findIndex((trip) => trip._id === tripId);
     this.mytrips.splice(index, 1);
   }
 
