@@ -30,6 +30,7 @@ export class SingleTripComponent implements OnInit {
   constructor(
     private tripService: TripService,
     private route: ActivatedRoute,
+    private router: Router,
     private userServce: UsersService,
     private messageService: MessageService
   ) {

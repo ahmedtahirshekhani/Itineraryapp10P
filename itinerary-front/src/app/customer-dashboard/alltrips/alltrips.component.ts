@@ -69,7 +69,7 @@ export class AlltripsComponent implements OnInit {
       console.log(data);
       this.removeFromList(tripId);
       this.messageService.add({
-        severity: 'success',
+        severity: 'info',
         summary: 'Removed',
         detail: 'Trip removed',
         life: 3000,
