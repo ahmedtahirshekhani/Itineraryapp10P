@@ -31,7 +31,6 @@ describe('RegisterComponent', () => {
   });
 
   afterEach(() => {
-    // restore all mocks to initial states
     jest.restoreAllMocks();
     jest.clearAllMocks();
   });
@@ -149,9 +148,7 @@ describe('RegisterComponent', () => {
       const error = throwError(() => new Error('Registration Failed'));
       const spyregisterUser = jest
         .spyOn(authServiceMock, 'registerUser')
-        .mockImplementation(
-          () => error
-        );
+        .mockImplementation(() => error);
       component.registerUser();
       expect(spyregisterUser).toHaveBeenCalledWith(
         'haadia',
