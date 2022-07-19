@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UsersService } from '../shared/users.service';
 import { TripService } from '../shared/trip.service';
 import { MessageService } from 'primeng/api';
+
 @Component({
   selector: 'app-single-trip',
   templateUrl: './single-trip.component.html',
@@ -14,8 +15,8 @@ export class SingleTripComponent implements OnInit {
   dayData!: any[];
   cols!: any[];
   updateBtnStatus!: Boolean[][];
-  tripId: String;
-  tripUrl: String | null;
+  tripId!: String;
+  username: String | null;
   colsMetaData!: any[];
   metadata: any[] = [];
   endDate!: String;
@@ -24,14 +25,16 @@ export class SingleTripComponent implements OnInit {
   selectedUser: any = [];
   friends = new Array();
   displayFriend: boolean = false;
+  currentLoc: any;
 
   constructor(
     private tripService: TripService,
     private route: ActivatedRoute,
-    private userService: UsersService,
+    private userServce: UsersService,
     private messageService: MessageService
   ) {
     this.tripId = this.route.snapshot.paramMap.get('tripId') as string;
+    this.currentLoc = this.router.getCurrentNavigation()?.extras.state!;
   }
 
   ngOnInit(): void {
@@ -39,12 +42,13 @@ export class SingleTripComponent implements OnInit {
       .getSingleTripData(this.tripId)
       .subscribe((tripData: any) => {
         if (tripData.success) {
-          this.tripId = tripData.message.metaData._id!;
           this.tripname = tripData.message.metaData.name;
+          this.username = tripData.message.metaData.username;
           this.dayData = tripData.message.singleTripDetails.tripdata;
           const metaData = tripData.message.metaData;
           const numofdays = metaData.days;
           const date = tripData.message.metaData.startDate;
+          this.friends = tripData.message.metaData.friends;
           const parts = date.split('/');
           const startDate = new Date(+parts[2], parts[1] - 1, +parts[0]);
           this.endDate = new Date(
@@ -58,9 +62,22 @@ export class SingleTripComponent implements OnInit {
             );
 
           this.metadata.push(metaData);
-          this.tripId = metaData._id;
 
-          // console.log('Trip Id', this.tripid);
+          this.userServce.getUsers().subscribe((response) => {
+            this.users = Object.values(response);
+            this.users = this.users[1];
+
+            // filtering own name out of add friend list
+
+            const testName: any = [];
+            testName.push(this.username);
+            this.users = this.users.filter(
+              (el: { username: any }) => -1 == testName.indexOf(el.username)
+            );
+          });
+
+        
+
         } else {
           console.log(tripData);
         }
@@ -76,12 +93,6 @@ export class SingleTripComponent implements OnInit {
       { field: 'numofdays', header: 'Number of Days' },
       { field: 'destination', header: 'Destination' },
     ];
-
-    //reading usernames for add a friend
-    this.userService.getUsers().subscribe((response) => {
-      this.users = Object.values(response);
-      this.users = this.users[1];
-    });
   }
 
   showAddFriend() {
@@ -107,7 +118,13 @@ export class SingleTripComponent implements OnInit {
     this.dayData[dayIdx][0].numberOfAct -= 1;
     this.dayData[dayIdx][1].splice(actTimeIdx, 1);
     this.updateBtnStatus[dayIdx].splice(actTimeIdx, 1);
-    this.tripService.updateTripData(this.dayData, this.tripId).subscribe();
+    console.log(this.updateBtnStatus[dayIdx]);
+    this.tripService
+      .updateTripData(this.dayData, this.tripId)
+      .subscribe((data: any) => {
+        console.log(data.success);
+        console.log(this.dayData[dayIdx][0].numberOfAct);
+      });
   }
 
   addActivity(dayIdx: number) {
@@ -122,13 +139,23 @@ export class SingleTripComponent implements OnInit {
   doneClicked(dayIdx: number, actTimeIdx: number) {
     // console.log('doneClicked', dayIdx, actTimeIdx);
     this.updateBtnStatus[dayIdx][actTimeIdx] = false;
-    this.tripService.updateTripData(this.dayData, this.tripId).subscribe();
+    this.tripService
+      .updateTripData(this.dayData, this.tripId)
+      .subscribe((data: any) => {
+        console.log(data.success);
+      });
   }
   onChange(event: any): void {
     console.log(event);
     this.selectedUser.username = event['username'];
     this.friends.push(this.selectedUser.username);
     this.addFriend = false;
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Added',
+      detail: 'Friend added',
+      life: 3000,
+    });
     this.tripService
       .addFriend(this.selectedUser.username, this.tripId)
       .subscribe({
@@ -154,7 +181,7 @@ export class SingleTripComponent implements OnInit {
     this.users.push({ username: friend });
     this.messageService.add({
       severity: 'warn',
-      summary: 'Successful',
+      summary: 'Removed',
       detail: 'Friend removed',
       life: 3000,
     });

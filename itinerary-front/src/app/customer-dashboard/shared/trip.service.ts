@@ -7,11 +7,6 @@ interface tripData {
   data: [Object];
 }
 
-interface tripData {
-  success: Boolean;
-  data: [Object];
-}
-
 interface additionStatus {
   success: Boolean;
 }
@@ -67,7 +62,7 @@ export class TripService {
   }
 
   getTripsAsFrnd() {
-    return this.http.get<tripData>('/api/v1/trips/others');
+    return this.http.get<Object[]>('/api/v1/trips/others/');
   }
 
   addNewTrip(

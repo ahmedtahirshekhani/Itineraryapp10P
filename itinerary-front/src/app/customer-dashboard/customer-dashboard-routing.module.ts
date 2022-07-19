@@ -9,7 +9,12 @@ const routes: Routes = [
     path: '',
     component: CustomerDashboardComponent,
     children: [
-      { path: '', component: AlltripsComponent },
+      { path: '', component: AlltripsComponent, data: { state: 'myPlanners' } },
+      {
+        path: 'friends',
+        component: AlltripsComponent,
+        data: { state: 'friendPlanners' },
+      },
       { path: ':tripId', component: SingleTripComponent },
     ],
   },

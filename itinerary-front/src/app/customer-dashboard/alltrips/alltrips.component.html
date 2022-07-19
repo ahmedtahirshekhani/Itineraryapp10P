@@ -1,12 +1,15 @@
 <div>
-  <h1>All Trips</h1>
-  <div class="box">
+  <h1 *ngIf="currentLoc == 'myPlanners'; else friendPlannerHead">My Trips</h1>
+
+  <ng-template #friendPlannerHead
+    ><h1>Other Planners (As Friend)</h1></ng-template
+  ><div class="box">
     <div class="grid">
       <div
         class="col-4 trip-card"
         *ngFor="let trip of mytrips; let idx = index"
       >
-        <div (click)="tripCardClicked(trip._id)">
+        <div id="{{trip.urlSlug}}" (click)="tripCardClicked(trip._id)">
           <p-card
             header="{{ trip.name }}"
             subheader="Created On: {{ trip['createdOn'] }}"
@@ -24,12 +27,14 @@
               </div>
             </div>
             <button
+              *ngIf="currentLoc == 'myPlanners'"
               pButton
               type="button"
-              (click)="deleteTrip(trip.name, $event)"
+              (click)="deleteTrip(trip._id, $event)"
               icon="pi pi-trash"
               label="Delete"
               class="p-button-danger"
+              id="{{trip.urlSlug}}-btn"
             ></button>
           </p-card>
         </div>

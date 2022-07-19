@@ -3,7 +3,7 @@ import { AuthService } from '../shared/auth.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, Validators } from '@angular/forms';
-import { TripService } from 'src/app/customer-dashboard/shared/trip.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -22,15 +22,7 @@ export class LoginComponent {
     private router: Router,
     public messageService: MessageService,
     private fb: FormBuilder
-  ) {
-    // this.trip.getMyTrip().subscribe((data: any) => {
-    //   if (data.success) {
-    //     console.log(data);
-    //   } else {
-    //     console.log(data.err);
-    //   }
-    // });
-  }
+  ) { }
 
   get username(): any {
     return this.credentialsForm.get('username');
@@ -51,12 +43,12 @@ export class LoginComponent {
   loginUser() {
     this.auth
       .login(this.username.value, this.password.value)
-      .subscribe((data: any) => {
-        if (data.success) {
+      .subscribe({
+        next: (data: any) => {
           this.auth.setLoggedIn(true);
-          console.log(data.success);
           this.router.navigate(['dashboard']);
-        } else {
+        },
+        error: (err: Error) => {
           this.messageService.add({
             severity: 'error',
             summary: 'Invalid Credentials!',

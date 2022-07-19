@@ -72,6 +72,8 @@ import { TokenInterceptor } from '../token-interceptor.service';
       multi: true,
     },
   ],
-  bootstrap: [CustomerDashboardComponent],
+  bootstrap: [
+    CustomerDashboardComponent,
+  ],
 })
 export class CustomerDashboardModule {}

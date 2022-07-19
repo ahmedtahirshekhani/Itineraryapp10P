@@ -41,9 +41,9 @@ export class CustomerDashboardComponent implements OnInit {
         routerLink: '/dashboard',
       },
       {
-        label: 'Friends Planners',
+        label: 'Other Planners',
         icon: 'pi pi-fw pi-eye',
-        routerLink: '/dashboard',
+        routerLink: '/dashboard/friends',
       },
       {
         label: 'Contact',

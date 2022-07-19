@@ -18,6 +18,7 @@
       <button
         class="col-md-12 text-center"
         pButton
+        *ngIf="currentLoc == 'myPlanners'"
         type="button"
         label="Add a friend"
         class="p-button-success"
@@ -97,7 +98,10 @@
             </td>
             <td class="day_ud_col">
               <button
-                *ngIf="updateBtnStatus[dayIdx][colIdx]; else disBtn"
+                *ngIf="
+                  updateBtnStatus[dayIdx][colIdx] && currentLoc == 'myPlanners';
+                  else disBtn
+                "
                 pButton
                 (click)="doneClicked(dayIdx, colIdx)"
                 type="button"
@@ -134,6 +138,7 @@
       <button
         pButton
         type="button"
+        *ngIf="currentLoc == 'myPlanners'"
         label="Add Activity"
         (click)="addActivity(dayIdx)"
         class="p-button-success"
@@ -199,6 +204,7 @@
         <td>
           <button
             pButton
+            *ngIf="currentLoc == 'myPlanners'"
             type="button"
             icon="pi pi-trash"
             (click)="removeFriend(friend)"
