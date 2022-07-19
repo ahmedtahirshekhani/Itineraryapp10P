@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TripService } from '../shared/trip.service';
-import { Subscription } from 'rxjs';
+import { catchError, Observable, Subscription } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 
 @Component({
@@ -50,7 +51,6 @@ export class AlltripsComponent implements OnInit {
       });
     }
   }
-
   tripCardClicked(tripId: String) {
     this.router.navigate(['dashboard/' + tripId], { state: this.currentLoc });
 

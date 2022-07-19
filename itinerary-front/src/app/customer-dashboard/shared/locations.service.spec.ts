@@ -42,7 +42,7 @@ describe('LocationsService', () => {
       // import the HttpClient mocking services
       imports: [ HttpClientTestingModule ],
       // provide service-under-test and its dependencies
-      providers: [ LocationsService]
+      providers: [ LocationsService ]
     });
     // inject the http, test controller and service-under-test
     service = TestBed.inject(LocationsService);
@@ -68,7 +68,7 @@ describe('LocationsService', () => {
     });
 
     // check for correct response - GET from expected URL
-    const req = httpTestingController.expectOne( {
+    const req = httpTestingController.expectOne({
       url: '/api/v1/locations',
       method: 'GET'
     });

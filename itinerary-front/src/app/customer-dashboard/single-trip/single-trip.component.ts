@@ -15,10 +15,8 @@ export class SingleTripComponent implements OnInit {
   dayData!: any[];
   cols!: any[];
   updateBtnStatus!: Boolean[][];
-
   tripId!: String;
   username: String | null;
-
   colsMetaData!: any[];
   metadata: any[] = [];
   endDate!: String;
@@ -31,7 +29,6 @@ export class SingleTripComponent implements OnInit {
 
   constructor(
     private tripService: TripService,
-    private router: Router,
     private route: ActivatedRoute,
     private userServce: UsersService,
     private messageService: MessageService
@@ -49,7 +46,6 @@ export class SingleTripComponent implements OnInit {
           this.username = tripData.message.metaData.username;
           this.dayData = tripData.message.singleTripDetails.tripdata;
           const metaData = tripData.message.metaData;
-          console.log(metaData);
           const numofdays = metaData.days;
           const date = tripData.message.metaData.startDate;
           this.friends = tripData.message.metaData.friends;
@@ -97,7 +93,6 @@ export class SingleTripComponent implements OnInit {
       { field: 'numofdays', header: 'Number of Days' },
       { field: 'destination', header: 'Destination' },
     ];
-
   }
 
   showAddFriend() {
@@ -139,8 +134,6 @@ export class SingleTripComponent implements OnInit {
       time: '00:00',
       activity: '',
     });
-
-    console.log(this.dayData[dayIdx]);
   }
 
   doneClicked(dayIdx: number, actTimeIdx: number) {
@@ -153,6 +146,7 @@ export class SingleTripComponent implements OnInit {
       });
   }
   onChange(event: any): void {
+    console.log(event);
     this.selectedUser.username = event['username'];
     this.friends.push(this.selectedUser.username);
     this.addFriend = false;
@@ -200,6 +194,5 @@ export class SingleTripComponent implements OnInit {
         console.log(err);
       },
     });
-
   }
 }
