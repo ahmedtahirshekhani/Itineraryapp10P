@@ -39,6 +39,7 @@ export class CreatePlannerComponent implements OnInit {
   ngOnInit(): void {
     this.locationService.getLocations().subscribe({
       next: (data: any) => {
+        console.log(data);
         for (let i = 0; i < data.length; i++) {
           this.cities.push({
             name: data[i].name,
@@ -98,8 +99,9 @@ export class CreatePlannerComponent implements OnInit {
     An update method that sends new trip details 
     to the AllTrips component to update the trips on-screen
   */
-  sendTripData(tripid: String): void {
+  sendTripData(tripId: String): void {
     const trip = {
+      _id: tripId,
       name: this.name.value,
       startDate: this.startDateFormatted,
       days: this.days,
@@ -107,7 +109,6 @@ export class CreatePlannerComponent implements OnInit {
       imageUrl: this.imageUrl,
       urlSlug: this.urlSlug,
       createdOn: new Date().toLocaleDateString('en-GB'), // change this
-      _id: tripid,
     };
 
     this.tripService.updateNewTrip(trip);
