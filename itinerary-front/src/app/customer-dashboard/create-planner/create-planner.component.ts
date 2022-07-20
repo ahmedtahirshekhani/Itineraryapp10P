@@ -22,10 +22,10 @@ export class CreatePlannerComponent implements OnInit {
 
   // reactive form group
   tripForm = this.fb.group({
-    name: <string|unknown>['', Validators.required],
-    startDate: <Date|unknown>[null, Validators.required],
-    days: <number|unknown>[null, Validators.required],
-    destination: <City|unknown>['', Validators.required],
+    name: <string | unknown>['', Validators.required],
+    startDate: <Date | unknown>[null, Validators.required],
+    days: <number | unknown>[null, Validators.required],
+    destination: <City | unknown>['', Validators.required],
   });
 
   constructor(
@@ -37,25 +37,35 @@ export class CreatePlannerComponent implements OnInit {
 
   // populate the dropdown with defined locations
   ngOnInit(): void {
-    this.locationService.getLocations().subscribe((data: any) => {
-      if (data.success) {
-        for (let i = 0; i < data.message.length; i++) {
+    this.locationService.getLocations().subscribe({
+      next: (data: any) => {
+        console.log(data);
+        for (let i = 0; i < data.length; i++) {
           this.cities.push({
-            name: data.message[i].name,
-            url: data.message[i].imageUrl,
+            name: data[i].name,
+            url: data[i].imageUrl,
           });
         }
-      } else {
-        console.log(data.err);
-      }
+      },
+      error: (error) => {
+        console.log(error);
+      },
     });
   }
 
   // getters for form controrls and their values
-  get name(): any { return this.tripForm.get('name') }
-  get startDate(): any { return this.tripForm.get('startDate')?.value }
-  get days(): any { return this.tripForm.get('days')?.value }
-  get destination(): any { return this.tripForm.get('destination')?.value } 
+  get name(): any {
+    return this.tripForm.get('name');
+  }
+  get startDate(): any {
+    return this.tripForm.get('startDate')?.value;
+  }
+  get days(): any {
+    return this.tripForm.get('days')?.value;
+  }
+  get destination(): any {
+    return this.tripForm.get('destination')?.value;
+  }
 
   getUrlSlug() {
     const nameSplit = this.name.value.toLowerCase().split(' ');
@@ -89,15 +99,16 @@ export class CreatePlannerComponent implements OnInit {
     An update method that sends new trip details 
     to the AllTrips component to update the trips on-screen
   */
-  sendTripData(): void {
+  sendTripData(tripId: String): void {
     const trip = {
+      _id: tripId,
       name: this.name.value,
       startDate: this.startDateFormatted,
       days: this.days,
       destination: this.destination.name,
       imageUrl: this.imageUrl,
       urlSlug: this.urlSlug,
-      createdOn: new Date().toLocaleDateString('en-GB') // change this
+      createdOn: new Date().toLocaleDateString('en-GB'), // change this
     };
 
     this.tripService.updateNewTrip(trip);
@@ -127,7 +138,7 @@ export class CreatePlannerComponent implements OnInit {
       .subscribe((data) => {
         if (data.success) {
           // update the screen
-          this.sendTripData();
+          this.sendTripData(data.tripId);
         }
 
         // forward server response to customer-dashboard
@@ -135,4 +146,3 @@ export class CreatePlannerComponent implements OnInit {
       });
   }
 }
-

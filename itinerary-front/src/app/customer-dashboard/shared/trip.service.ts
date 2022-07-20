@@ -1,25 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+
 interface tripData {
+  [x: string]: any;
   success: Boolean;
   data: [Object];
 }
 
-interface tripData {
+interface tripAdded {
   success: Boolean;
-  data: [Object];
-}
-
-interface additionStatus {
-  success: Boolean;
+  tripId: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class TripService {
-  private newTrip = new Subject<Object>();
+  newTrip = new BehaviorSubject<Object>({});
   constructor(private http: HttpClient) {}
 
   /*
@@ -40,23 +38,33 @@ export class TripService {
   }
 
   getMyTrip() {
-    return this.http.get<tripData>('/api/v1/trips');
+    return this.http.get<any>('/api/v1/trips');
   }
 
-  getSingleTripData(tripNameArg: String) {
-    return this.http.get<tripData>('/api/v1/trips/' + tripNameArg);
+  getSingleTripData(tripID: String) {
+    return this.http.get<tripData>('/api/v1/trips/' + tripID);
   }
 
-  updateTripData(tripdata: any[][], tripname: String) {
-    return this.http.put<tripData>('/api/v1/trips/' + tripname, {
+  updateTripData(tripdata: any[][], tripID: String | null) {
+    return this.http.put<tripData>('/api/v1/trips/' + tripID, {
       data: tripdata,
     });
   }
 
-  addFriend(friends: any[], tripid: String) {
-    return this.http.patch<tripData>('/api/v1/trips/' + tripid, {
-      friends,
+  addFriend(friends: string, tripID: String | null) {
+    return this.http.patch<tripData>('/api/v1/trips/friends/' + tripID, {
+      friendToAdd: friends,
     });
+  }
+
+  removeFriend(friends: string, tripID: String | null) {
+    return this.http.post('/api/v1/trips/friends/' + tripID, {
+      friendToDel: friends,
+    });
+  }
+
+  getTripsAsFrnd() {
+    return this.http.get<Object[]>('/api/v1/trips/others');
   }
 
   addNewTrip(
@@ -67,7 +75,7 @@ export class TripService {
     imageUrl: String,
     urlSlug: String
   ) {
-    return this.http.post<additionStatus>('/api/v1/trips', {
+    return this.http.post<tripAdded>('/api/v1/trips', {
       name,
       startDate,
       days,
@@ -77,7 +85,7 @@ export class TripService {
     });
   }
 
-  deleteTrip(name: String) {
-    return this.http.delete('/api/v1/trips/' + name);
+  deleteTrip(tripID: String) {
+    return this.http.delete('/api/v1/trips/' + tripID);
   }
 }

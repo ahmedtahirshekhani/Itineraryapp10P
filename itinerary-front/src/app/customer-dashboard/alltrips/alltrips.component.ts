@@ -1,58 +1,82 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TripService } from '../shared/trip.service';
-import { Subscription } from 'rxjs';
+import { catchError, Observable, Subscription } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-alltrips',
   templateUrl: './alltrips.component.html',
-  styleUrls: ['./alltrips.component.css'],
+  styleUrls: ['./alltrips.component.scss'],
 })
 export class AlltripsComponent implements OnInit {
   mytrips: any[] = [];
+  friendTrips: any[] = [];
   public subscription: Subscription;
+  currentLoc: String = '';
 
-  constructor(private tripService: TripService, private router: Router) {}
+  constructor(
+    private tripService: TripService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
-    this.tripService.getMyTrip().subscribe((data: any) => {
-      if (data.success) {
-        this.mytrips = data.data;
-        console.log(this.mytrips);
+    this.route.data.subscribe((v) => {
+      this.currentLoc = v['state'];
+      if (this.currentLoc === 'myPlanners') {
+        this.tripService.getMyTrip().subscribe({
+          next: (res) => {
+            this.mytrips = res;
+          },
+        });
       } else {
-        console.log(data.err);
+        this.tripService.getTripsAsFrnd().subscribe((data: any) => {
+          this.mytrips = data;
+        });
       }
     });
 
-    // listen for new Trips being added
-    this.subscription = this.tripService.updateTripList().subscribe((trip) => {
-      this.mytrips.push(trip);
-    });
+    /*
+      Update trip list with newly a added trip that the user
+      owns - prevent conflation of friends trips with the trips
+      of the user.
+    */
+    if (this.currentLoc === 'myPlanners') {
+      // listen for new Trips being added by the user
+      this.subscription = this.tripService
+        .updateTripList()
+        .subscribe((trip) => {
+          this.mytrips.push(trip);
+        });
+    }
   }
-
-  tripCardClicked(tripUrl: String) {
-    this.router.navigate(['dashboard/' + tripUrl]);
+  tripCardClicked(tripId: String) {
+    console.log(tripId);
+    this.router.navigate(['dashboard/' + tripId], { state: this.currentLoc });
 
     // this.router.navigateByUrl('/singletrip', { state: { tripName: tripname } });
   }
 
   // update mytrips list to reflect removal on screen sans netwrok call
-  removeFromList(name: string): void {
-    for (let i = 0; i < this.mytrips.length; i++) {
-      if (this.mytrips[i].name == name) {
-        // remove just that deleted trip
-        this.mytrips.splice(i, 1);
-        break;
-      }
-    }
+  removeFromList(tripId: string): void {
+    const index = this.mytrips.findIndex((trip) => trip._id === tripId);
+    this.mytrips.splice(index, 1);
   }
 
-  deleteTrip(name: string, event: any) {
+  deleteTrip(tripId: string, event: any) {
     event.stopPropagation();
-    console.log('delete', name);
-    this.tripService.deleteTrip(name).subscribe((data: any) => {
-      console.log(data.success);
+    this.tripService.deleteTrip(tripId).subscribe((data: any) => {
+      console.log(data);
+      this.removeFromList(tripId);
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Removed',
+        detail: 'Trip removed',
+        life: 3000,
+      });
     });
-    this.removeFromList(name);
   }
 }

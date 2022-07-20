@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 export class BootComponent implements OnInit {
 
-  progressBarValue = 0;
+  progressBarValue: number = 0;
 
   constructor(private router: Router) { }
 

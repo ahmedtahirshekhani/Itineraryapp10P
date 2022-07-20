@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-customer-dashboard',
   templateUrl: './customer-dashboard.component.html',
-  styleUrls: ['./customer-dashboard.component.css'],
+  styleUrls: ['./customer-dashboard.component.scss'],
   providers: [DialogService, MessageService],
 })
 export class CustomerDashboardComponent implements OnInit {
@@ -36,9 +36,14 @@ export class CustomerDashboardComponent implements OnInit {
         command: () => this.createPlanner(),
       },
       {
-        label: 'View All Planners',
+        label: 'My Planners',
         icon: 'pi pi-fw pi-eye',
         routerLink: '/dashboard',
+      },
+      {
+        label: 'Other Planners',
+        icon: 'pi pi-fw pi-eye',
+        routerLink: '/dashboard/friends',
       },
       {
         label: 'Contact',
