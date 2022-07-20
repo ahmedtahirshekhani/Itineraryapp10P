@@ -13,7 +13,6 @@ class DecodedToken {
 }
 
 interface loginStatus {
-  success: boolean;
   message: string;
 }
 
@@ -24,15 +23,10 @@ interface isLoggedIn {
   status: Boolean;
 }
 
-interface logoutStatus {
-  success: boolean;
-}
-
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private loggedInStatus = false;
   private decodedToken;
 
   constructor(private http: HttpClient) {
@@ -40,18 +34,10 @@ export class AuthService {
       JSON.parse(localStorage.getItem('ti_meta')!) || new DecodedToken();
   }
 
-  get isLoggedIn() {
-    return this.loggedInStatus;
-  }
-
-  setLoggedIn(value: boolean) {
-    this.loggedInStatus = value;
-  }
-
   login(
-    username: string | unknown,
-    password: string | unknown
-  ): Observable<any> {
+    username: string,
+    password: string
+  ): Observable<loginStatus> {
     // post details to server, return user info if valid
 
     return this.http
@@ -59,9 +45,9 @@ export class AuthService {
         username,
         password,
       })
-      .pipe(map((resp: any) => this.saveToken(resp)));
+      .pipe(map((resp: loginStatus) => this.saveToken(resp)));
   }
-  private saveToken(resp: any): string {
+  private saveToken(resp: loginStatus): loginStatus {
     this.decodedToken = jwt.decodeToken(resp.message);
 
     localStorage.setItem('ti_auth', resp.message);
@@ -71,10 +57,10 @@ export class AuthService {
   }
 
   registerUser(
-    name: string,
-    username: string,
-    password: string,
-    email: string
+    name?: string,
+    username?: string,
+    password?: string,
+    email?: string
   ) {
     return this.http.post<registerResponse>('/api/v1/users/register', {
       name,
