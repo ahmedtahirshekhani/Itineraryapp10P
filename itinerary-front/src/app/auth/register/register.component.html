@@ -5,14 +5,17 @@
       <h1>Itinerary App</h1>
     </div>
     <div class="image col-lg-6">
-      <img [src]="image" class="img-fluid">
+      <img 
+        src="../../../assets/images/registration-background.jpg"
+        class="img-fluid"
+      >
     </div>
     <div class="col-lg-6">
       <div class="Welcome text-center">
         <h1>Sign up</h1>
         <p>Register to explore the world</p>
       </div>
-      <form [formGroup]="registerForm" #userData="ngForm" (ngSubmit)="registerUser()">
+      <form [formGroup]="registerForm" #userData="ngForm" (ngSubmit)="register()">
         <div class="form">
 
           <span class="p-float-label">
@@ -33,9 +36,9 @@
           <span class="p-float-label ">
             <input id="password" type="password" size="60" formControlName="password" pInputText>
             <label for="password">Password</label>
-            <div *ngIf="Password['password'].touched && Password['password'].invalid" class="alert alert-danger">
+            <div *ngIf="formControls['password'].touched && formControls['password'].invalid" class="alert alert-danger">
               Password must be 8 characters with at least 1 upper, 1 digit, 1 lower, and 1 special character.
-              <div *ngIf="Password['password'].errors && Password['password'].errors['required']">
+              <div *ngIf="formControls['password'].errors && formControls['password'].errors['required']">
                 Password is required
               </div>
             </div>
@@ -44,11 +47,11 @@
           <span class="p-float-label ">
             <input id="cpassword" type="password" size="60" formControlName="cpassword" pInputText>
             <label for="cpassword">Confirm Password</label>
-            <div *ngIf="Password['cpassword'].touched && Password['cpassword'].invalid" class="alert alert-danger">
-              <div *ngIf="Password['cpassword'].errors && Password['cpassword'].errors['required']">
+            <div *ngIf="formControls['cpassword'].touched && formControls['cpassword'].invalid" class="alert alert-danger">
+              <div *ngIf="formControls['cpassword'].errors && formControls['cpassword'].errors['required']">
                 Password is required
               </div>
-              <div *ngIf="Password['cpassword'].errors && Password['cpassword'].errors['confirmedValidator']">
+              <div *ngIf="formControls['cpassword'].errors && formControls['cpassword'].errors['confirmedValidator']">
                 Passwords do not match
               </div>
             </div>
