@@ -8,12 +8,12 @@ import { Router } from '@angular/router';
 })
 export class BootComponent implements OnInit {
 
-  progressBarValue = 0;
+  progressBarValue: number = 0;
 
   constructor(private router: Router) { }
 
   ngOnInit() {
-    let interval = setInterval(() => {
+    let interval: NodeJS.Timer = setInterval(() => {
       this.progressBarValue = this.progressBarValue + Math.floor(Math.random() * 10) + 40;
       if (this.progressBarValue >= 100) {
         this.progressBarValue = 100;
