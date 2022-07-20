@@ -4,6 +4,7 @@ import { ConfirmedValidator } from '../shared/confirmed.validator';
 import { AuthService } from '../shared/auth.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -13,7 +14,6 @@ import { MessageService } from 'primeng/api';
 })
 export class RegisterComponent implements OnInit {
   image: string = '../../../assets/images/registration-background.jpg';
-  value4: string | undefined;
 
   registerForm = this.fb.group(
     {
@@ -60,7 +60,7 @@ export class RegisterComponent implements OnInit {
       )
       .subscribe({
         next: (data) => this.router.navigate(['login']),
-        error: (error) =>
+        error: (error) => 
           this.msg.add({ severity: 'error', summary: 'Registration Failed' }),
       });
   }

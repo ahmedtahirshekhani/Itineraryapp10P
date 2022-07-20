@@ -39,6 +39,7 @@ export class CreatePlannerComponent implements OnInit {
   ngOnInit(): void {
     this.locationService.getLocations().subscribe({
       next: (data: any) => {
+        console.log(data);
         for (let i = 0; i < data.length; i++) {
           this.cities.push({
             name: data[i].name,

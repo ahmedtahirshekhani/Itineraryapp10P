@@ -42,12 +42,11 @@ export class LoginComponent {
 
   loginUser() {
     this.auth.login(this.username.value, this.password.value).subscribe({
-      next: (data: any) => {
+      next: () => {
         this.auth.setLoggedIn(true);
         this.router.navigate(['dashboard']);
       },
-      error: (err: Error) => {
-        console.log(err);
+      error: () => {
         this.messageService.add({
           severity: 'error',
           summary: 'Invalid Credentials!',
