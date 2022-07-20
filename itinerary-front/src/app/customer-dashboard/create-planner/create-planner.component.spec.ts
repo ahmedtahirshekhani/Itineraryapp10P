@@ -25,27 +25,24 @@ class MockTripService {
 // mocked LocationsService
 class MockLocationsService {
   getLocations(){
-    return of({    
-      "success": true,
-      "message": [
-        {
-          "_id": "1",
-          "name": "France",
-          "subPlaces": [
-            "Paris"
-          ],
-          "imageUrl": "https://www.test.com",
-        },
-        {
-          "_id": "2",
-          "name": "USA",
-          "subPlaces": [
-            "New York"
-          ],
-          "imageUrl": "https://www.test.com",
-        }
-      ]
-    });
+    return of([
+      {
+        "_id": "1",
+        "name": "France",
+        "subPlaces": [
+          "Paris"
+        ],
+        "imageUrl": "https://www.test.com",
+      },
+      {
+        "_id": "2",
+        "name": "USA",
+        "subPlaces": [
+          "New York"
+        ],
+        "imageUrl": "https://www.test.com",
+      }
+    ]);
   }
 }
 
@@ -205,7 +202,8 @@ describe('CreatePlannerComponent', () => {
   it('should handle successful trip addition', () => {
     // set spies on TripService
     const addSpy = jest.spyOn(tripService, 'addNewTrip').mockReturnValue(of({
-      success: true
+      success: true,
+      tripId: "abcd"
     }));
     const updateSpy = jest.spyOn(tripService, 'updateNewTrip');
     const dialogSpy = jest.spyOn(dialogRef, 'close');
@@ -230,6 +228,7 @@ describe('CreatePlannerComponent', () => {
       "test-trip"
     );
     expect(updateSpy).toHaveBeenCalledWith({
+      _id: "abcd",
       name: "Test Trip",
       startDate: "24/12/2018",
       days: 12,
@@ -244,7 +243,8 @@ describe('CreatePlannerComponent', () => {
   it('should handle failed trip addition', () => {
     // set spies on TripService
     const addSpy = jest.spyOn(tripService, 'addNewTrip').mockReturnValue(of({
-      success: false
+      success: false,
+      tripId: ''
     }));
     const updateSpy = jest.spyOn(tripService, 'updateNewTrip');
     const dialogSpy = jest.spyOn(dialogRef, 'close');
