@@ -40,7 +40,7 @@ export class RegisterComponent implements OnInit {
     private auth: AuthService,
     private fb: FormBuilder,
     private router: Router,
-    public msg: MessageService
+    public msg: MessageService,
   ) {}
 
   get Password() {

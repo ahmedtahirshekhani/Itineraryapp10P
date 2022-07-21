@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UsersService } from '../shared/users.service';
 import { TripService } from '../shared/trip.service';
 import { MessageService } from 'primeng/api';
+import { ErrorHandlerService } from 'src/app/error-handler.service';
 
 @Component({
   selector: 'app-single-trip',
@@ -32,7 +33,8 @@ export class SingleTripComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private userServce: UsersService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private errorDisplayService: ErrorHandlerService
   ) {
     this.tripId = this.route.snapshot.paramMap.get('tripId') as string;
     this.currentLoc = this.router.getCurrentNavigation()?.extras.state!;
@@ -83,7 +85,7 @@ export class SingleTripComponent implements OnInit {
         });
       },
       error: (err: Error) => {
-        console.log(err);
+        this.errorDisplayService.openDialog();
       },
     });
 
@@ -167,7 +169,7 @@ export class SingleTripComponent implements OnInit {
           console.log(res);
         },
         error: (err) => {
-          console.log(err);
+          this.errorDisplayService.openDialog();
         },
       });
   }
@@ -195,7 +197,7 @@ export class SingleTripComponent implements OnInit {
         console.log(res);
       },
       error: (err) => {
-        console.log(err);
+        this.errorDisplayService.openDialog();
       },
     });
   }
