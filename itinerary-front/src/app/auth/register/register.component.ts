@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { NonNullableFormBuilder, Validators } from '@angular/forms';
 import { ConfirmedValidator } from '../shared/confirmed.validator';
 import { AuthService } from '../shared/auth.service';
 import { Router } from '@angular/router';
@@ -12,9 +12,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./register.component.css'],
   providers: [MessageService],
 })
-export class RegisterComponent implements OnInit {
-  image: string = '../../../assets/images/registration-background.jpg';
-
+export class RegisterComponent {
   registerForm = this.fb.group(
     {
       name: ['', Validators.required],
@@ -32,25 +30,22 @@ export class RegisterComponent implements OnInit {
       cpassword: ['', [Validators.required]],
     },
     {
-      validator: ConfirmedValidator('password', 'cpassword'),
-    }
+      validators: ConfirmedValidator('password', 'cpassword'),
+    } 
   );
 
   constructor(
     private auth: AuthService,
-    private fb: FormBuilder,
+    private fb: NonNullableFormBuilder,
     private router: Router,
     public msg: MessageService,
   ) {}
 
-  get Password() {
+  get formControls() {
     return this.registerForm.controls;
   }
 
-  ngOnInit(): void {}
-
-  registerUser() {
-    console.warn(this.registerForm.value);
+  register() {
     this.auth
       .registerUser(
         this.registerForm.value.name,
@@ -59,9 +54,13 @@ export class RegisterComponent implements OnInit {
         this.registerForm.value.email
       )
       .subscribe({
-        next: (data) => this.router.navigate(['login']),
-        error: (error) => 
-          this.msg.add({ severity: 'error', summary: 'Registration Failed' }),
+        next: () => this.router.navigate(['login']),
+        error: () => {
+          this.msg.add({
+            severity: 'error',
+            summary: 'Registration Failed'
+          });
+        }
       });
   }
 }

@@ -15,9 +15,6 @@ import { By } from '@angular/platform-browser';
 class MockAuthService {
   login(username: string, password: string) {
   }
-
-  setLoggedIn(status: boolean) {
-  }
 }
 
 // mocked RegisterComponent
@@ -44,21 +41,25 @@ describe('LoginComponent', () => {
   let component: LoginComponent;
   let router: Router;
   let fixture: ComponentFixture<LoginComponent>;
-  let service: AuthService;
+  let authService: AuthService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ LoginComponent ],
-      imports: [ ReactiveFormsModule,  RouterTestingModule.withRoutes(routes), ToastModule, NoopAnimationsModule ],
-      providers: [{
-        provide: AuthService, useClass: MockAuthService
-      }
-    ]
+      imports: [ 
+        ReactiveFormsModule,
+        RouterTestingModule.withRoutes(routes),
+        ToastModule,
+        NoopAnimationsModule
+      ],
+      providers: [
+        { provide: AuthService, useClass: MockAuthService }
+      ]
     })
     .compileComponents();
 
     router = TestBed.inject(Router);
-    service = TestBed.inject(AuthService);
+    authService = TestBed.inject(AuthService);
 
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
@@ -67,8 +68,7 @@ describe('LoginComponent', () => {
   });
 
   afterEach(() => {
-    // restore all mocks to initial states
-    jest.restoreAllMocks();
+    // clear all mock calls and instance properties
     jest.clearAllMocks();
   });
 
@@ -108,7 +108,7 @@ describe('LoginComponent', () => {
     const control = component.username;
     expect(spy).toHaveBeenCalled();
     expect(control).toBeInstanceOf(AbstractControl);
-    expect(control.value).toEqual("fahad.shaikh");
+    expect(control!.value).toEqual("fahad.shaikh");
   });
 
   it('should return password form control', () => {
@@ -121,17 +121,7 @@ describe('LoginComponent', () => {
     const control = component.password;
     expect(spy).toHaveBeenCalled();
     expect(control).toBeInstanceOf(AbstractControl);
-    expect(control.value).toEqual("testString");
-  });
-
-  it('should clear form values', () => {
-    component.credentialsForm.setValue({
-      "username": "fahad.shaikh",
-      "password": "testString"
-    });
-    component.clearInput();
-    expect(component.password.value).toEqual(null);
-    expect(component.username.value).toEqual(null);
+    expect(control!.value).toEqual("testString");
   });
 
   it('should navigate to registration', fakeAsync(() => {
@@ -142,13 +132,11 @@ describe('LoginComponent', () => {
 
   it('should handle successful login attempt', () => {
     // set spies on service
-    const serviceSpy = jest.spyOn(service, 'login').mockReturnValue(
+    const serviceSpy = jest.spyOn(authService, 'login').mockReturnValue(
       of({
-        success: true,
         message: "Login Successful"
       })
     );
-    const loggedInStausSpy = jest.spyOn(service, 'setLoggedIn');
     const navigateSpy = jest.spyOn(router, 'navigate');
 
     // set form values
@@ -161,14 +149,8 @@ describe('LoginComponent', () => {
     component.loginUser();
     // verify that mockservice is called with formData
     expect(serviceSpy).toHaveBeenCalledWith("fahad.shaikh", "L@hore123");
-    // check if loggedInStatus is updated
-    expect(loggedInStausSpy).toHaveBeenCalledWith(true);
     // check if navigation to dashboard occurs
     expect(navigateSpy).toHaveBeenCalledWith(['dashboard']);
-    // check if fields are reset
-    fixture.detectChanges();
-    expect(component.password.value).toEqual(null);
-    expect(component.username.value).toEqual(null);
   });
 
   it('should handle failed login attempt', () => {
@@ -176,7 +158,7 @@ describe('LoginComponent', () => {
     const error = throwError(() => new Error('Failed login attempt'));
     
     // set spies on service
-    const serviceSpy = jest.spyOn(service, 'login').mockImplementation(() => error);
+    const serviceSpy = jest.spyOn(authService, 'login').mockImplementation(() => error);
 
     // set form values
     component.credentialsForm.setValue({
@@ -186,7 +168,8 @@ describe('LoginComponent', () => {
 
     // trigger form submission
     component.loginUser();
-    // verify that service is called with Form Data
+
+    // verify that service is called with set Form Data
     expect(serviceSpy).toHaveBeenCalledWith("test", "test123");
     
     // verify that the toast message is rendered
@@ -194,10 +177,5 @@ describe('LoginComponent', () => {
     const toastMessage =  fixture.debugElement.query(By.css('.p-toast-message'));
     expect(toastMessage.nativeElement).toBeTruthy();
     expect(toastMessage.nativeElement.classList).toContain("p-toast-message-error");
-
-    // check if fields are reset
-    fixture.detectChanges();
-    expect(component.password.value).toEqual(null);
-    expect(component.username.value).toEqual(null);
   });
 });

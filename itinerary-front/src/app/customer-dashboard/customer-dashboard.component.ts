@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-customer-dashboard',
   templateUrl: './customer-dashboard.component.html',
-  styleUrls: ['./customer-dashboard.component.css'],
+  styleUrls: ['./customer-dashboard.component.scss'],
   providers: [DialogService, MessageService],
 })
 export class CustomerDashboardComponent implements OnInit {

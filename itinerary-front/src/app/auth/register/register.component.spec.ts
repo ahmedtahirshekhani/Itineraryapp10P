@@ -1,23 +1,31 @@
 import { RegisterComponent } from './register.component';
-import { ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { AuthService } from '../shared/auth.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ToastModule } from 'primeng/toast';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of, throwError } from 'rxjs';
+import { By } from '@angular/platform-browser';
 
 describe('RegisterComponent', () => {
   let fixture: ComponentFixture<RegisterComponent>;
   let component: RegisterComponent;
   let authServiceMock: AuthService;
   let routerMock: Router;
-  let messageServiceMock: any;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [RegisterComponent],
-      imports: [RouterTestingModule, ReactiveFormsModule, HttpClientModule],
+      imports: [RouterTestingModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        ToastModule,
+        NoopAnimationsModule
+      ],
+      providers: [AuthService]
     }).compileComponents();
     routerMock = TestBed.inject(Router);
     authServiceMock = TestBed.inject(AuthService);
@@ -31,13 +39,14 @@ describe('RegisterComponent', () => {
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    // jest.restoreAllMocks();
     jest.clearAllMocks();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
   describe('Test: ngOnInit', () => {
     it('should initialize registerForm', () => {
       const mockRegisterForm = {
@@ -52,7 +61,7 @@ describe('RegisterComponent', () => {
   });
 
   describe('Test: Register Form', () => {
-    it('should invalidate registerForm', () => {
+    it('should invalidate registerForm - empty fields', () => {
       const compiled = fixture.nativeElement as HTMLElement;
       component.registerForm.setValue({
         name: '',
@@ -80,7 +89,7 @@ describe('RegisterComponent', () => {
       expect(compiled.querySelector('button')?.disabled).toBeFalsy();
     });
 
-    it('should invalidate registerForm', () => {
+    it('should invalidate registerForm - password criteria not satisfied', () => {
       const compiled = fixture.nativeElement as HTMLElement;
       component.registerForm.setValue({
         name: 'haadia',
@@ -94,7 +103,7 @@ describe('RegisterComponent', () => {
       expect(compiled.querySelector('button')?.disabled).toBeTruthy();
     });
 
-    it('should invalidate registerForm', () => {
+    it("should invalidate registerForm - passwords don't match", () => {
       const compiled = fixture.nativeElement as HTMLElement;
       component.registerForm.setValue({
         name: 'haadia',
@@ -111,6 +120,7 @@ describe('RegisterComponent', () => {
 
   describe('Test registerUser', () => {
     it('should register user', () => {
+      // setup valid form values
       component.registerForm.setValue({
         name: 'haadia',
         email: 'haadia@gmail.com',
@@ -118,17 +128,22 @@ describe('RegisterComponent', () => {
         password: 'Lahore%123',
         cpassword: 'Lahore%123',
       });
-      const spyregisterUser = jest
+
+      // setup spies and mock response on service methods
+      const spyRegisterUser = jest
         .spyOn(authServiceMock, 'registerUser')
         .mockReturnValue(
           of({
-            success: true,
-            message: 'Registeration Successful',
+            success: true
           })
         );
       const navigateSpy = jest.spyOn(routerMock, 'navigate');
-      component.registerUser();
-      expect(spyregisterUser).toHaveBeenCalledWith(
+     
+      // trigger register function
+      component.register();
+
+      // verify results
+      expect(spyRegisterUser).toHaveBeenCalledWith(
         'haadia',
         'haadia123',
         'Lahore%123',
@@ -138,6 +153,10 @@ describe('RegisterComponent', () => {
     });
 
     it('should not register user', () => {
+      // create mock error response
+      const error = throwError(() => new Error('Registration Failed'));
+
+      // set up valid form values
       component.registerForm.setValue({
         name: 'haadia',
         email: 'haadia@gmail.com',
@@ -145,12 +164,28 @@ describe('RegisterComponent', () => {
         password: 'Lahore%123',
         cpassword: 'Lahore%123',
       });
-      const error = throwError(() => new Error('Registration Failed'));
+      
+      // setup spies and mock responses on service methods
       const spyregisterUser = jest
         .spyOn(authServiceMock, 'registerUser')
         .mockImplementation(() => error);
-      component.registerUser();
-      expect(spyregisterUser).toHaveBeenCalledTimes(1);
+
+      // trigger registration
+      component.register();
+
+      // verify results
+      expect(spyregisterUser).toHaveBeenCalledWith(
+        'haadia',
+        'haadia123',
+        'Lahore%123',
+        'haadia@gmail.com'
+      );
+
+      // verify that the toast message is rendered
+      fixture.detectChanges();
+      const toastMessage =  fixture.debugElement.query(By.css('.p-toast-message'));
+      expect(toastMessage.nativeElement).toBeTruthy();
+      expect(toastMessage.nativeElement.classList).toContain("p-toast-message-error");
     });
   });
 });

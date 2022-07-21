@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { FormBuilder, Validators } from '@angular/forms';
-import { HttpErrorResponse } from '@angular/common/http';
+import { AbstractControl, NonNullableFormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -13,27 +12,23 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class LoginComponent {
   credentialsForm = this.fb.group({
-    username: <string | unknown>['', Validators.required],
-    password: <string | unknown>['', Validators.required],
+    username: ["", Validators.required],
+    password: ["", Validators.required],
   });
 
   constructor(
     private auth: AuthService,
     private router: Router,
     public messageService: MessageService,
-    private fb: FormBuilder
+    private fb: NonNullableFormBuilder
   ) {}
 
-  get username(): any {
+  get username(): AbstractControl<string> | null {
     return this.credentialsForm.get('username');
   }
-  get password(): any {
-    return this.credentialsForm.get('password');
-  }
 
-  clearInput(): void {
-    this.username.reset();
-    this.password.reset();
+  get password(): AbstractControl<string> | null {
+    return this.credentialsForm.get('password');
   }
 
   goRegister() {
@@ -41,9 +36,8 @@ export class LoginComponent {
   }
 
   loginUser() {
-    this.auth.login(this.username.value, this.password.value).subscribe({
+    this.auth.login(this.username!.value, this.password!.value).subscribe({
       next: () => {
-        this.auth.setLoggedIn(true);
         this.router.navigate(['dashboard']);
       },
       error: () => {
@@ -53,7 +47,5 @@ export class LoginComponent {
         });
       },
     });
-    // reset the fields
-    this.clearInput();
   }
 }

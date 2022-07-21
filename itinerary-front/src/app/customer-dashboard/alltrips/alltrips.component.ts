@@ -8,7 +8,7 @@ import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-alltrips',
   templateUrl: './alltrips.component.html',
-  styleUrls: ['./alltrips.component.css'],
+  styleUrls: ['./alltrips.component.scss'],
 })
 export class AlltripsComponent implements OnInit {
   mytrips: any[] = [];
