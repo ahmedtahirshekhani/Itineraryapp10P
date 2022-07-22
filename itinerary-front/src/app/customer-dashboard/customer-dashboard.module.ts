@@ -30,7 +30,7 @@ import { ContactComponent } from './contact/contact.component';
 import { ToastModule } from 'primeng/toast';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TokenInterceptor } from '../token-interceptor.service';
-
+import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
   declarations: [
@@ -62,6 +62,7 @@ import { TokenInterceptor } from '../token-interceptor.service';
     InputNumberModule,
     ToastModule,
     ReactiveFormsModule,
+    NgxSpinnerModule,
   ],
   providers: [
     MenuItemContent,
