@@ -20,7 +20,7 @@ export class AlltripsComponent implements OnInit {
     private tripService: TripService,
     private route: ActivatedRoute,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
   ) {}
 
   ngOnInit(): void {

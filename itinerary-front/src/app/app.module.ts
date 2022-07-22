@@ -7,9 +7,11 @@ import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { CustomerDashboardModule } from './customer-dashboard/customer-dashboard.module';
 import { TokenInterceptor } from './token-interceptor.service';
+import { ErrorDisplayComponent } from './error-display/error-display.component';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ErrorDisplayComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -23,6 +25,7 @@ import { TokenInterceptor } from './token-interceptor.service';
       useClass: TokenInterceptor,
       multi: true,
     },
+    DialogService
   ],
   bootstrap: [AppComponent],
 })

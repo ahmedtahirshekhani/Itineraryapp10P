@@ -14,6 +14,7 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './shared/auth.guard';
 import { TokenInterceptor } from '../token-interceptor.service';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [LoginComponent, BootComponent, RegisterComponent],
@@ -27,6 +28,7 @@ import { TokenInterceptor } from '../token-interceptor.service';
     ProgressBarModule,
     HttpClientModule,
     AuthRoutingModule,
+    DialogModule,
   ],
   providers: [
     AuthService,
