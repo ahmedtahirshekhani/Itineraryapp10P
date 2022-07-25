@@ -3,7 +3,7 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { LocationsService } from '../shared/locations.service';
 import { TripService } from '../shared/trip.service';
 import { FormBuilder, Validators } from '@angular/forms';
-
+import { ErrorHandlerService } from 'src/app/error-handler.service';
 interface City {
   name: string;
   url: String;
@@ -32,7 +32,8 @@ export class CreatePlannerComponent implements OnInit {
     private locationService: LocationsService,
     private tripService: TripService,
     public ref: DynamicDialogRef,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private errorDisplayService: ErrorHandlerService,
   ) {}
 
   // populate the dropdown with defined locations
@@ -48,7 +49,7 @@ export class CreatePlannerComponent implements OnInit {
         }
       },
       error: (error) => {
-        console.log(error);
+        this.errorDisplayService.openDialog();
       },
     });
   }

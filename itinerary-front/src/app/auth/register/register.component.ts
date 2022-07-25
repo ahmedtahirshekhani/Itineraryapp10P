@@ -37,7 +37,7 @@ export class RegisterComponent {
     private auth: AuthService,
     private fb: NonNullableFormBuilder,
     private router: Router,
-    public msg: MessageService
+    public msg: MessageService,
   ) {}
 
   get formControls() {

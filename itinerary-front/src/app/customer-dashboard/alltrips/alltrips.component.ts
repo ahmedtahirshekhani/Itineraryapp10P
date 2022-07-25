@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TripService } from '../shared/trip.service';
 import { catchError, Observable, Subscription } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
-
+import { ErrorHandlerService } from 'src/app/error-handler.service';
 @Component({
   selector: 'app-alltrips',
   templateUrl: './alltrips.component.html',
@@ -20,7 +19,8 @@ export class AlltripsComponent implements OnInit {
     private tripService: TripService,
     private route: ActivatedRoute,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private errorHandlerService: ErrorHandlerService
   ) {}
 
   ngOnInit(): void {
@@ -52,6 +52,9 @@ export class AlltripsComponent implements OnInit {
           this.mytrips.push(trip);
         });
     }
+    
+    // calling spinner annimation
+    this.errorHandlerService.showSpinner();
   }
   tripCardClicked(tripId: String) {
     console.log(tripId);
