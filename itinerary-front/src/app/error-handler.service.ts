@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ErrorDisplayComponent } from './error-display/error-display.component';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ErrorHandlerService {
-
-  constructor(public dialogService: DialogService) { }
+  constructor(
+    public dialogService: DialogService,
+    private spinner: NgxSpinnerService
+  ) {}
 
   openDialog() {
     this.dialogService.open(ErrorDisplayComponent, {
@@ -17,4 +20,11 @@ export class ErrorHandlerService {
     });
   }
 
+  showSpinner() {
+    this.spinner.show();
+
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 2000);
+  }
 }
