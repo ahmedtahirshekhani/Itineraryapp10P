@@ -4,7 +4,6 @@ import { ConfirmedValidator } from '../shared/confirmed.validator';
 import { AuthService } from '../shared/auth.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
