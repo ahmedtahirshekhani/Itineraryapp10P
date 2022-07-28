@@ -6,6 +6,7 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { LocationsService } from '../shared/locations.service';
 import { TripService } from '../shared/trip.service';
+import { DialogService } from 'primeng/dynamicdialog';
 import { of } from 'rxjs';
 
 // mocked TripService
@@ -51,7 +52,8 @@ describe('CreatePlannerComponent', () => {
   let fixture: ComponentFixture<CreatePlannerComponent>;
   let dialogRef: DynamicDialogRef;
   let locationService: LocationsService;
-  let tripService: TripService
+  let tripService: TripService;
+  let dialogService: DialogService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -59,6 +61,7 @@ describe('CreatePlannerComponent', () => {
       imports: [ ReactiveFormsModule, DialogModule, DynamicDialogModule ],
       providers: [
         DynamicDialogRef,
+        DialogService,
         { provide: LocationsService, useClass: MockLocationsService },
         { provide: TripService, useClass: MockTripService }
       ]
@@ -67,6 +70,7 @@ describe('CreatePlannerComponent', () => {
 
     locationService = TestBed.inject(LocationsService);
     tripService = TestBed.inject(TripService);
+    dialogService = TestBed.inject(DialogService);
 
     dialogRef = TestBed.inject(DynamicDialogRef)
     fixture = TestBed.createComponent(CreatePlannerComponent);

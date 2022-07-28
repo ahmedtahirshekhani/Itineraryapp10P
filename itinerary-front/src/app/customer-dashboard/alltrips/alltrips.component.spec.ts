@@ -5,6 +5,7 @@ import { TripService } from '../shared/trip.service';
 import { MessageService } from 'primeng/api';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { DialogService } from 'primeng/dynamicdialog';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 
@@ -23,13 +24,15 @@ describe('AlltripsComponent', () => {
   let router: Router;
   let activatedRoute: ActivatedRoute;
   let msgService: MessageService;
+  let dialogService: DialogService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ AlltripsComponent ],
       imports: [ RouterTestingModule ],
       providers: [ { provide: TripService, useClass: MockTripService },
-      MessageService ]
+      MessageService,
+      DialogService ]
     })
     .compileComponents();
 
@@ -37,6 +40,7 @@ describe('AlltripsComponent', () => {
     router = TestBed.inject(Router);
     activatedRoute = TestBed.inject(ActivatedRoute);
     msgService = TestBed.inject(MessageService);
+    dialogService = TestBed.inject(DialogService);
 
     fixture = TestBed.createComponent(AlltripsComponent);
     component = fixture.componentInstance;
