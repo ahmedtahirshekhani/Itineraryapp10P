@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TripService } from '../shared/trip.service';
-import { catchError, Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { MessageService } from 'primeng/api';
-import { ErrorHandlerService } from 'src/app/error-handler.service';
+import { ErrorHandlerService } from '../../error-handler.service';
 @Component({
   selector: 'app-alltrips',
   templateUrl: './alltrips.component.html',
